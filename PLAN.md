@@ -117,8 +117,10 @@ Never cut: loops 1 and 2, the evaluation protocol, the README disclosures, the v
 - Done 2026-11-04: loop-2 data layer (DepMap 24Q4 + PRISM 20Q2 pull, derived tables, nearest-cell-line lookup, protocol first). Private GitHub repo created and pushed.
 - Done 2026-11-04: loop 1 data and models PASS after two review rounds (wild-type only, salts stripped, RF shipped, ROC-AUC 0.845 to 0.971 with CIs, split variance disclosed). Results: `results/activity_models.md`.
 - Done 2026-11-04: the Streamlit app with the activity tab (loop 1) merged; headless health ok, example molecules and nearest actives render.
-- Done 2026-11-04: loop 3 (Tox21) data and models PASS on substance: random forest beats 1-NN on 12 of 12 assays (ROC-AUC 0.66 to 0.83), 7,709 parent molecules, shared scaffold split; contract amendment to score-vs-prevalence in progress.
-- In progress: loop-2 per-drug models round 3 (disclosure only, 202 drugs); loop-3 contract fix; the models release bundle and startup download.
+- Done 2026-11-04: loop 3 (Tox21) data and models PASS and merged: random forest beats 1-NN on 12 of 12 assays (ROC-AUC 0.66 to 0.83), 7,709 parent molecules, shared scaffold split; contract is score vs prevalence. Results: `results/tox21_models.md`.
+- Done 2026-11-04: loop 2 per-drug models PASS after three rounds and merged: 202 drugs, logistic regression ships, median ROC-AUC 0.546, 171 of 202 weak, lookup is the main evidence. Results: `results/loop2_models.md`.
+- In progress: the models release bundle and startup download (branch infra/model-bundle).
+- Then: loop-2 and loop-3 app tabs; README disclosures and credits; hosting; first video take.
 - Then: loop-2 and loop-3 app tabs; README disclosures; hosting on Streamlit Community Cloud; first video take.
 
 ## Problems
