@@ -87,4 +87,5 @@ Discord (event server) is the main channel for announcements and mentors. Organi
 ## Still to check yourself
 - [ ] Registered on Devpost and joined the Discord server.
 - [x] Solo (decided 2026-11-04).
+- [x] Repo public since 2026-11-04 (PSMacaroni/stem2connect-2026); fresh-clone check still to do in the last week.
 - [x] Resources page read 2026-11-04 (above).

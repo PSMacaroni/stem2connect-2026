@@ -59,7 +59,7 @@ README. Raw data never goes in git; pull scripts do.
 **Build.** Models (loop 1 forests 51 MB, loop 3 forest 129 MB, loop 2 logistic 1.5 MB) ship as a GitHub release asset
 that the app downloads once at startup and caches (decided 2026-11-04). Streamlit app hosted on **Streamlit Community Cloud** (Hugging Face Spaces no longer runs code for free,
 checked 2026-11-04). Memory ceiling about 2.7 GB, so models stay small and are bundled with the app. The app sleeps
-after 12 idle hours: wake it before judging. Repo private until the last week, then public.
+after 12 idle hours: wake it before judging. Repo **public since 2026-11-04** (flipped early so hosting can be tested; release v1 holds the models).
 
 **Way of working.** Manager session (Fable) plans and reviews; Opus subagents build, one task each, on branches
 `area/topic`. PASS only when tests and lint pass, the "done" checks hold, and the vault is updated.
@@ -106,6 +106,7 @@ Never cut: loops 1 and 2, the evaluation protocol, the README disclosures, the v
 | 2026-11-04 | Name: Molecule Screening Workbench | Plain and clear | OncoScreen; HitBench |
 | 2026-11-04 | Release v1 with the full models bundle on the private repo | The app needs it at startup; hosting cannot be tested without it | Keep the zip local |
 | 2026-11-04 | Co-author trailers: the manager's early briefs made Opus subagents sign commits with the manager's Fable line; disclosed in the README, history not rewritten | Honesty about who wrote what; a rewrite would hide the mistake and break the pushed history | Rewriting history |
+| 2026-11-04 | Repo flipped public the same day, after the README disclosures merged | The app's startup download is anonymous; hosting cannot be tested on a private repo; a week of buffer | Public after the tabs merge; last week as first planned |
 | 2026-11-04 | Private GitHub repo PSMacaroni/stem2connect-2026 created and main pushed | CI on GitHub Actions; public flip in the last week | Stay local |
 | 2026-11-04 | Host on Streamlit Community Cloud, not Hugging Face Spaces | Spaces now needs a paid plan for Gradio and Docker Spaces; Community Cloud is free and known | Gradio on a free ZeroGPU Space; paying for HF PRO |
 | 2026-11-04 | Loop 2 uses the Broad Figshare snapshots (DepMap 24Q4 + PRISM 20Q2, CC BY 4.0) instead of Sanger GDSC + Cell Model Passports | Sanger's policy is non-transferable and bans use in third-party websites; the Figshare records carry CC BY 4.0 (checked on the Figshare API); current portal releases have restrictive terms and a captcha | Emailing Sanger for permission; keeping GDSC local-only; the 26Q3 portal release |
@@ -122,8 +123,9 @@ Never cut: loops 1 and 2, the evaluation protocol, the README disclosures, the v
 - Done 2026-11-04: the Streamlit app with the activity tab (loop 1) merged; headless health ok, example molecules and nearest actives render.
 - Done 2026-11-04: loop 3 (Tox21) data and models PASS and merged: random forest beats 1-NN on 12 of 12 assays (ROC-AUC 0.66 to 0.83), 7,709 parent molecules, shared scaffold split; contract is score vs prevalence. Results: `results/tox21_models.md`.
 - Done 2026-11-04: loop 2 per-drug models PASS after three rounds and merged: 202 drugs, logistic regression ships, median ROC-AUC 0.546, 171 of 202 weak, lookup is the main evidence. Results: `results/loop2_models.md`.
-- In progress: the models release bundle and startup download (branch infra/model-bundle).
-- Then: loop-2 and loop-3 app tabs; README disclosures and credits; hosting; first video take.
+- Done 2026-11-04: models release bundle and startup download merged; release v1 published (212 files, 178,693,014 bytes); README disclosures, credits and results table and the Devpost draft merged (three review rounds); repo made public; anonymous download verified with the hash check.
+- In progress: loop-2 and loop-3 app tabs (branch app/loops-2-3-tabs).
+- Then: Prakhar deploys on Streamlit Community Cloud (`docs/hosting.md`); README tabs wording; first video take; analogs if time.
 - Then: loop-2 and loop-3 app tabs; README disclosures; hosting on Streamlit Community Cloud; first video take.
 
 ## Problems
