@@ -11,6 +11,7 @@ import streamlit as st
 from rdkit import Chem
 from rdkit.Chem import Draw
 
+from molscreen import ui_cells, ui_safety
 from molscreen.assets import ensure_models, models_url
 from molscreen.data import ACTIVE_PCHEMBL
 from molscreen.predict import examples, predict
@@ -121,7 +122,7 @@ def activity_tab(res: dict, gene: str) -> None:
 
 
 res = results()
-st.title("Molecule Screening Workbench (working name)")
+st.title("Molecule Screening Workbench")
 st.info("Research and learning tool, not medical advice. Cell lines and public assay data, not patients.")
 if err := models_error():
     st.error(f"Could not get the trained models from {models_url()}: {err}")
@@ -134,8 +135,10 @@ with tabs[0]:
                     f"{ACTIVE_PCHEMBL} or more. If a query's max similarity to the training molecules is below the target's "
                     f"cut-off, the app abstains. Known limits, from `results/activity_models.md`:\n\n"
                     f"{md_section('Known limits')}")
-tabs[1].write("Coming: which cancer cell lines respond to a drug (loop 2).")
-tabs[2].write("Coming: safety flags from Tox21 (loop 3).")
+with tabs[1]:
+    ui_cells.render()
+with tabs[2]:
+    ui_safety.render(MAX_MOLECULES)
 tabs[3].write("Coming: similar molecules to explore (loop 4).")
 st.divider()
 st.caption(md_section("Credits").replace("\n", "  \n") + f"  \n{res['release']}, CC BY-SA 3.0.")
