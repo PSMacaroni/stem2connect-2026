@@ -1,7 +1,6 @@
 # Devpost submission text
 
-<!-- Draft written 2026-11-04. Before pasting: update "What it does" when the cell-lines and safety tabs land, add the
-links, and re-run the numbers pass against the results files (a re-run changes them). Every figure traces to a
+<!-- Draft written 2026-11-04. Before pasting: add the links, and re-run the numbers pass against the results files (a re-run changes them). Every figure traces to a
 source file or a run (Numbers appendix). -->
 
 ## Project name
@@ -36,13 +35,15 @@ ALK, ABL1, PARP1, BCL2). The app estimates whether the molecule is likely to be 
 models use wild-type protein measurements only. When the molecule is unlike anything in the training data, the app
 abstains and says so instead of guessing.
 
-The models behind the next two tabs are trained and evaluated; the tabs themselves are being built (update this
-paragraph when they land):
-- **Cell lines (loop 2):** enter mutated genes and see the most similar cancer cell lines with their measured drug
-  responses from the PRISM screen. Per-drug models will be shown second and greyed out when weak, because they are
-  close to chance (see below).
-- **Safety flags (loop 3):** for each of 12 Tox21 assays, the app will show the molecule's score next to the assay's active rate,
-  with the assay's held-out ROC-AUC. Not a toxicity verdict.
+Two more tabs are live:
+- **Cell lines (loop 2):** enter mutated genes and see the PRISM-screened cancer cell lines that share the most of
+  those hotspot-mutated genes, with the measured PRISM drug responses of the line you pick as the main evidence. It
+  is a lookup on cell lines, not a prediction for a patient. Per-drug model ranks come second and are greyed out
+  when weak (their held-out 95% CI reaches 0.5), because most are close to chance (see below).
+- **Safety flags (loop 3):** for each of 12 Tox21 lab assays, the molecule's score next to that assay's active
+  rate and its held-out ROC-AUC. No toxicity verdict, and it abstains on molecules unlike its training data.
+
+The Analogs tab (loop 4) is not built yet.
 
 Held-out results (numbers from the results files in the repository):
 - Activity, scaffold split: random forest ROC-AUC 0.845 to 0.971 across the 9 targets, against a
@@ -87,7 +88,7 @@ before every merge. Commits carry Co-Authored-By trailers. Of the 46 non-merge c
 - "Beats the baseline" depends on the metric: the activity and safety models rank better than nearest-neighbour lookup on every target and assay, but
   lose on balanced accuracy at a 0.5 cut on 8 of 9 targets and 8 of 12 assays.
 - Negative results are results: drug-response models on hotspot mutations alone are near chance (171 of 202 weak),
-  so the app will lead with the measured responses of similar cell lines.
+  so the app leads with the measured responses of similar cell lines.
 - Check the licence before downloading: our first loop-2 data source has a non-transferable policy, so we switched
   to Broad's CC BY 4.0 snapshots. Free hosting changed too: Hugging Face Spaces now needs a paid plan for the kind of
   Space Streamlit needs, so we host on Streamlit Community Cloud.

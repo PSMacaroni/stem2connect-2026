@@ -9,20 +9,25 @@ A learning tool for students: paste a molecule (as SMILES), pick one of 9 cancer
 app estimates whether the molecule is likely to be active on that target, using a model trained on public ChEMBL
 lab measurements. Next to each answer it shows the 3 most similar molecules the model learned from, with their
 structures and measured activity, so you can see the evidence. The models use wild-type protein measurements only,
-and when a molecule is unlike anything in the training data the app abstains and says so instead of guessing. The
+and when a molecule is unlike anything in the training data the app abstains and says so instead of guessing.
+The Cell lines tab takes a list of mutated genes, finds the PRISM-screened cancer cell lines that share the most of
+those hotspot-mutated genes, and shows the measured PRISM drug responses of the line you pick as the main evidence:
+a lookup on cell lines, not a prediction for a patient. Per-drug model ranks come second and are greyed out when
+weak (their held-out 95% CI reaches 0.5). The Safety flags tab scores a molecule in each of 12 Tox21 lab assays and
+shows each score next to that assay's active rate and its held-out ROC-AUC, with no toxicity verdict; like the
+Activity tab, it abstains on molecules unlike its training data. The Analogs tab is not built yet. The
 data comes from lab assays on proteins and cell lines, not patients: this is a research and learning tool, not
 medical advice, and it does not discover drugs.
 
 ## Results at a glance
 
 Held-out results for the three model loops. Each number is copied from the results file in the last column, which
-the training run writes. The activity tab is in the app today. The loop-2 and loop-3 models are trained and
-evaluated, but their app tabs are not built yet.
+the training run writes. All three loops have a tab in the app (Activity, Cell lines, Safety flags).
 
 | Loop | What is predicted | Held-out test | Result on the held-out test | Source |
 |---|---|---|---|---|
 | 1. Molecules to activity | Whether a molecule is active (1 µM cut-off, `docs/evaluation.md`) on each of 9 cancer protein targets, wild-type assays only | Scaffold split (seed 0): test molecules share no core structure with training | Random forest ROC-AUC 0.845 (ERBB2) to 0.971 (BCL2); 1-nearest-neighbour baseline 0.787 (BRAF) to 0.950 (BCL2). Above the baseline on 9 of 9 targets; below it on balanced accuracy at 0.5 on 8 of 9. | `results/activity_models.md` |
-| 2. Mutations to drug response | Whether a cancer cell line is among the most sensitive to each of 202 drugs (`auc` below the drug's 10th percentile), from its hotspot mutations alone | Leave-lineage-out: 146 test cell lines in 10 lineages never seen in training | **Negative result.** Median ROC-AUC 0.546 (logistic regression) vs 0.516 (1-nearest-neighbour) over the 198 drugs that are not underpowered; 171 of 202 shipped models are weak (95% CI reaches 0.5). The app will lead with the nearest cell lines' measured responses. | `results/loop2_models.md` |
+| 2. Mutations to drug response | Whether a cancer cell line is among the most sensitive to each of 202 drugs (`auc` below the drug's 10th percentile), from its hotspot mutations alone | Leave-lineage-out: 146 test cell lines in 10 lineages never seen in training | **Negative result.** Median ROC-AUC 0.546 (logistic regression) vs 0.516 (1-nearest-neighbour) over the 198 drugs that are not underpowered; 171 of 202 shipped models are weak (95% CI reaches 0.5). The app leads with the nearest cell lines' measured responses. | `results/loop2_models.md` |
 | 3. Molecules to safety flags | Whether a molecule resembles compounds that were active in each of 12 Tox21 lab assays (not a toxicity verdict) | Scaffold split (seed 0) shared by all 12 assays | Random forest ROC-AUC 0.664 (NR-ER) to 0.830 (NR-AR-LBD). Above 1-nearest-neighbour on 12 of 12 assays; below it on balanced accuracy at 0.5 on 8 of 12. | `results/tox21_models.md` |
 
 ROC-AUC 0.5 is a coin flip and 1.0 is a perfect ranking. Confidence intervals, every baseline, the abstain counts
@@ -159,11 +164,11 @@ a copy of it is also in the owner's repository for another challenge (Enveda CAS
   (+0.0199) and BCL2 (+0.0215) (`results/activity_models.md`). We report this instead of picking the best split.
 - **"Beats the baseline" depends on the metric.** The random forest ranks better than 1-nearest-neighbour on 9 of 9
   targets and 12 of 12 Tox21 assays, but is below it on balanced accuracy at a 0.5 cut on 8 of 9 targets and 8 of 12
-  assays (`results/activity_models.md`, `results/tox21_models.md`). So the safety tab will show each score next to
+  assays (`results/activity_models.md`, `results/tox21_models.md`). So the safety tab shows each score next to
   the assay's active rate rather than a yes/no flag.
 - **Negative results are results.** Per-drug models on hotspot mutations alone are near chance: median ROC-AUC
-  0.546, 171 of 202 weak, 73 below 0.5 (`results/loop2_models.md`). The app will lead with the measured responses of
-  the nearest cell lines and grey out weak models.
+  0.546, 171 of 202 weak, 73 below 0.5 (`results/loop2_models.md`). The app leads with the measured responses of
+  the nearest cell lines and greys out weak models.
 - **Check the licence before downloading.** The first choice for loop 2 (Sanger GDSC and Cell Model Passports) is
   under a non-commercial, non-transferable policy, so we switched to Broad's CC BY 4.0 Figshare snapshots; the
   smallest ChemBERTa-2 weights carry no licence at all; Tox21 states none (`docs/data-registry.md`).
