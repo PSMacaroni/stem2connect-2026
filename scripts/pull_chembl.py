@@ -23,7 +23,7 @@ TARGETS = {  # gene -> ChEMBL target ID, from docs/data-registry.md section 1
 FIELDS = [
     "molecule_chembl_id", "canonical_smiles", "standard_type", "standard_relation", "standard_value",
     "standard_units", "pchembl_value", "assay_chembl_id", "assay_type", "data_validity_comment",
-    "document_chembl_id", "target_organism",
+    "document_chembl_id", "target_organism", "assay_variant_mutation",
 ]
 OUT = Path(__file__).resolve().parents[1] / "data" / "chembl"
 
