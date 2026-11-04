@@ -3,7 +3,7 @@
 This file is Prakhar's. Agreed with the manager session on 2026-11-04. Keep it current.
 
 ## Idea and track
-**Working name: (decide later).** A free cancer drug-screening workbench for students and small labs.
+**Name: Molecule Screening Workbench** (decided 2026-11-04). A free cancer drug-screening workbench for students and small labs.
 Track: **Scientific Research** ("tools for analysis"). Solo entry.
 
 Four loops, in ship order. Loops 1 and 2 are never cut.
@@ -91,7 +91,7 @@ Never cut: loops 1 and 2, the evaluation protocol, the README disclosures, the v
 | 2026-11-04 | $0 spend cap | Everything fits free tiers | $10, $25 |
 | 2026-11-04 | Activity models are wild-type only; rows from mutant-protein assays are dropped | Review found 43% of BRAF rows and 22 to 24% of EGFR and ALK rows came from mutant assays pooled with wild-type; a clean claim beats a bigger dataset | Keep pooled and disclose; separate mutant models (maybe week 2) |
 | 2026-11-04 | Strip salts to the parent molecule before aggregating | 614 EGFR and 113 ALK molecules were the same parent under different ChEMBL IDs (double-counted, no leak) | Keep as is and disclose |
-| 2026-11-04 | CDK4 and CDK6 stay, marked "underpowered" with their test inactive counts (36 and 6) | Keeps the 9-target panel without hiding the noise | Drop CDK6; merge CDK4/6 |
+| 2026-11-04 | CDK4 and CDK6 stay, marked "underpowered" with their test inactive counts (36 and 8 after the re-run; 6 in the first run) | Keeps the 9-target panel without hiding the noise | Drop CDK6; merge CDK4/6 |
 | 2026-11-04 | Headline metric is ROC-AUC with a bootstrap 95% CI next to the 1-NN baseline; then inactive-class PR-AUC vs random; balanced accuracy shown even where RF loses; active-class PR-AUC last | Actives are 70 to 97% of molecules, so active-class PR-AUC is inflated by construction | Inactive-class PR-AUC as the headline |
 | 2026-11-04 | Nearest cell lines rank by number of shared mutated genes first, then Jaccard | Plain Jaccard put lines carrying only the listed genes first (43 ties at 0.667 for KRAS/TP53/STK11) | Plain Jaccard; rarity-weighted genes |
 | 2026-11-04 | Per-drug models only for compounds whose PRISM target names a gene, oncology drugs first (about 30 to 60) | 1,457 of 1,494 compounds pass the 300-line rule, so "best-sampled" selects nothing | Most variable 30; all 1,457 |
@@ -103,6 +103,9 @@ Never cut: loops 1 and 2, the evaluation protocol, the README disclosures, the v
 | 2026-11-04 | Trained models ship as a GitHub release asset that the app downloads once at startup and caches; the pre-registered random forests stay | Loop 1 is 51 MB and loop 3 is 129 MB, too big for git; Streamlit Community Cloud builds from the repo | Smaller forests (a re-evaluation); logistic regression for loop 3 (lost on 12 of 12 by 0.01 to 0.11) |
 | 2026-11-04 | The safety tab shows each assay's score against the assay's active rate, with the assay's ROC-AUC and CI; no hard flag | Balanced accuracy at 0.5 is 0.52 to 0.70 and below 1-NN on 8 of 12 assays, while ROC-AUC beats 1-NN on 12 of 12 | A flag at a train-set threshold; the 0.5 flag |
 | 2026-11-04 | Loop 2 keeps all 202 drugs from the 3-per-gene plus selective rules, with the odd single-target picks (antibiotics under TOP2A, thiram under JAK2, anthelmintics under TUBB) named in Known limits | They are real PRISM screens on cancer cell lines; the app leads with the lookup; no fourth round | A moa blocklist; selective drugs only for the 9 loop-1 targets |
+| 2026-11-04 | Name: Molecule Screening Workbench | Plain and clear | OncoScreen; HitBench |
+| 2026-11-04 | Release v1 with the full models bundle on the private repo | The app needs it at startup; hosting cannot be tested without it | Keep the zip local |
+| 2026-11-04 | Co-author trailers: the manager's early briefs made Opus subagents sign commits with the manager's Fable line; disclosed in the README, history not rewritten | Honesty about who wrote what; a rewrite would hide the mistake and break the pushed history | Rewriting history |
 | 2026-11-04 | Private GitHub repo PSMacaroni/stem2connect-2026 created and main pushed | CI on GitHub Actions; public flip in the last week | Stay local |
 | 2026-11-04 | Host on Streamlit Community Cloud, not Hugging Face Spaces | Spaces now needs a paid plan for Gradio and Docker Spaces; Community Cloud is free and known | Gradio on a free ZeroGPU Space; paying for HF PRO |
 | 2026-11-04 | Loop 2 uses the Broad Figshare snapshots (DepMap 24Q4 + PRISM 20Q2, CC BY 4.0) instead of Sanger GDSC + Cell Model Passports | Sanger's policy is non-transferable and bans use in third-party websites; the Figshare records carry CC BY 4.0 (checked on the Figshare API); current portal releases have restrictive terms and a captcha | Emailing Sanger for permission; keeping GDSC local-only; the 26Q3 portal release |
@@ -125,7 +128,7 @@ Never cut: loops 1 and 2, the evaluation protocol, the README disclosures, the v
 
 ## Problems
 - Tox21 has no stated licence (probably US-government public domain): raw file never committed, cited only.
-- CDK6 has 6 inactives in its test set, CDK4 36: both marked underpowered.
+- CDK6 has 8 inactives in its test set (6 in the first run), CDK4 36: both marked underpowered.
 - Loop 2 per-drug models on hotspot mutations alone explain little (median ROC-AUC 0.56 at 5b7d361 on the branch); the write-up reports this as a negative result and the app leads with the lookup.
 - Leave-lineage-out test set never asks about Skin (BRAF melanoma) or blood lineages: they all sit in train.
 - Loop 2 derived tables are 31 MB (sensitivity.csv 28.9 MB): too big to commit as is for the hosted app; trim or compress before hosting.
