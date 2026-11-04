@@ -1,10 +1,7 @@
-# [Project name]
+# Molecule Screening Workbench
 
 Entry for the [STEM2Connect AI Hackathon 2026](https://stem2connect-online-hackathon.devpost.com/).
-Primary track: [Education / Healthcare / Sustainability / Scientific Research / Community Impact]
-
-> Template. Fill each section in before submitting. Devpost requires this README to say what the project does,
-> how to run it, and which AI tools or services it uses. The submission deadline is Nov 21, 2026, 11:59 PM EST.
+Primary track: Scientific Research
 
 ## What it does
 
@@ -16,7 +13,33 @@ and when a molecule is unlike anything in the training data the app abstains and
 data comes from lab assays on proteins and cell lines, not patients: this is a research and learning tool, not
 medical advice, and it does not discover drugs.
 
+## Results at a glance
+
+Held-out results for the three model loops. Each number is copied from the results file in the last column, which
+the training run writes. The activity tab is in the app today. The loop-2 and loop-3 models are trained and
+evaluated, but their app tabs are not built yet.
+
+| Loop | What is predicted | Held-out test | Result on the held-out test | Source |
+|---|---|---|---|---|
+| 1. Molecules to activity | Whether a molecule is active (1 µM cut-off, `docs/evaluation.md`) on each of 9 cancer protein targets, wild-type assays only | Scaffold split (seed 0): test molecules share no core structure with training | Random forest ROC-AUC 0.845 (ERBB2) to 0.971 (BCL2); 1-nearest-neighbour baseline 0.787 (BRAF) to 0.950 (BCL2). Above the baseline on 9 of 9 targets; below it on balanced accuracy at 0.5 on 8 of 9. | `results/activity_models.md` |
+| 2. Mutations to drug response | Whether a cancer cell line is among the most sensitive to each of 202 drugs (`auc` below the drug's 10th percentile), from its hotspot mutations alone | Leave-lineage-out: 146 test cell lines in 10 lineages never seen in training | **Negative result.** Median ROC-AUC 0.546 (logistic regression) vs 0.516 (1-nearest-neighbour) over the 198 drugs that are not underpowered; 171 of 202 shipped models are weak (95% CI reaches 0.5). The app will lead with the nearest cell lines' measured responses. | `results/loop2_models.md` |
+| 3. Molecules to safety flags | Whether a molecule resembles compounds that were active in each of 12 Tox21 lab assays (not a toxicity verdict) | Scaffold split (seed 0) shared by all 12 assays | Random forest ROC-AUC 0.664 (NR-ER) to 0.830 (NR-AR-LBD). Above 1-nearest-neighbour on 12 of 12 assays; below it on balanced accuracy at 0.5 on 8 of 12. | `results/tox21_models.md` |
+
+ROC-AUC 0.5 is a coin flip and 1.0 is a perfect ranking. Confidence intervals, every baseline, the abstain counts
+and the split-variance checks are in the results files.
+
 ## The problem it addresses
+
+Checking whether a molecule might act on a cancer protein, which cancer cell lines respond to a drug, or whether a
+compound trips a lab toxicity assay usually takes commercial screening software or a specialist pipeline, which
+students and small labs often cannot afford. The data to do this is public (ChEMBL, DepMap and PRISM, Tox21), but
+using it honestly is hard: the files are large, the licences differ, and a model tested on molecules close to its
+training data looks better than it is. Most free tools show one confident score and hide how uncertain it is, or
+how far the question is from anything the model has seen. This workbench is built around three questions, each
+answered with held-out numbers and the evidence behind the answer: is this molecule likely to be active on a given
+cancer target; for a set of mutated genes, which cancer cell lines carry them and how did those lines respond to
+drugs; and does this molecule resemble compounds that were active in the Tox21 safety assays? When a molecule is
+unlike the training data, it says so instead of guessing.
 
 ## How to run it
 
@@ -46,16 +69,116 @@ everything in WSL. On Linux or macOS, skip step 1 and run the rest in a normal t
    trained models in `models/` (made by `uv run python -m molscreen.train`).
 
 ## AI tools and services used
-**Inside the project:**
+**Inside the project:** classic machine learning, trained here on public lab data. No large language model or
+external AI API is called by the app.
+- **Activity (loop 1):** one random forest per target on Morgan fingerprints (radius 2, 2048 bits), built with
+  scikit-learn and RDKit. LightGBM was trained and compared; the random forest won the pre-registered switch rule
+  and ships (`results/activity_models.md`).
+- **Drug response (loop 2):** one logistic regression per drug on the cell line's 0/1 hotspot mutation vector
+  (542 genes); a random forest was compared. Logistic regression ships by a dated amendment
+  (`docs/evaluation-loop2.md`, `results/loop2_models.md`).
+- **Safety (loop 3):** one random forest per Tox21 assay on Morgan fingerprints; logistic regression was compared
+  (`results/tox21_models.md`).
+- **Baselines** on every held-out set: majority class and 1-nearest-neighbour (Tanimoto similarity for molecules).
+  The nearest cell lines for a set of genes are a lookup (shared mutated genes, then Jaccard), not a model.
+- **Evaluation rules written before training** (`docs/evaluation.md`, `docs/evaluation-loop2.md`,
+  `docs/evaluation-loop3.md`), with every later change written as a dated amendment: scaffold-split testing for
+  molecules, leave-lineage-out testing for cell lines, bootstrap 95% confidence intervals, and a split-variance check.
+- **Abstain rule:** when a molecule's highest Tanimoto similarity to the training molecules is below the 5th
+  percentile of the training set's own leave-one-out similarities, the app shows no prediction and says why
+  (`docs/evaluation.md`).
 
-**AI coding assistants (disclosure):** Claude Code (Anthropic). Say what it contributed, what we changed, and what we tested.
+**AI coding assistants (disclosure):** Claude Code (Anthropic) was used throughout this project. A manager
+session running Claude Fable 5.1 planned the work with the owner, wrote each task brief and reviewed every result.
+Subagents running Claude Opus 5.5 wrote the code, the tests, the evaluation protocols, the results reports and the
+docs, including this README section and the Devpost draft. An independent reviewer subagent recomputed the loop-1
+numbers from scratch and found the reporting and data problems that changed the protocol: assays on mutant
+proteins pooled with wild-type ones, the same parent molecule counted under several ChEMBL IDs as different salts,
+an active-class PR-AUC that looked high only because most molecules are active, and balanced accuracy missing from
+the table. Those findings led to the wild-type-only and salt-stripping amendments in `docs/evaluation.md`. The
+owner, Prakhar Suryansh, chose the project, the data sources, the metrics and the cut-offs, and made every decision
+in the Decisions table of `PLAN.md` after seeing the evidence for it. Before anything was merged, the manager
+session re-ran the tests and the reproduction of the reported numbers.
+Commits carry Co-Authored-By trailers. Of the 46 non-merge commits at the time of writing, 14 written by the manager session (the plan updates and one CI fix) correctly name Claude Fable 5.1; 24 written by subagents running Claude Opus 5.5 (the scaffold, data registry, loop-1, loop-2 and activity-tab work) also name Claude Fable 5.1, because the manager's task briefs specified the manager's own attribution line by mistake, noticed during this README review; 6 (loop 3 and the model bundle) name Claude Opus 5.5; 2 setup commits name Claude Sonnet 5.5. Git history was not rewritten; later commits name the model that wrote them.
+No AI tool decided what this project claims: the
+wording rules (a research and learning tool, not medical advice; cell lines, not patients) are the owner's, in
+`PLAN.md`.
 
 ## Credits and reused work
-Libraries, public datasets and third-party APIs, each with a link and license.
-Anything reused from an earlier project, with the project and the date it was written.
+The code is MIT-licensed (`LICENSE`). ChEMBL-derived data in this repository or its release files is shared under
+CC BY-SA 3.0, as ChEMBL's licence requires.
+
+### Data
+- **ChEMBL** (bioactivity data, loop 1). ChEMBL data is from http://www.ebi.ac.uk/chembl - the version of ChEMBL is
+  chembl_37. Licensed under CC BY-SA 3.0 (https://creativecommons.org/licenses/by-sa/3.0/). Any ChEMBL-derived data
+  in this repository is shared under the same licence. Mendez D, et al. ChEMBL: towards direct deposition of
+  bioassay data. Nucleic Acids Res. 2019;47(D1):D930-D940. doi:10.1093/nar/gky1075
+- **DepMap 24Q4 Public** (hotspot mutations, cell-line annotations, compound map, loop 2), Broad Institute.
+  Figshare+, doi:10.25452/figshare.plus.27993248. CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/).
+- **PRISM Repurposing 20Q2** (secondary-screen dose-response, loop 2), Broad Institute; DepMap, Corsello S, Kocak M,
+  Golub T. figshare, doi:10.6084/m9.figshare.20564034. CC BY 4.0. Corsello SM, Nagari RT, Spangler RD, et al.
+  Discovering the anticancer potential of non-oncology drugs by systematic viability profiling. *Nat Cancer.*
+  2020;1(2):235-248. doi:10.1038/s43018-019-0018-6
+- Tsherniak A, Vazquez F, Montgomery PG, et al. Defining a Cancer Dependency Map. *Cell.* 2017;170(3):564-576.e16.
+  doi:10.1016/j.cell.2017.06.010
+- Mutation data: Ghandi M, Huang FW, Jané-Valbuena J, et al. Next-generation characterization of the Cancer Cell
+  Line Encyclopedia. *Nature.* 2019;569(7757):503-508. doi:10.1038/s41586-019-1186-3
+- **Tox21** (12 toxicity assays, loop 3) as distributed by MoleculeNet/DeepChem
+  (https://deepchemdata.s3-us-west-1.amazonaws.com/datasets/tox21.csv.gz). Wu Z, et al. MoleculeNet: a benchmark for
+  molecular machine learning. Chem. Sci. 2018;9:513-530. doi:10.1039/C7SC02664A. Huang R, et al. Tox21Challenge to
+  build predictive models of nuclear receptor and stress response pathways as mediated by exposure to environmental
+  chemicals and drugs. Front. Environ. Sci. 2016;3:85. doi:10.3389/fenvs.2015.00085. **Licence not stated:** neither
+  MoleculeNet/DeepChem nor the NCATS challenge page states a licence for the data. Tox21 is a US federal programme,
+  so it is probably public domain (inferred, not verified).
+
+Raw data is never committed: `scripts/pull_chembl.py`, `scripts/pull_depmap.py` and `scripts/pull_tox21.py` download
+it. Licences were checked on the official pages before any download (`docs/data-registry.md`).
+
+### Libraries
+RDKit (BSD-3-Clause), scikit-learn (BSD-3-Clause), LightGBM (MIT), Streamlit (Apache-2.0), pandas (BSD-3-Clause),
+NumPy (BSD-3-Clause), joblib (BSD-3-Clause), pytest (MIT), ruff (MIT), uv (MIT or Apache-2.0). Versions are pinned
+in `pyproject.toml` and `uv.lock`; licence links are in `docs/data-registry.md`.
+
+### Reused work
+No code, data or design from the owner's earlier hackathon projects (Ashby, MuFFLe++) was reused. The only
+carried-over ideas are evaluation habits: testing on held-out data the model never saw, abstaining instead of
+guessing, and recording where every cut-off comes from. They are described in the owner's notes and were written
+fresh here. Everything in this repository was created between Nov 3 and Nov 21, 2026 (first commit 2026-11-03).
+`scripts/sync_to_vault.py`, a utility that copies this project into the owner's notes, was written on 2026-11-03;
+a copy of it is also in the owner's repository for another challenge (Enveda CASMI). It is not part of the app.
 
 ## What we learned
+- **A high score can come from the data, not the model.** Most ChEMBL molecules in these sets are active, so a
+  random ranking already scores 0.68 to 0.95 on active-class PR-AUC (`results/activity_models.md`). We lead with
+  ROC-AUC and its confidence interval next to the nearest-neighbour baseline instead.
+- **Read what each assay measured.** A review found assays on mutant proteins pooled with wild-type ones; dropping
+  them removed 42.8% of BRAF rows, 23.8% of EGFR rows and 22.0% of ALK rows (`results/activity_models.md`). The
+  activity models now answer one clean question: activity on the normal protein.
+- **One test set's confidence interval understates the uncertainty.** Changing the scaffold split alone moves
+  ROC-AUC by up to 0.0549 (CDK4, 1-nearest-neighbour), more than the random forest's lead over the baseline on ABL1
+  (+0.0199) and BCL2 (+0.0215) (`results/activity_models.md`). We report this instead of picking the best split.
+- **"Beats the baseline" depends on the metric.** The random forest ranks better than 1-nearest-neighbour on 9 of 9
+  targets and 12 of 12 Tox21 assays, but is below it on balanced accuracy at a 0.5 cut on 8 of 9 targets and 8 of 12
+  assays (`results/activity_models.md`, `results/tox21_models.md`). So the safety tab will show each score next to
+  the assay's active rate rather than a yes/no flag.
+- **Negative results are results.** Per-drug models on hotspot mutations alone are near chance: median ROC-AUC
+  0.546, 171 of 202 weak, 73 below 0.5 (`results/loop2_models.md`). The app will lead with the measured responses of
+  the nearest cell lines and grey out weak models.
+- **Check the licence before downloading.** The first choice for loop 2 (Sanger GDSC and Cell Model Passports) is
+  under a non-commercial, non-transferable policy, so we switched to Broad's CC BY 4.0 Figshare snapshots; the
+  smallest ChemBERTa-2 weights carry no licence at all; Tox21 states none (`docs/data-registry.md`).
+- **Free hosting changes.** Hugging Face Spaces now needs a paid plan for Gradio and Docker Spaces, and Streamlit
+  needs a Docker Space there, so the app will be hosted on Streamlit Community Cloud instead
+  (`docs/data-registry.md`, read 2026-11-04).
 
 ## What's next
+- **Analog enumeration (loop 4):** small RDKit edits to a known active, each scored by the activity and safety
+  models with the same abstain rule, top few shown.
+- **Richer features for loop 2:** damaging mutations beyond hotspots, and other cell-line data, to test whether the
+  per-drug models can get clearly above chance.
+- **Mutant-specific activity models:** use the mutant-protein assay rows that the wild-type models leave out, for
+  targets where mutations change which drugs work.
+- **A chemist's review:** ask a medicinal chemist to check the examples, the wording and the abstain behaviour.
 
 ## Team
+Prakhar Suryansh (solo entry).
