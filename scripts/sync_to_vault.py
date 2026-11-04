@@ -8,6 +8,7 @@ The copy goes to <vault>/Projects/<name>/repo/. It includes every file git track
 every file git would track (so it follows .gitignore: data, virtual environments and
 .env files stay out). If the folder is not a git repo it walks the tree and skips the
 usual junk. It also skips:
+  - your personal Claude setup files (CLAUDE.local.md, .claude/settings.local.json)
   - files over --max-mb (default 5), listed in the manifest
   - files whose names or contents look like secrets (keys, tokens), listed in the manifest
 It never deletes anything in the vault. Files that disappeared from the project are listed
@@ -35,9 +36,10 @@ SECRET_NAMES = re.compile(
     r"|credentials(\.json|\.ya?ml)?|secrets?\.(json|ya?ml|toml|env|txt)|\.?tokens?(\.txt|\.json)?)$",
     re.IGNORECASE,
 )
+PERSONAL = {"CLAUDE.local.md", ".claude/settings.local.json"}
 SECRET_ALLOW = re.compile(r"\.(example|sample|template)$|\.md$", re.IGNORECASE)
 SECRET_CONTENT = re.compile(
-    r"(ghp_[A-Za-z0-9]{30,}|github_pat_[A-Za-z0-9_]{30,}|hf_[A-Za-z0-9]{30,}|sk-[A-Za-z0-9_\-]{30,}"
+    r"(ghp_[A-Za-z0-9]{30,}|github_pat_[A-Za-z0-9_]{30,}|hf_[A-Za-z0-9]{30,}|sk-(?:proj-|ant-|live-)?[A-Za-z0-9]{32,}"
     r"|AKIA[0-9A-Z]{16}|xox[baprs]-[A-Za-z0-9\-]{20,}|-----BEGIN [A-Z ]*PRIVATE KEY-----"
     r"|(?i:api[_-]?key|secret|token|password)\s*[=:]\s*['\"][A-Za-z0-9_\-\.]{20,}['\"])"
 )
@@ -64,9 +66,8 @@ def list_files(src: Path) -> list[str]:
 
 
 def skip_reason(src: Path, rel: str, max_bytes: int) -> str | None:
-    parts = rel.split("/")
-    if any(p in JUNK_DIRS for p in parts):
-        return "junk folder"
+    if rel in PERSONAL:
+        return "personal Claude setup (already kept in the vault)"
     path = src / rel
     if SECRET_NAMES.search(rel) and not SECRET_ALLOW.search(rel):
         return "name looks like a secret"
