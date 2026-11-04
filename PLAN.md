@@ -124,8 +124,9 @@ Never cut: loops 1 and 2, the evaluation protocol, the README disclosures, the v
 - Done 2026-11-04: loop 3 (Tox21) data and models PASS and merged: random forest beats 1-NN on 12 of 12 assays (ROC-AUC 0.66 to 0.83), 7,709 parent molecules, shared scaffold split; contract is score vs prevalence. Results: `results/tox21_models.md`.
 - Done 2026-11-04: loop 2 per-drug models PASS after three rounds and merged: 202 drugs, logistic regression ships, median ROC-AUC 0.546, 171 of 202 weak, lookup is the main evidence. Results: `results/loop2_models.md`.
 - Done 2026-11-04: models release bundle and startup download merged; release v1 published (212 files, 178,693,014 bytes); README disclosures, credits and results table and the Devpost draft merged (three review rounds); repo made public; anonymous download verified with the hash check.
-- In progress: loop-2 and loop-3 app tabs (branch app/loops-2-3-tabs).
-- Then: Prakhar deploys on Streamlit Community Cloud (`docs/hosting.md`); README tabs wording; first video take; analogs if time.
+- Done 2026-11-04: loop-2 (Cell lines) and loop-3 (Safety flags) tabs merged; all four loops' evidence shown as decided; 46 tests.
+- In progress: bundle v2 with the derived DepMap tables (the hosted Cell lines tab needs them); README tabs wording.
+- Then: Prakhar deploys on Streamlit Community Cloud (`docs/hosting.md`, after the v2 hash); first video take; analogs if time.
 - Then: loop-2 and loop-3 app tabs; README disclosures; hosting on Streamlit Community Cloud; first video take.
 
 ## Problems
