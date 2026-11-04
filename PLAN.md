@@ -85,6 +85,10 @@ Never cut: loops 1 and 2, the evaluation protocol, the README disclosures, the v
 | 2026-11-04 | Analog enumeration, not a generative model | Simple and explainable | Training a generator |
 | 2026-11-04 | Streamlit on Hugging Face Spaces, Community Cloud fallback | More memory and disk; named on the Resources page; Streamlit known | Gradio; local only |
 | 2026-11-04 | $0 spend cap | Everything fits free tiers | $10, $25 |
+| 2026-11-04 | Activity models are wild-type only; rows from mutant-protein assays are dropped | Review found 43% of BRAF rows and 22 to 24% of EGFR and ALK rows came from mutant assays pooled with wild-type; a clean claim beats a bigger dataset | Keep pooled and disclose; separate mutant models (maybe week 2) |
+| 2026-11-04 | Strip salts to the parent molecule before aggregating | 614 EGFR and 113 ALK molecules were the same parent under different ChEMBL IDs (double-counted, no leak) | Keep as is and disclose |
+| 2026-11-04 | CDK4 and CDK6 stay, marked "underpowered" with their test inactive counts (36 and 6) | Keeps the 9-target panel without hiding the noise | Drop CDK6; merge CDK4/6 |
+| 2026-11-04 | Headline metric is ROC-AUC with a bootstrap 95% CI next to the 1-NN baseline; then inactive-class PR-AUC vs random; balanced accuracy shown even where RF loses; active-class PR-AUC last | Actives are 70 to 97% of molecules, so active-class PR-AUC is inflated by construction | Inactive-class PR-AUC as the headline |
 | 2026-11-04 | Host on Streamlit Community Cloud, not Hugging Face Spaces | Spaces now needs a paid plan for Gradio and Docker Spaces; Community Cloud is free and known | Gradio on a free ZeroGPU Space; paying for HF PRO |
 | 2026-11-04 | Loop 2 uses the Broad Figshare snapshots (DepMap 24Q4 + PRISM 20Q2, CC BY 4.0) instead of Sanger GDSC + Cell Model Passports | Sanger's policy is non-transferable and bans use in third-party websites; the Figshare records carry CC BY 4.0 (checked on the Figshare API); current portal releases have restrictive terms and a captcha | Emailing Sanger for permission; keeping GDSC local-only; the 26Q3 portal release |
 
@@ -94,10 +98,11 @@ Never cut: loops 1 and 2, the evaluation protocol, the README disclosures, the v
   Data registry with licences merged (`docs/data-registry.md`).
 
 ## Next
-- In progress: loop-1 ChEMBL pulls, evaluation protocol, activity models.
+- In progress: loop-1 FIX round 1 (reporting fixes, wild-type-only and salt-stripped re-run). First run (pooled, 4c71e50 on the branch): RF ROC-AUC 0.855 to 0.962, reproduced by the manager and an independent reviewer.
 - Done 2026-11-04: Broad DepMap / PRISM licence check (registry section 3b).
 - Then: the Streamlit app with the activity tab; README disclosures; private GitHub repo.
 
 ## Problems
 - Tox21 has no stated licence (probably US-government public domain): raw file never committed, cited only.
-- CDK6 has the fewest ChEMBL rows (1,026); check the unique-molecule count before promising a CDK6 model.
+- CDK6 has 6 inactives in its test set, CDK4 36: both marked underpowered.
+- The switch rule reads the held-out set once (pre-registered); README must say so. Model parameters were committed with the first results, not with the protocol.
