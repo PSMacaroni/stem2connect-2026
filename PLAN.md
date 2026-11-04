@@ -1,8 +1,23 @@
 # Plan
 
-This file is Prakhar's. It is blank on purpose. Fill it in while planning with the manager session, and keep it current.
+This file is Prakhar's. Agreed with the manager session on 2026-11-04. Keep it current.
 
 ## Idea and track
+**Working name: (decide later).** A free cancer drug-screening workbench for students and small labs.
+Track: **Scientific Research** ("tools for analysis"). Solo entry.
+
+Four loops, in ship order. Loops 1 and 2 are never cut.
+1. **Molecules → activity.** Paste SMILES, pick a cancer target (EGFR, BRAF, HER2/ERBB2, CDK4, CDK6, ALK, ABL1,
+   PARP1, BCL2), get a ranked activity prediction plus the nearest known actives from ChEMBL shown as evidence.
+2. **Mutations → drugs.** Enter mutated genes; see the most similar GDSC cell lines with their measured drug
+   sensitivities, plus trained sensitivity models for the 20 to 30 best-sampled drugs. Cell-line data, never patients.
+3. **Molecules → safety flags.** Tox21 assays per molecule, with confidence and an abstain when the molecule is
+   unlike the training set.
+4. **Analog enumeration.** RDKit transforms on a known active, scored by loops 1 and 3, top few shown.
+
+Why this and not a third slide-analysis tool: Learning and Growth is 20% of the score; the new-work rule and the
+non-commercial pathology encoder licences make slide reuse a drag in a public repo; and generalist judges can
+grade a screening tool's problem and impact. See the vault decision note.
 
 ## Facts that bound the plan
 Details in `docs/hackathon.md`.
@@ -10,18 +25,67 @@ Details in `docs/hackathon.md`.
 - Needed to be eligible: public GitHub repo with README, demo video (6 min or less) showing it working,
   Devpost description, one track, all team members added.
 - New work only (Oct 11 to Nov 21). Credit libraries, datasets, APIs. Disclose reused work and AI assistants.
+- Time: 10 to 20 hours a week from Prakhar, counting review. Enveda CASMI runs at the same time; no code crosses
+  between the two repos.
+- Spend cap: **$0**. CPU in WSL on this PC, Google Colab free for one-off GPU runs.
 
 ## Approach
+**AI.** Floor: RDKit Morgan fingerprints + LightGBM or random forest, one model per target. Comparison: ChemBERTa
+(or a similar open chemistry model from Hugging Face) embeddings + small head, the same linear-probe idea as Ashby.
+Stretch: a graph neural network trained on Colab.
+
+**Honest evaluation, decided before any result.**
+- Scaffold-split held-out test sets (the molecule version of patient-disjoint testing). Never tune on them.
+- Every model must beat a nearest-neighbour (Tanimoto) baseline and a majority/random baseline on the held-out set.
+- Abstain when a query is far from the training data (Tanimoto distance cutoff set on the training set).
+- Every number in the README, the write-up and the video traces to a run file and says how it was computed.
+
+**Wording.** "Research and learning tool, not medical advice." Never "discovers drugs", never "predicts a patient's
+response". GDSC rows are cell lines.
+
+**Data and licences.** ChEMBL (activities), Tox21 via MoleculeNet (safety), GDSC + Cell Model Passports (drug
+sensitivity and cell-line mutations), an open chemistry encoder from Hugging Face. Each licence is checked and
+written into `docs/data-registry.md` before any download, and credited in the README.
+
+**Build.** Streamlit app, hosted on Hugging Face Spaces (Streamlit SDK); Streamlit Community Cloud is the fallback.
+Models bundled small enough to ship with the app. Repo private until the last week, then public.
+
+**Way of working.** Manager session (Fable) plans and reviews; Opus subagents build, one task each, on branches
+`area/topic`. PASS only when tests and lint pass, the "done" checks hold, and the vault is updated.
+
+## Weeks
+- **Nov 4 to 10:** licence and data registry; data pulls; activity models with the evaluation protocol; app with the
+  activity tab; README with AI disclosure; GitHub repo created (private).
+- **Nov 11 to 17:** mutations loop; safety flags; ChemBERTa comparison; hosting on Spaces; first video take.
+- **Nov 18 to 20:** analogs if time; numbers pass; fresh-clone test; final video; repo public; submit Nov 20
+  with a day spare.
 
 ## Cut order
 What gets dropped first if time runs out.
+1. Analog enumeration (loop 4)
+2. GNN stretch
+3. ChemBERTa comparison
+4. Hosting (fall back to the video plus a local run from the README)
+5. Safety flags (loop 3)
+Never cut: loops 1 and 2, the evaluation protocol, the README disclosures, the video.
 
 ## Decisions
 | Date | Decision | Why | Rejected |
 |---|---|---|---|
+| 2026-11-04 | Molecule screening workbench, Scientific Research track | Learning and Growth score; licence and new-work friction of slide reuse; impact legible to generalist judges | A third slide-analysis tool |
+| 2026-11-04 | Loops 1 and 2 are the core; 3 and 4 are extras | 10 to 20 h/week, solo | Generation as a core feature |
+| 2026-11-04 | Nearest cell lines + per-drug models for loop 2 | Honest, demoable in a week | One drug+genomics model; lookup only |
+| 2026-11-04 | Analog enumeration, not a generative model | Simple and explainable | Training a generator |
+| 2026-11-04 | Streamlit on Hugging Face Spaces, Community Cloud fallback | More memory and disk; named on the Resources page; Streamlit known | Gradio; local only |
+| 2026-11-04 | $0 spend cap | Everything fits free tiers | $10, $25 |
 
 ## Done
+- 2026-11-03: scaffold (README skeleton, rules, templates).
+- 2026-11-04: plan agreed.
 
 ## Next
+- Week-1 tasks: data registry with licences; repo scaffold (package, tests, ruff); ChEMBL pulls for the 9 targets;
+  evaluation protocol; activity models; activity tab.
 
 ## Problems
+(none yet)

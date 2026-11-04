@@ -68,7 +68,23 @@ the Rules page does not mention them, so treat that as unconfirmed.
 Discord (event server) is the main channel for announcements and mentors. Organizers: stem2connect@gmail.com
 (preferred, listed on the Rules page). Mentor requests go through Discord.
 
+## Resources page (read 2026-11-04)
+- Track wording on the event page: Healthcare is "health education, patient resources, public health, and access";
+  Scientific Research is "tools for analysis, organization, collaboration, and communication".
+- Suggested tools: Hugging Face (models, Spaces), Streamlit and Gradio, Teachable Machine, MIT App Inventor,
+  GitHub Student Developer Pack, OBS Studio for the video. Datasets: Kaggle, Data.gov, WHO GHO, NASA Earthdata.
+- AI feature ideas: a trained classifier, a summarizer or translator, or an ML prediction from a dataset. "Fetching
+  ordinary data from a conventional API does not itself create an AI feature."
+- Free AI options (checked by the organizers 2026-10-21): Gemini API free tier (**users must be 18+**); Teachable
+  Machine; Hugging Face hosted inference has **no free credits** (open models and Spaces are still free).
+- Data safety: use synthetic or publicly licensed data; never upload patient records or private data to AI services
+  or public repos; keep keys out of code, README, screenshots and video.
+- Submission steps: public repo + README; video 6 min or less on YouTube or Vimeo; Devpost entry with track and AI
+  disclosure in the public description; add teammates; press Submit (a draft is not an entry); test links signed out.
+- Gallery on 2026-11-04: 34 projects, mostly small web apps; a few medical ones (ClinNote, MedAssist, PULSE) and
+  image classifiers (LeafGuard).
+
 ## Still to check yourself
 - [ ] Registered on Devpost and joined the Discord server.
-- [ ] Decide solo or team, and add everyone on Devpost.
-- [ ] Read the Resources section of the event page (free AI credits and tools).
+- [x] Solo (decided 2026-11-04).
+- [x] Resources page read 2026-11-04 (above).
