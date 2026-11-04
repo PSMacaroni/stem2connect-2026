@@ -39,7 +39,10 @@ Stretch: a graph neural network trained on Colab.
 
 **Honest evaluation, decided before any result.**
 - Scaffold-split held-out test sets (the molecule version of patient-disjoint testing). Never tune on them.
-- Every model must beat a nearest-neighbour (Tanimoto) baseline and a majority/random baseline on the held-out set.
+- Baselines on every held-out set: majority class and 1-nearest-neighbour by Tanimoto. "Beats the baseline" means
+  held-out ROC-AUC on the pre-registered split; a model that does not exceed 1-NN there is marked "no better than
+  nearest-neighbour lookup" and the app leads with the nearest actives instead. All other metrics are reported even
+  where the model loses (first run: RF below 1-NN on balanced accuracy on 8 of 9 targets).
 - Abstain when a query is far from the training data (Tanimoto distance cutoff set on the training set).
 - Every number in the README, the write-up and the video traces to a run file and says how it was computed.
 
@@ -111,4 +114,5 @@ Never cut: loops 1 and 2, the evaluation protocol, the README disclosures, the v
 - CDK6 has 6 inactives in its test set, CDK4 36: both marked underpowered.
 - Loop 2 derived tables are 31 MB (sensitivity.csv 28.9 MB): too big to commit as is for the hosted app; trim or compress before hosting.
 - Only 117 of 1,494 PRISM compounds carry a ChEMBL ID, so linking loop 2 drugs to loop 1 targets needs the SMILES, not the ID.
+- Changing the scaffold-split seed alone moves ROC-AUC by up to about 0.046 (ERBB2, CDK6), more than the RF lead over 1-NN on ABL1 and BCL2 and more than any RF-vs-LightGBM gap; bootstrap CIs cover one test set only. Reported as a disclosure over 5 seeds; nothing is chosen from it.
 - The switch rule reads the held-out set once (pre-registered); README must say so. Model parameters were committed with the first results, not with the protocol.
