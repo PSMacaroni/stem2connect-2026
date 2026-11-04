@@ -40,7 +40,7 @@ target genes.
 Code: `src/molscreen/drugs.py`. These are sensitivity models for **cell lines, not patients**. A model on 542
 hotspot genes explains little of drug response; we expect many drugs near ROC-AUC 0.5 and will say so.
 
-**Drug set** (Prakhar's decision, 2026-11-04; **amended in FIX round 1 to up to 3 per oncology gene, see Changes**). Candidates: compounds whose PRISM `target` field names at least one
+**Drug set** (Prakhar's decision, 2026-11-04; **amended in FIX round 1 to up to 3 per oncology gene and in FIX round 2 to add selective drugs, see Changes**). Candidates: compounds whose PRISM `target` field names at least one
 gene symbol (every `target` token in the 20Q2 file is a symbol) and that have at least 300 screened cell lines
 which are also in the hotspot matrix. That is far more than 60 (the 300-line rule alone passes 1,457 of 1,494),
 so keep only candidates that match the oncology target list below, then the 60 with the most such lines (ties by
@@ -126,3 +126,15 @@ Counts and the worked example go to `results/loop2_data.md`, built from one run 
     <= 0.5). The nearest cell lines and their measured sensitivities are the main evidence in loop 2; model ranks
     are shown second and greyed when `weak`; the probabilities are not calibrated and are shown as ranks, never as
     percentages.
+- 2026-11-04, FIX round 2, decided by Prakhar after the FIX round 1 results existed (commit 71dc695: 86 drugs,
+  logistic regression shipped, median held-out ROC-AUC 0.545). One amendment to the drug set; everything else
+  (split, seed, features, label, models, parameters, metrics, the logistic-regression amendment) is unchanged.
+  - **Selective drugs are added.** On top of the 3-per-gene set, every candidate (a gene in `target`, at least 300
+    lines in the hotspot matrix) whose `target` names **exactly one gene, and that gene is on the oncology list**,
+    is kept; each compound still counts once. Why: the 3-per-gene rule left out the BRAF inhibitors, where hotspot
+    mutations should matter most; selectivity, not screening count, is what makes a drug a clean test of its target.
+  - **Assignment in the 3-per-gene rule.** Compounds are taken most screened first (ties by Broad ID); a compound
+    whose `target` names several oncology-list genes goes to the one with the fewest compounds so far (ties by list
+    order), while that gene has fewer than 3 (was: the first-listed gene in list order). Why: the old rule put
+    paclitaxel under BCL2 rather than TUBB, and let one gene take compounds another gene lacked. The results report
+    how many assignments changed.
