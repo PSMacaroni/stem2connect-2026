@@ -11,6 +11,7 @@ import streamlit as st
 from rdkit import Chem
 from rdkit.Chem import Draw
 
+from molscreen.assets import ensure_models, models_url
 from molscreen.data import ACTIVE_PCHEMBL
 from molscreen.predict import examples, predict
 from molscreen.train import MODELS, NAMES, RESULTS
@@ -18,6 +19,16 @@ from molscreen.train import MODELS, NAMES, RESULTS
 MAX_MOLECULES = 200  # a public app: keep one request small
 
 st.set_page_config(page_title="Molecule Screening Workbench", layout="wide")
+
+
+@st.cache_resource(show_spinner="downloading models (one-time)")
+def models_error() -> str | None:
+    """None once the models are in models/, else the error. Cached, so a failed download is not retried per click."""
+    try:
+        ensure_models()
+    except Exception as e:  # noqa: BLE001 (any failure: say so and keep the rest of the app working)
+        return f"{type(e).__name__}: {e}"
+    return None
 
 
 @st.cache_data
@@ -112,6 +123,8 @@ def activity_tab(res: dict, gene: str) -> None:
 res = results()
 st.title("Molecule Screening Workbench (working name)")
 st.info("Research and learning tool, not medical advice. Cell lines and public assay data, not patients.")
+if err := models_error():
+    st.error(f"Could not get the trained models from {models_url()}: {err}")
 gene = sidebar(res)
 tabs = st.tabs(["Activity", "Cell lines", "Safety flags", "Analogs"])
 with tabs[0]:
