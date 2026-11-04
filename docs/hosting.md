@@ -13,7 +13,7 @@ SHA-256. (`v1` had the 212 models only.)
    App URL: pick a short name, for example `molecule-screening-workbench`.
 4. Click **Advanced settings**. Python version: **3.12**. In **Secrets**, paste exactly one line, with the v2
    SHA-256 that `bundle_models.py` printed for the zip you published:
-   `MOLSCREEN_MODELS_SHA256 = "<v2 sha256>"`
+   `MOLSCREEN_MODELS_SHA256 = "c1407c0bca4bd3aca1323422cbd7c9a8830be47424c7195e42666189eeea7402"`
    (no other secrets exist; the download is anonymous).
 5. Click **Deploy**. The first build installs `requirements.txt` (a few minutes) and then downloads the 188 MB
    bundle (one more minute). Watch the log on the right: it should print `models: zip SHA-256 matches` and
