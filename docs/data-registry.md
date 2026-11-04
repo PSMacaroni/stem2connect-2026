@@ -105,6 +105,154 @@ https://cellmodelpassports.sanger.ac.uk/downloads (Drug Sensitivity Data section
 
 ---
 
+## 3b. Broad DepMap and PRISM (candidate replacement for loop 2)
+
+Researched 2026-11-04 as a drop-in for sections 3 and 4. Nothing was downloaded: facts come from the Figshare API
+(`https://api.figshare.com/v2/articles/<id>`), the small README files of each release (5 to 43 KB), byte-range peeks
+at the first ~1.2 KB of each data file (to read the header row), the DepMap forum's public JSON
+(`https://forum.depmap.org/t/<id>.json`) and Internet Archive copies of the terms page.
+
+**Short answer: the current DepMap portal releases are no longer CC BY 4.0, but the last DepMap and PRISM releases
+deposited on Figshare are, and they are enough for loop 2.**
+
+**1. Two licences, depending on where and when the file comes from.**
+- **Current portal terms (not open).** `https://depmap.org/portal/terms/`, "Last Revised: April 2nd, 2026" (read from
+  the Internet Archive copy of 2026-05-02,
+  `https://web.archive.org/web/20260502220113/https://depmap.org/portal/terms/`; the same wording was already in the
+  copy of 2025-12-16, "Last Revised: May 20th, 2025"). Exact wording:
+  > "The data made available on this website were generated for research purposes and are not intended for clinical
+  > or commercial uses, including direct sale, incorporation into a product, or the use of the data to train,
+  > develop, or enhance machine learning or AI models other than for internal research use (each a "Commercial
+  > Use"). For clarity, machine learning and AI models are permitted to be utilized with or on the Data for your own
+  > internal use, or shared for non-profit research purposes, including for process optimization and analysis."
+
+  and, on rehosting:
+  > "Any rehosting of the Data on Your website requires that You both adhere to, and require any third party users
+  > to adhere to, these terms and conditions. You agree to repost these terms and conditions in full if you elect to
+  > rehost the Data."
+
+  The terms also require acknowledging the Broad Institute and keep a confidentiality clause for "identifiable Data
+  Subjects".
+- **Figshare deposits (CC BY 4.0).** Every DepMap/PRISM Figshare record checked shows
+  `"license": {"name": "CC BY 4.0", "url": "https://creativecommons.org/licenses/by/4.0/"}` in the Figshare API on
+  2026-11-04 (records in the table below). CC BY 4.0 Section 2(a)(1) grants "a worldwide, royalty-free,
+  non-sublicensable, non-exclusive, irrevocable license" to "reproduce and Share the Licensed Material, in whole or
+  in part; and produce, reproduce, and Share Adapted Material"
+  (https://creativecommons.org/licenses/by/4.0/legalcode.en). Attribution is the condition that matters here.
+- **Why both exist (DepMap staff on the forum).** Phil Montgomery (`pmontgom`, DepMap developer), 2026-09-25,
+  https://forum.depmap.org/t/ccle-depmap-license-clarification/4686 : "We used to deposit data into figshare under
+  a CC4.0 license, but stopped doing when DepMap switched to terms of use which were not compatible with the CC4.0
+  license." And 2026-07-28, https://forum.depmap.org/t/provide-an-open-endpoint-for-latest-version-retrieval/4652 :
+  "Yes, older data has been released on those platforms. However, for newly generated data, the DepMap data terms
+  and conditions have changed." Earlier (2024-02-02,
+  https://forum.depmap.org/t/re-distribution-of-the-ccle-data-licensing/3063) he wrote that for the Figshare files
+  "yes, you can put the data from those files on another website" "as long as the data is attributed to the DepMap
+  project." The 2026-09-25 post also says a Zenodo mirror of newer files claiming CC BY 4.0 "is not valid": use
+  only Broad's own Figshare records.
+- **Sanger GDSC on the DepMap portal.** The portal also hosts "Sanger GDSC1 and GDSC2" (Release 8.1, Oct 2019,
+  reprocessed) and "Sanger Drug Combinations 2022" (forum list of portal datasets, 2024-10-24,
+  https://forum.depmap.org/t/depmap-portal-datasets/3695). The portal's per-file licence for these could not be read
+  (captcha, see 4.), so it is **not verified**; the source data is under the Sanger DepMap Data Usage Policy
+  (sections 3 and 4), so the portal copy is no way around Blocker 2. `PortalCompounds.csv` (DepMap 24Q4) maps
+  compounds to `GDSC1:`/`GDSC2:` IDs, which confirms GDSC data is mixed into the portal.
+
+**2. Releases.** The newest release is **DepMap Public 26Q3**, announced 2026-10-05
+(https://forum.depmap.org/t/announcing-the-26q3-release/4692). Since 2026 there are two releases a year (26Q1 and
+26Q3; https://forum.depmap.org/t/depmap-26q2-release/4569, 2026-01-29). 25Q2 and later exist only on the portal,
+under the new terms (https://forum.depmap.org/t/availability-of-depmap-25q2-on-figshare/4424, 2025-08-18: "the plan
+moving forward is to release DepMap data directly on the DepMap portal without hosting it on figshare").
+**The newest CC BY 4.0 release is DepMap 24Q4 Public on Figshare+** (no 25Qx record was found on Figshare).
+
+| Record (Figshare, CC BY 4.0) | DOI / URL | Published | What loop 2 uses |
+|---|---|---|---|
+| DepMap 24Q4 Public | 10.25452/figshare.plus.27993248.v1 ; https://plus.figshare.com/articles/dataset/DepMap_24Q4_Public/27993248 | 2024-12-10 | mutations, model metadata, compound map |
+| PRISM Repurposing 20Q2 Dataset | 10.6084/m9.figshare.20564034.v1 ; https://figshare.com/articles/dataset/PRISM_Repurposing_20Q2_Dataset/20564034 | 2022-08-23 | secondary-screen dose-response (AUC, IC50, SMILES) |
+| PRISM Repurposing 19Q4 Dataset | 10.6084/m9.figshare.9393293.v4 ; https://figshare.com/articles/dataset/PRISM_Repurposing_19Q3_Primary_Screen/9393293 | 2019-12-17 | the version analysed in Corsello 2020 (fallback) |
+| Repurposing Public 24Q2 | 10.6084/m9.figshare.25917643.v1 ; https://figshare.com/articles/dataset/Repurposing_Public_24Q2/25917643 | 2024-05-31 | newest PRISM Repurposing release found; single dose only |
+
+DepMap 24Q4 files (sizes from the Figshare API):
+
+| File | Bytes | Format and key columns (header row read 2026-11-04) |
+|---|---|---|
+| `OmicsSomaticMutations.csv` | 338,945,382 | One row per somatic variant (Mutect2, hg38). Columns include `HugoSymbol`, `ProteinChange` (e.g. `p.V600E`), `VariantInfo`, `VepImpact`, `LikelyLoF`, `OncogeneHighImpact`, `TumorSuppressorHighImpact`, `HessDriver`, `Hotspot`, `AMClass`/`AMPathogenicity` (AlphaMissense), `CivicID`, `EntrezGeneID` and **`ModelID`** (`ACH-...`). The real header also has `Exon`, `Intron` and `RescueReason`, which the README leaves out. |
+| `OmicsSomaticMutationsMatrixHotspot.csv` | 4,210,723 | Cell line x gene matrix; columns are `SYMBOL (EntrezID)` (e.g. `NRAS (4893)`), rows are `ACH-...` IDs. README: 0 = no hotspot mutation, else 1 or 2 by summed allele frequency (2 if > 0.95); "hot spot" = Hess et al. 2019, OncoKB hotspot or COSMIC mutation significance tier 1. **This is the ready-made mutation vector.** |
+| `OmicsSomaticMutationsMatrixDamaging.csv` | 147,655,356 | Same shape, for damaging (`LikelyLoF == True`) mutations, i.e. tumour-suppressor loss. |
+| `Model.csv` | 645,696 | `ModelID`, `CellLineName`, `StrippedCellLineName`, `OncotreeLineage`, `OncotreePrimaryDisease`, `OncotreeSubtype`, `OncotreeCode`, `RRID` (Cellosaurus), `CCLEName`, **`SangerModelID`** (`SIDM...`) and `COSMICID`. Also the donor's `Age`, `Sex` and `PatientRace`: drop these, never show them. |
+| `PortalCompounds.csv` | 692,052 | `CompoundID` (`DPC-...`), `CompoundName`, `GeneSymbolOfTargets`, `SampleIDs` (e.g. `BRD:BRD-K37890730-001-15-1;GDSC2:1003`), `ChEMBLID`, `SMILES`, `InChIKey`, `PubChemCID`. The first rows have empty `SMILES`/`InChIKey`; how many are filled is **not verified**. |
+| `README.txt` | 43,103 | Column docs. Mutation pipeline PDF: https://storage.googleapis.com/shared-portal-files/Tools/24Q4_Mutation_Pipeline_Documentation.pdf |
+
+**3. Drug sensitivity (PRISM).** PRISM pools DNA-barcoded cell lines and reads viability with Luminex beads.
+- **Secondary screen (dose-response, what loop 2 needs).**
+  `prism-repurposing-20q2-secondary-screen-dose-response-curve-parameters.csv` (290,170,269 bytes; the 19Q4 file
+  `secondary-screen-dose-response-curve-parameters.csv` is 264,340,589 bytes). 1,448 compounds x 489 cell lines,
+  8 doses, 4-fold dilution from 10 uM, 5 days; plus screen `MTS010`: 192 oncology compounds x 770 cell lines (the
+  README recommends `MTS010` where available). Header: `broad_id`, `depmap_id`, `ccle_name`, `screen_id`,
+  `upper_limit`, `lower_limit`, `slope`, `r2`, `auc`, `ec50`, `ic50`, `passed_str_profiling`, `row_name`, `name`,
+  `moa`, `target`, `disease.area`, `indication`, **`smiles`**, `phase`. Measures: **`auc`** (area under a
+  four-parameter log-logistic curve fitted with the drc R package) and `ic50`/`ec50` in uM. Structures: a `smiles`
+  column on every row, and a Broad ID (`BRD-K...-001-01-1`, "drug-batch combinations"). No InChIKey column.
+- **Primary screen.** 4,518 compounds (19Q4) / 5,274 (20Q2) at 2.5 uM against 578 or 562 cell lines; the measure
+  is log2 fold change (`primary-screen-replicate-collapsed-logfold-change.csv`).
+- **Repurposing Public 24Q2 (newest PRISM release found).** 1,514 compounds (1,280 REP1M + 234 REP300) at a
+  single dose of 2.5 uM, 5 days, 906 cell lines (859 passed QC). The measure is log2 fold change only
+  (`Repurposing_Public_24Q2_Extended_Primary_Data_Matrix.csv`, 72,456,953 bytes: rows = treatments, columns =
+  `ACH-...`). Its compound list (`Repurposing_Public_24Q2_Extended_Primary_Compound_List.csv`: `screen`, `dose`,
+  `repurposing_target`, `MOA`, `IDs` = `BRD:BRD-...`, `Drug.Name`, `Synonyms`) has **no SMILES**; map Broad IDs
+  through `PortalCompounds.csv`. No dose-response, so it fits loop 2 less well than the 20Q2 secondary screen. A
+  newer PRISM release under the new portal terms may exist but was **not verified** (captcha).
+
+**4. Download mechanics.**
+- **depmap.org sits behind a Cloudflare Turnstile check.** On 2026-11-04 every `https://depmap.org/portal/...` URL
+  tried (terms, data page, `/portal/api/download/files`, and even `/portal/api/no-captcha/download/files`, which
+  staff announced as open on 2026-07-28) returned a 4.8 KB "DepMap — Verification" page to `curl`, with the note
+  "please don't scrape the portal". So the portal cannot be scripted and its per-file licence dialog was not read.
+  The check was not bypassed.
+- **Figshare works without an account.** `https://ndownloader.figshare.com/files/<file_id>` answers HTTP 302 to a
+  signed S3 URL, and range requests work. File IDs: `OmicsSomaticMutationsMatrixHotspot.csv` 51065750,
+  `OmicsSomaticMutationsMatrixDamaging.csv` 51065747, `OmicsSomaticMutations.csv` 51065732, `Model.csv` 51065297,
+  `PortalCompounds.csv` 51065762, 24Q4 `README.txt` 51065795; 20Q2 secondary dose-response 36794595 and its readme
+  36794613; 24Q2 Extended Primary matrix 46630984 and compound list 46630981. Pin these IDs and record a SHA-256 on
+  download.
+
+**5. Citations** (journal DOIs checked on Crossref; Figshare DOIs resolve at doi.org; 2026-11-04).
+- DepMap, Broad (2024). DepMap 24Q4 Public. Figshare+. Dataset. doi:10.25452/figshare.plus.27993248.v1
+- DepMap, Broad; Corsello S; Kocak M; Golub T (2022). PRISM Repurposing 20Q2 Dataset. figshare. Dataset.
+  doi:10.6084/m9.figshare.20564034.v1
+- Corsello SM, Nagari RT, Spangler RD, et al. Discovering the anticancer potential of non-oncology drugs by
+  systematic viability profiling. *Nat Cancer.* 2020;1(2):235-248. doi:10.1038/s43018-019-0018-6 (verified)
+- Tsherniak A, Vazquez F, Montgomery PG, et al. Defining a Cancer Dependency Map. *Cell.* 2017;170(3):564-576.e16.
+  doi:10.1016/j.cell.2017.06.010
+- Mutation data: Ghandi M, Huang FW, Jané-Valbuena J, et al. Next-generation characterization of the Cancer Cell
+  Line Encyclopedia. *Nature.* 2019;569(7757):503-508. doi:10.1038/s41586-019-1186-3
+- DepMap's own "how to cite" wording is on the portal and was **not read** (captcha).
+
+**6. Verdict.**
+
+| Source | OK for a public GitHub repo? | OK to display in a public app? | Why |
+|---|---|---|---|
+| Figshare snapshots: DepMap 24Q4 Public + PRISM Repurposing 20Q2 (or 19Q4) + Repurposing Public 24Q2 | **Yes**, with attribution. Commit only small derived tables (e.g. the hotspot matrix cut to loop-2 genes, the AUC table); fetch the large raw files with a script. | **Yes**, with attribution | CC BY 4.0 on each record, and CC BY 4.0 is irrevocable; Broad staff say the old deposits keep their terms and may be put on another website if attributed. Models trained on them may be published. |
+| Current portal releases (25Q2, 26Q1, 26Q3) | **No** | **Unclear, avoid** | Portal terms: ML use only internal or "shared for non-profit research purposes"; rehosting binds every visitor to the terms. Also captcha-gated, so no reproducible download script. |
+| GDSC via the DepMap portal | **No** (same as section 3) | **Unclear** | Sanger DepMap Data Usage Policy; the portal's licence text was not verified. |
+
+**What loop 2 looks like on this data.**
+1. Mutation vector: `OmicsSomaticMutationsMatrixHotspot.csv` (24Q4), one row per `ACH-...` cell line, one 0/1/2
+   column per gene; optionally add `OmicsSomaticMutationsMatrixDamaging.csv` for tumour suppressors. The protein
+   change to display (e.g. `BRAF p.V600E`) comes from `OmicsSomaticMutations.csv` (`HugoSymbol`, `ProteinChange`,
+   `ModelID`).
+2. Drug sensitivity: `auc` (lower = more sensitive) from the 20Q2 secondary dose-response file, preferring
+   `screen_id == "MTS010"` and `passed_str_profiling == TRUE`; `smiles` links each drug to loops 1, 3 and 4.
+3. Join: PRISM `depmap_id` = DepMap `ModelID` = 24Q4 matrix row ID (`ACH-...`). Names and lineage come from
+   `Model.csv`. Never join on cell-line names.
+4. Bonus: `Model.csv` has `SangerModelID`, so a GDSC comparison stays possible if Sanger ever says yes.
+
+**Not verified:** the portal's per-file licence dialog and "how to cite" text, the licence shown for the portal's
+GDSC copy, any PRISM release newer than Repurposing Public 24Q2, the column names in the 26Q3 release, how many
+`PortalCompounds.csv` rows have SMILES, the overlap between 24Q4 mutation lines and PRISM lines, and the licences
+of the third-party sources behind some annotation columns (OncoKB/COSMIC hotspot lists, CIViC, AlphaMissense, Drug
+Repurposing Hub `moa`/`target`). Confirm the counts on first download.
+
+---
+
 ## 5. Open chemistry encoders on Hugging Face (ChemBERTa comparison)
 
 All three repos are **not gated** (`"gated": false` from `https://huggingface.co/api/models/<id>`), so no account or
@@ -178,6 +326,15 @@ If one breaks, drop to the previous release and note it here.
    visitors, and whether models trained on them may be published. Suggested fix: Prakhar emails depmap@sanger.ac.uk,
    describes the free, educational, non-commercial hackathon app and asks (an outward action, so his call). Until
    then, keep loop-2 data and models out of git.
+   **Alternative found (2026-11-04, section 3b):** Broad's last Figshare deposits are CC BY 4.0 and need no email:
+   DepMap 24Q4 Public (mutations, `Model.csv`) + PRISM Repurposing 20Q2 secondary screen (dose-response `auc` with
+   `smiles`), joined on `ModelID` = `depmap_id` (`ACH-...`). Both may go in a public repo and app with attribution.
+   Do **not** use newer DepMap releases (25Q2, 26Q1, 26Q3): since 2025 the portal terms limit ML use to internal use
+   or non-profit research sharing and make rehosting bind every visitor, and the portal is captcha-gated. **Still
+   unclear:** Broad has no formal written statement that the old CC BY copies stay usable for new ML work (only
+   forum posts by DepMap staff plus the irrevocable CC BY text); the licences of third-party lists behind some
+   annotation columns (OncoKB/COSMIC hotspots, CIViC, AlphaMissense, Drug Repurposing Hub); and the cell-line overlap
+   and counts (need a download). Choosing GDSC (ask Sanger) or DepMap/PRISM (switch now) is Prakhar's call.
 3. **cancerrxgene.org is gone (HTTP 410).** GDSC downloads now come from Cell Model Passports. Two different files
    named `GDSC2_fitted_dose_response_27Oct23.xlsx` exist (22,112,537 vs 21,330,376 bytes); use the CMP link and
    record its SHA-256.
