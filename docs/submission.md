@@ -79,7 +79,7 @@ changed the protocol (mutant-protein assays pooled with wild-type ones, salts co
 inflated metric, a missing metric); those led to the wild-type-only and salt-stripping amendments. Prakhar Suryansh
 chose the project, the data sources, the metrics and the cut-offs, and made every decision in the plan's decisions
 table after seeing the evidence. The manager session re-ran the tests and the reproduction of the reported numbers
-before every merge. Commits carry Co-Authored-By trailers. The two setup commits (88889f6, bd5723a) name Claude Sonnet 5.5. Commits up to the loop-2 and app work name Claude Fable 5.1 although the subagents that wrote them ran on Claude Opus 5.5: the manager's briefs specified the manager's own attribution line by mistake, noticed during this README review; from the loop-3 work on, commits name Claude Opus 5.5. Git history was not rewritten.
+before every merge. Commits carry Co-Authored-By trailers. Of the 46 non-merge commits at the time of writing, 14 written by the manager session (the plan updates and one CI fix) correctly name Claude Fable 5.1; 24 written by subagents running Claude Opus 5.5 (the scaffold, data registry, loop-1, loop-2 and activity-tab work) also name Claude Fable 5.1, because the manager's task briefs specified the manager's own attribution line by mistake, noticed during this README review; 6 (loop 3 and the model bundle) name Claude Opus 5.5; 2 setup commits name Claude Sonnet 5.5. Git history was not rewritten; later commits name the model that wrote them.
 
 ## What we learned
 - A high score can come from the data, not the model: a random ranking already scores 0.68 to 0.95 on active-class
