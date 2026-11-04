@@ -3,8 +3,10 @@
 Scaffold-split held-out test sets, ChEMBL release ChEMBL_37, protocol `docs/evaluation.md` with its
 2026-11-04 amendments (wild-type assays only, salts stripped to the parent; extra reporting).
 All numbers come from `results/activity_models.json`, written by `uv run python -m molscreen.train`.
-Morgan fingerprints (radius 2, 2048 bits). Model parameters are fixed in `src/molscreen/train.py`; nothing
-was tuned, so no inner split was used. Every metric below is on the held-out test set.
+Morgan fingerprints (radius 2, 2048 bits). Model parameters are fixed in `src/molscreen/train.py`;
+parameters were committed together with the first results (4c71e50), not with the protocol (1cc2650);
+that nothing was tuned rests on the author's word; no inner split was used.
+Every metric below is on the held-out test set of the pre-registered split (seed 0).
 **Shipped model: random forest.** "Underpowered" marks a target with fewer than 50 inactive molecules
 in its test set: its AUCs can move a lot with a few molecules.
 
@@ -78,25 +80,27 @@ active fraction there (0.68 to 0.95 here), so high values are expected.
 - Balanced accuracy at 0.5: below 1-NN on 8 of 9 targets (BRAF 0.684 vs 0.702, ERBB2 0.729 vs 0.735, CDK4 0.661 vs 0.683, CDK6 0.500 vs 0.625, ALK 0.749 vs 0.771, ABL1 0.704 vs 0.752, PARP1 0.657 vs 0.698, BCL2 0.847 vs 0.856).
 - PR-AUC, active class: below 1-NN on 0 of 9 targets.
 
+Must-beat rule (docs/evaluation.md, amendment c): the metric is seed-0 held-out ROC-AUC. The random forest exceeds 1-NN on 9 of 9 targets; any target where it does not is marked "no better than nearest-neighbour lookup" (it still ships, and the app shows its nearest actives as the main evidence).
+
 ### PR-AUC, active as the positive class (the switch rule's metric)
 
 A random ranking scores the test active fraction here.
 
 | Gene | Random | Majority | 1-NN | Random forest | LightGBM | RF - LightGBM | Note |
 |---|---|---|---|---|---|---|---|
-| EGFR | 0.695 | 0.695 | 0.888 | 0.941 | 0.920 | +0.0204 |  |
-| BRAF | 0.841 | 0.841 | 0.940 | 0.966 | 0.966 | -0.0000 |  |
-| ERBB2 | 0.753 | 0.753 | 0.910 | 0.930 | 0.919 | +0.0116 |  |
-| CDK4 | 0.872 | 0.872 | 0.970 | 0.980 | 0.976 | +0.0038 | underpowered: 36 test inactives |
-| CDK6 | 0.952 | 0.952 | 0.981 | 0.994 | 0.966 | +0.0273 | underpowered: 8 test inactives |
-| ALK | 0.683 | 0.683 | 0.894 | 0.961 | 0.952 | +0.0089 |  |
-| ABL1 | 0.707 | 0.707 | 0.934 | 0.949 | 0.946 | +0.0033 |  |
-| PARP1 | 0.826 | 0.826 | 0.954 | 0.974 | 0.969 | +0.0049 |  |
-| BCL2 | 0.830 | 0.830 | 0.987 | 0.994 | 0.992 | +0.0015 |  |
+| EGFR | 0.695 | 0.695 | 0.888 | 0.941 | 0.920 | +0.02041 |  |
+| BRAF | 0.841 | 0.841 | 0.940 | 0.966 | 0.966 | -3.17e-06 |  |
+| ERBB2 | 0.753 | 0.753 | 0.910 | 0.930 | 0.919 | +0.01159 |  |
+| CDK4 | 0.872 | 0.872 | 0.970 | 0.980 | 0.976 | +0.003805 | underpowered: 36 test inactives |
+| CDK6 | 0.952 | 0.952 | 0.981 | 0.994 | 0.966 | +0.02726 | underpowered: 8 test inactives |
+| ALK | 0.683 | 0.683 | 0.894 | 0.961 | 0.952 | +0.008898 |  |
+| ABL1 | 0.707 | 0.707 | 0.934 | 0.949 | 0.946 | +0.003269 |  |
+| PARP1 | 0.826 | 0.826 | 0.954 | 0.974 | 0.969 | +0.004874 |  |
+| BCL2 | 0.830 | 0.830 | 0.987 | 0.994 | 0.992 | +0.001522 |  |
 
 Switch rule (re-applied after the amendment): the random forest had the higher active-class PR-AUC on 8 of 9 targets (it needs at least 6), so **random forest** ships for every target. In the first run (4c71e50) the count was 7 of 9, also the random forest.
-CDK4 is underpowered: its RF-vs-LightGBM PR-AUC margin (+0.0038) rests on 36 test inactives.
-CDK6 is underpowered: its RF-vs-LightGBM PR-AUC margin (+0.0273) rests on 8 test inactives.
+CDK4 is underpowered: its RF-vs-LightGBM PR-AUC margin (+0.003805) rests on 36 test inactives.
+CDK6 is underpowered: its RF-vs-LightGBM PR-AUC margin (+0.02726) rests on 8 test inactives.
 
 ## Abstain
 
@@ -134,12 +138,34 @@ can land on the other side, so even a target with the same molecules (CDK6, BCL2
 | PARP1 | 4510 | 4504 | 0.900 | 0.897 | 0.898 | 0.892 |
 | BCL2 | 3142 | 3142 | 0.962 | 0.971 | 0.963 | 0.965 |
 
+## Split variance (disclosure)
+
+Disclosure only: for each target the scaffold split was recomputed with seeds [0, 1, 2, 3, 4] and a
+random forest refit per seed (`uv run python -m molscreen.train --split-seeds 0 1 2 3 4`). No model is
+saved from these runs and nothing is chosen from them. Values are held-out ROC-AUC, min / median / max
+over the seeds; the last column is the median over seeds of the per-seed RF minus 1-NN difference.
+
+| Gene | RF ROC-AUC min / median / max | 1-NN ROC-AUC min / median / max | RF - 1-NN, median |
+|---|---|---|---|
+| EGFR | 0.866 / 0.877 / 0.879 | 0.811 / 0.813 / 0.838 | +0.060 |
+| BRAF | 0.859 / 0.877 / 0.887 | 0.761 / 0.773 / 0.792 | +0.098 |
+| ERBB2 | 0.845 / 0.862 / 0.888 | 0.794 / 0.801 / 0.838 | +0.051 |
+| CDK4 | 0.877 / 0.892 / 0.905 | 0.815 / 0.855 / 0.870 | +0.048 |
+| CDK6 | 0.894 / 0.911 / 0.938 | 0.799 / 0.816 / 0.846 | +0.097 |
+| ALK | 0.914 / 0.921 / 0.940 | 0.851 / 0.870 / 0.890 | +0.051 |
+| ABL1 | 0.861 / 0.866 / 0.879 | 0.816 / 0.827 / 0.859 | +0.039 |
+| PARP1 | 0.894 / 0.909 / 0.909 | 0.841 / 0.878 / 0.893 | +0.031 |
+| BCL2 | 0.952 / 0.971 / 0.975 | 0.942 / 0.950 / 0.954 | +0.020 |
+
+Changing the split alone moves ROC-AUC by up to 0.0549 (CDK4, 1-NN), which is larger than the random forest's seed-0 lead over 1-NN on ERBB2 (+0.0515), CDK4 (+0.0376), ABL1 (+0.0199), PARP1 (+0.0546), BCL2 (+0.0215), and larger than every RF-versus-LightGBM gap in active-class PR-AUC (the switch rule's metric; largest 0.02726); the bootstrap CIs above cover one fixed test set only. Seed 0 stays the reported split (it was pre-registered).
+
 ## Known limits
 
 - **Measurement types and assay types are pooled.** Of the 46032 kept rows: IC50 85.2%, Ki 13.1%, EC50 1.7%. Functional (F) assays, the rest binding (B): EGFR 5.6%, BRAF 0.9%, ERBB2 9.2%, CDK4 1.7%, CDK6 1.9%, ALK 8.4%, ABL1 5.2%, PARP1 0.1%, BCL2 1.2% of kept rows.
 - **Wild type only, as far as ChEMBL says.** Rows from assays declaring a variant were dropped (EGFR 23.8%, BRAF 42.8%, ERBB2 0.4%, CDK4 0.0%, CDK6 0.0%, ALK 22.0%, ABL1 13.5%, PARP1 0.0%, BCL2 0.8% of the rows that pass every other rule). An assay on a mutant protein that does not declare it is still in (inferred risk).
 - **The abstain rule holds back 16% (BCL2) to 46% (BRAF) of held-out molecules**: a scaffold split makes held-out molecules unlike train by design.
 - **Stereoisomers stay separate training points, and charged salt forms are not neutralised.** Parent molecules that share a structure once stereo is removed: EGFR 408 of 9778, BRAF 115 of 2991, ERBB2 178 of 2553, CDK4 235 of 1401, CDK6 69 of 821, ALK 98 of 2428, ABL1 231 of 2912, PARP1 195 of 4504, BCL2 280 of 3142.
+- **Ki and IC50 are not on the same footing.** For each parent molecule with both an IC50 and a Ki row on the target, median pKi minus median pIC50, then the median over those molecules: EGFR +0.47 (n = 59), BRAF +0.91 (n = 6), ERBB2 +1.05 (n = 9), CDK4 -0.39 (n = 6), CDK6 n/a (n = 0), ALK +0.93 (n = 24), ABL1 +0.33 (n = 29), PARP1 +0.65 (n = 20), BCL2 +0.59 (n = 84). Pooling them moves a molecule's label near the 6.0 cut-off.
 - **The active rate (72% to 97% of molecules) reflects what gets published** (mostly optimised series), not a screening library, so these numbers do not predict real hit rates.
 - **AUC kept is measured on the non-abstained subset, closer to train and usually easier**; it is above the all-molecule ROC-AUC on 6 of 9 targets. Quote the all-molecule ROC-AUC as the headline.
 

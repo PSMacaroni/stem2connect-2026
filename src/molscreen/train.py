@@ -100,9 +100,17 @@ def fit(kind: str, X: np.ndarray, y: np.ndarray):
     return model.fit(X, y)
 
 
-def split(ds):
-    train, test = scaffold_split(ds["smiles"].tolist(), test_frac=0.2, seed=0)
+def split(ds, seed: int = 0):
+    train, test = scaffold_split(ds["smiles"].tolist(), test_frac=0.2, seed=seed)
     return ds.iloc[train].reset_index(drop=True), ds.iloc[test].reset_index(drop=True)
+
+
+def ki_minus_ic50(rows: pd.DataFrame) -> dict:
+    """For each parent molecule with both IC50 and Ki rows: median pKi minus median pIC50; then the median."""
+    m = rows[rows["standard_type"].isin(["IC50", "Ki"])].groupby(["smiles", "standard_type"])["pchembl_value"]
+    m = m.median().unstack()
+    diff = (m["Ki"] - m["IC50"]).dropna() if {"IC50", "Ki"} <= set(m.columns) else pd.Series(dtype=float)
+    return {"median": float(diff.median()) if len(diff) else None, "n_molecules": len(diff)}
 
 
 def dataset_stats(acts: pd.DataFrame, rows: pd.DataFrame, ds: pd.DataFrame) -> dict:
@@ -118,6 +126,7 @@ def dataset_stats(acts: pd.DataFrame, rows: pd.DataFrame, ds: pd.DataFrame) -> d
         "rows_by_type": {t: int((rows["standard_type"] == t).sum()) for t in ("IC50", "Ki", "EC50")},
         "rows_functional": int((rows["assay_type"] == "F").sum()),
         "molecules_stereo_siblings": int(flat.duplicated(keep=False).sum()),
+        "ki_minus_ic50": ki_minus_ic50(rows),
     }
 
 
@@ -153,6 +162,22 @@ def run_gene(gene: str):
         out[kind]["roc_auc_kept"] = metrics(y_te[kept], p[kept], (p[kept] >= 0.5).astype(int))["roc_auc"]
         out[kind]["roc_auc_ci95"] = roc_auc_ci(y_te, p)
     return out, tr, X_tr
+
+
+def split_variance(gene: str, seeds: list[int]) -> tuple[dict, dict]:
+    """Disclosure only: RF and 1-NN held-out ROC-AUC under other scaffold-split seeds. Nothing is saved or chosen.
+    Also returns the Ki-minus-IC50 offset, so this run can fill it in without retraining the shipped models."""
+    rows = filter_activities(pd.read_csv(PULLS / f"{gene}.csv"))
+    ds = aggregate(rows)
+    X, y, pc = fingerprints(ds["smiles"].tolist()), ds["active"].to_numpy(), ds["pchembl"].to_numpy()
+    out = {"rf": [], "nn1": []}
+    for seed in seeds:
+        tr, te = scaffold_split(ds["smiles"].tolist(), test_frac=0.2, seed=seed)
+        p = fit("rf", X[tr], y[tr]).set_params(n_jobs=1).predict_proba(X[te])[:, 1]
+        _, nn = max_tanimoto(X[te], X[tr])
+        out["rf"].append(metrics(y[te], p, (p >= 0.5).astype(int))["roc_auc"])
+        out["nn1"].append(metrics(y[te], pc[tr][nn], y[tr][nn])["roc_auc"])
+    return out, ki_minus_ic50(rows)
 
 
 def switch_rule(genes: dict) -> tuple[str, int]:
@@ -217,7 +242,10 @@ def write_models_md(results: dict) -> None:
     fr = [r["test_active_frac"] for r in g.values()]
 
     def note(r):
-        return f"underpowered: {r['test_inactives']} test inactives" if r["test_inactives"] < low else ""
+        notes = [f"underpowered: {r['test_inactives']} test inactives"] if r["test_inactives"] < low else []
+        if r[shipped]["roc_auc"] <= r["nn1"]["roc_auc"]:
+            notes.append("no better than nearest-neighbour lookup")
+        return "; ".join(notes)
 
     def margin(r):
         return r["rf"]["pr_auc"] - r["lgbm"]["pr_auc"]
@@ -233,8 +261,10 @@ def write_models_md(results: dict) -> None:
         f"Scaffold-split held-out test sets, ChEMBL release {rel}, protocol `docs/evaluation.md` with its",
         "2026-11-04 amendments (wild-type assays only, salts stripped to the parent; extra reporting).",
         "All numbers come from `results/activity_models.json`, written by `uv run python -m molscreen.train`.",
-        "Morgan fingerprints (radius 2, 2048 bits). Model parameters are fixed in `src/molscreen/train.py`; nothing",
-        "was tuned, so no inner split was used. Every metric below is on the held-out test set.",
+        "Morgan fingerprints (radius 2, 2048 bits). Model parameters are fixed in `src/molscreen/train.py`;",
+        "parameters were committed together with the first results (4c71e50), not with the protocol (1cc2650);",
+        "that nothing was tuned rests on the author's word; no inner split was used.",
+        "Every metric below is on the held-out test set of the pre-registered split (seed 0).",
         f"**Shipped model: {sname}.** \"Underpowered\" marks a target with fewer than {low} inactive molecules",
         "in its test set: its AUCs can move a lot with a few molecules.", "",
         "## Headline: shipped model against the baselines", "",
@@ -272,10 +302,15 @@ def write_models_md(results: dict) -> None:
         vs_nn("balanced_acc", "Balanced accuracy at 0.5"),
         vs_nn("pr_auc", "PR-AUC, active class"),
         "",
+        (f"Must-beat rule (docs/evaluation.md, amendment c): the metric is seed-0 held-out ROC-AUC. The {sname} "
+        f"exceeds 1-NN on {sum(r[shipped]['roc_auc'] > r['nn1']['roc_auc'] for r in g.values())} of {len(g)} "
+        "targets; any target where it does not is marked \"no better than nearest-neighbour lookup\" (it still "
+        "ships, and the app shows its nearest actives as the main evidence)."),
+        "",
         "### PR-AUC, active as the positive class (the switch rule's metric)", "",
         "A random ranking scores the test active fraction here.", "",
         *table(["Gene", "Random", "Majority", "1-NN", "Random forest", "LightGBM", "RF - LightGBM", "Note"],
-               [[gene, f"{r['test_active_frac']:.3f}", *row[1:-1], f"{margin(r):+.4f}", row[-1]]
+               [[gene, f"{r['test_active_frac']:.3f}", *row[1:-1], f"{margin(r):+.4g}", row[-1]]
                 for (gene, r), row in zip(g.items(), per_model("pr_auc"))]),
         "",
         (f"Switch rule (re-applied after the amendment): the random forest had the higher active-class PR-AUC on "
@@ -284,7 +319,7 @@ def write_models_md(results: dict) -> None:
     ]
     for gene, r in g.items():
         if r["test_inactives"] < low:
-            lines.append(f"{gene} is underpowered: its RF-vs-LightGBM PR-AUC margin ({margin(r):+.4f}) rests on "
+            lines.append(f"{gene} is underpowered: its RF-vs-LightGBM PR-AUC margin ({margin(r):+.4g}) rests on "
                          f"{r['test_inactives']} test inactives.")
 
     ab = {gene: r["abstain"]["n_test_abstain"] / r["n_test"] for gene, r in g.items()}
@@ -307,6 +342,40 @@ def write_models_md(results: dict) -> None:
                  f3(r["lgbm"]["roc_auc"])] for gene, r in g.items() for b in [FIRST_RUN[gene]]]),
     ]
 
+    sv = results.get("split_variance")
+    if sv:
+        sg = sv["genes"]
+        rng = {(gene, k): max(v[k]) - min(v[k]) for gene, v in sg.items() for k in ("rf", "nn1")}
+        (xg, xk), x = max(rng.items(), key=lambda kv: kv[1])
+        lead = {gene: g[gene]["rf"]["roc_auc"] - g[gene]["nn1"]["roc_auc"] for gene in sg}
+        inside = [f"{gene} ({lead[gene]:+.4f})" for gene in sg if abs(lead[gene]) < x]
+        gaps = {gene: abs(margin(g[gene])) for gene in sg}
+        gmax = max(gaps.values())
+
+        def mmm(v):
+            return f"{min(v):.3f} / {float(np.median(v)):.3f} / {max(v):.3f}"
+
+        lines += [
+            "", "## Split variance (disclosure)", "",
+            f"Disclosure only: for each target the scaffold split was recomputed with seeds {sv['seeds']} and a",
+            "random forest refit per seed (`uv run python -m molscreen.train --split-seeds 0 1 2 3 4`). No model is",
+            "saved from these runs and nothing is chosen from them. Values are held-out ROC-AUC, min / median / max",
+            "over the seeds; the last column is the median over seeds of the per-seed RF minus 1-NN difference.", "",
+            *table(["Gene", "RF ROC-AUC min / median / max", "1-NN ROC-AUC min / median / max",
+                    "RF - 1-NN, median"],
+                   [[gene, mmm(v["rf"]), mmm(v["nn1"]),
+                     f"{float(np.median(np.subtract(v['rf'], v['nn1']))):+.3f}"] for gene, v in sg.items()]),
+            "",
+            f"Changing the split alone moves ROC-AUC by up to {x:.4f} ({xg}, {NAMES[xk]}), which is larger than "
+            + (f"the random forest's seed-0 lead over 1-NN on {', '.join(inside)}" if inside
+               else "none of the random forest's seed-0 leads over 1-NN")
+            + (f", and larger than every RF-versus-LightGBM gap in active-class PR-AUC (the switch rule's metric; "
+               f"largest {gmax:.4g})" if x > gmax else
+               f"; it is not larger than every RF-versus-LightGBM gap in active-class PR-AUC (largest {gmax:.4g})")
+            + "; the bootstrap CIs above cover one fixed test set only. Seed 0 stays the reported split (it was "
+            "pre-registered).",
+        ]
+
     d = {gene: r["dataset"] for gene, r in g.items()}
     kept = sum(x["rows_kept"] for x in d.values())
     types = {t: sum(x["rows_by_type"][t] for x in d.values()) for t in ("IC50", "Ki", "EC50")}
@@ -326,6 +395,12 @@ def write_models_md(results: dict) -> None:
         "- **Stereoisomers stay separate training points, and charged salt forms are not neutralised.** Parent "
         "molecules that share a structure once stereo is removed: "
         + ", ".join(f"{gene} {x['molecules_stereo_siblings']} of {x['molecules']}" for gene, x in d.items()) + ".",
+        "- **Ki and IC50 are not on the same footing.** For each parent molecule with both an IC50 and a Ki row "
+        "on the target, median pKi minus median pIC50, then the median over those molecules: "
+        + ", ".join(f"{gene} " + ("n/a" if x["ki_minus_ic50"]["median"] is None else
+                                  f"{x['ki_minus_ic50']['median']:+.2f}")
+                    + f" (n = {x['ki_minus_ic50']['n_molecules']})" for gene, x in d.items())
+        + ". Pooling them moves a molecule's label near the 6.0 cut-off.",
         (f"- **The active rate ({100 * min(act):.0f}% to {100 * max(act):.0f}% of molecules) reflects what gets "
         "published** (mostly optimised series), not a screening library, so these numbers do not predict real hit "
         "rates."),
@@ -346,10 +421,25 @@ def main() -> None:
     info = json.loads((PULLS / "PULL_INFO.json").read_text())
     ap = argparse.ArgumentParser(description="Train loop-1 activity models.")
     ap.add_argument("--genes", nargs="+", default=list(info["targets"]))
-    genes = ap.parse_args().genes
+    ap.add_argument("--split-seeds", nargs="+", type=int,
+                    help="disclosure run only: RF and 1-NN ROC-AUC under these split seeds; trains nothing it saves")
+    args = ap.parse_args()
+    genes = args.genes
 
     path = RESULTS / "activity_models.json"
     results = json.loads(path.read_text()) if path.exists() else {"genes": {}}
+    if args.split_seeds:
+        sv = results.setdefault("split_variance", {"seeds": args.split_seeds, "genes": {}})
+        if sv["seeds"] != args.split_seeds:
+            sv.update(seeds=args.split_seeds, genes={})
+        for gene in genes:
+            sv["genes"][gene], ki = split_variance(gene, args.split_seeds)
+            results["genes"][gene]["dataset"]["ki_minus_ic50"] = ki
+            print(f"{gene}: RF ROC-AUC per seed {[round(a, 3) for a in sv['genes'][gene]['rf']]}")
+        path.write_text(json.dumps(results, indent=2) + "\n", encoding="utf-8")
+        write_models_md(results)
+        print(f"split variance written for {len(genes)} genes; no model saved")
+        return
     trains = {}
     for gene in genes:
         out, tr, X_tr = run_gene(gene)

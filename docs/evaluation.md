@@ -74,3 +74,14 @@ the switch rule is re-applied once on the new data.
   (`Chem.GetMolFrags`, ties broken by SMILES), canonical SMILES with stereo kept, charges not neutralised.
   Group rows by that parent SMILES, keep the list of ChEMBL IDs per parent, and take the median pChEMBL over all
   their rows.
+
+## Amendment 2026-11-04 (c): what "beats the baseline" means, added after review round 2
+Changes no data rule, model or switch rule.
+- The metric for "beats the baseline" is held-out **ROC-AUC on the seed-0 split**. A target whose shipped model
+  does not exceed 1-NN on it is marked "no better than nearest-neighbour lookup" in the results and in the app.
+  It still ships; the app then shows the nearest actives as the main evidence.
+- Facts at ddd2a6d (`results/activity_models.json`): the random forest exceeds 1-NN on ROC-AUC on 9 of 9 targets.
+  It is below 1-NN on balanced accuracy at 0.5 on 8 of 9 targets, and on CDK6 inactive-class PR-AUC (0.411 vs
+  0.538). CDK6's random-forest balanced accuracy (0.500) equals the majority baseline.
+- Split variance is disclosed, not used: `--split-seeds 0 1 2 3 4` recomputes the scaffold split per seed and
+  refits the random forest; nothing is saved or chosen from it. Seed 0 stays the reported split.
