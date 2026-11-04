@@ -1,7 +1,9 @@
-"""Get the trained models: download the release zip once, verify every file, keep what already matches.
+"""Get the trained models and the derived DepMap tables: download the release zip once, verify every file.
 
-The zip is made by scripts/bundle_models.py and holds the models plus MANIFEST.json (name, bytes, SHA-256 of each).
-Stdlib only, anonymous download (the release is public). Env overrides: MOLSCREEN_MODELS_URL, MOLSCREEN_MODELS_SHA256.
+The zip is made by scripts/bundle_models.py. Every entry is named by its path from the repo root
+(`models/EGFR.joblib`, `data/depmap/derived/sensitivity.csv`), and `models/MANIFEST.json` lists each file's name,
+bytes and SHA-256. Stdlib only, anonymous download (the release is public).
+Env overrides: MOLSCREEN_MODELS_URL, MOLSCREEN_MODELS_SHA256.
 """
 
 import hashlib
@@ -13,11 +15,11 @@ import urllib.request
 import zipfile
 from pathlib import Path
 
-from molscreen.train import MODELS
+from molscreen.data import ROOT
 
-TAG = "v1"  # the release tag; change it (or set MOLSCREEN_MODELS_URL) when a new bundle is published
+TAG = "v2"  # the release tag; change it (or set MOLSCREEN_MODELS_URL) when a new bundle is published
 DEFAULT_URL = f"https://github.com/PSMacaroni/stem2connect-2026/releases/download/{TAG}/models-{TAG}.zip"
-MANIFEST = "MANIFEST.json"
+MANIFEST = "models/MANIFEST.json"  # in the zip and under dest; written last, so it marks a complete install
 
 
 def models_url() -> str:
@@ -30,7 +32,7 @@ def sha256(path: Path) -> str:
 
 
 def installed(dest: Path) -> bool:
-    """True when dest/MANIFEST.json exists and every file it names is there with the same SHA-256."""
+    """True when dest/models/MANIFEST.json exists and every file it names is there with the same SHA-256."""
     try:
         files = json.loads((dest / MANIFEST).read_text(encoding="utf-8"))["files"]
     except (OSError, ValueError, KeyError):
@@ -38,11 +40,11 @@ def installed(dest: Path) -> bool:
     return all((dest / f["name"]).is_file() and sha256(dest / f["name"]) == f["sha256"] for f in files)
 
 
-def ensure_models(url: str | None = None, dest: Path = MODELS) -> Path:
-    """Make sure dest holds the verified models; download and unpack the release zip only when it does not."""
+def ensure_models(url: str | None = None, dest: Path = ROOT) -> Path:
+    """Make sure dest (the repo root) holds the verified files; download and unpack the zip only when it does not."""
     dest = Path(dest)
     if installed(dest):
-        print(f"models: {dest} already verified, nothing to do")
+        print(f"models: {dest / MANIFEST} already verified, nothing to do")
         return dest
     url = url or models_url()
     print(f"models: downloading {url}")
@@ -62,7 +64,6 @@ def ensure_models(url: str | None = None, dest: Path = MODELS) -> Path:
         tmp.seek(0)
         with zipfile.ZipFile(tmp) as zf:
             manifest = json.loads(zf.read(MANIFEST))
-            dest.mkdir(parents=True, exist_ok=True)
             for f in manifest["files"]:
                 target = (dest / f["name"]).resolve()
                 if not target.is_relative_to(dest.resolve()):
@@ -79,6 +80,7 @@ def ensure_models(url: str | None = None, dest: Path = MODELS) -> Path:
                     raise ValueError(f"models zip file {f['name']} does not match its SHA-256 in {MANIFEST}")
                 os.replace(part, target)
                 print(f"models: {f['name']} extracted and verified")
-    (dest / MANIFEST).write_text(json.dumps(manifest, indent=2), encoding="utf-8")  # last: marks a complete install
+    (dest / MANIFEST).parent.mkdir(parents=True, exist_ok=True)
+    (dest / MANIFEST).write_text(json.dumps(manifest, indent=2), encoding="utf-8")
     print(f"models: {len(manifest['files'])} files verified in {dest}")
     return dest

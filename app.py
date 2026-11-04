@@ -124,7 +124,7 @@ res = results()
 st.title("Molecule Screening Workbench (working name)")
 st.info("Research and learning tool, not medical advice. Cell lines and public assay data, not patients.")
 if err := models_error():
-    st.error(f"Could not get the trained models from {models_url()}: {err}")
+    st.error(f"Could not get the trained models and data tables from {models_url()}: {err}")
 gene = sidebar(res)
 tabs = st.tabs(["Activity", "Cell lines", "Safety flags", "Analogs"])
 with tabs[0]:
