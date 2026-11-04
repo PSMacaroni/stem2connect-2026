@@ -40,7 +40,7 @@ target genes.
 Code: `src/molscreen/drugs.py`. These are sensitivity models for **cell lines, not patients**. A model on 542
 hotspot genes explains little of drug response; we expect many drugs near ROC-AUC 0.5 and will say so.
 
-**Drug set** (Prakhar's decision, 2026-11-04). Candidates: compounds whose PRISM `target` field names at least one
+**Drug set** (Prakhar's decision, 2026-11-04; **amended in FIX round 1 to up to 3 per oncology gene, see Changes**). Candidates: compounds whose PRISM `target` field names at least one
 gene symbol (every `target` token in the 20Q2 file is a symbol) and that have at least 300 screened cell lines
 which are also in the hotspot matrix. That is far more than 60 (the 300-line rule alone passes 1,457 of 1,494),
 so keep only candidates that match the oncology target list below, then the 60 with the most such lines (ties by
@@ -73,7 +73,7 @@ equally similar neighbours: the first by `ModelID`).
 - Logistic regression: L2, `C=1.0`, `class_weight="balanced"`, `max_iter=1000` (other arguments default).
 - Random forest: 300 trees, `class_weight="balanced"`, `random_state=0` (other arguments default).
 
-**Which model ships (switch rule, pre-registered, applied once across drugs).** Logistic regression ships for
+**Which model ships (switch rule, pre-registered, applied once across drugs; overridden in FIX round 1: logistic regression ships, see Changes).** Logistic regression ships for
 every drug unless the random forest has the higher held-out ROC-AUC on more than half of the drugs that are not
 underpowered. The shipped model is the one fit on the training lines, so its held-out numbers are its own.
 
@@ -108,3 +108,21 @@ Counts and the worked example go to `results/loop2_data.md`, built from one run 
   drug with at least 300 lines in the hotspot matrix). Why: 1,457 of 1,494 compounds pass the 300-line rule, so it
   selects nothing. The section above now also fixes the features, label rule, shared split, models, parameters,
   switch rule, underpowered flag and abstain rule. Rejected: the 30 most variable drugs; all 1,457.
+- 2026-11-04, FIX round 1, decided by Prakhar after the first per-drug results existed (commit 5b7d361:
+  60 drugs, random forest shipped by the switch rule, median held-out ROC-AUC 0.562). Three amendments; split,
+  seed, features, label rule, model parameters and metrics are unchanged.
+  - **Drug set: up to 3 compounds per oncology-list gene, no overall cap.** Candidates as before (a gene in
+    `target`, at least 300 lines in the hotspot matrix). Each candidate is assigned to the first gene of the
+    oncology list (in list order) that its `target` names, so it counts once; candidates naming no listed gene are
+    dropped (the `moa` match is no longer used). Per gene, the 3 with the most lines are kept (ties by Broad ID).
+    Why: capping at the 60 most-screened compounds filled the set with multi-kinase and EGFR drugs and dropped
+    targets where hotspot genes should matter most (for example the BRAF inhibitors dabrafenib and vemurafenib).
+  - **Shipped model: logistic regression, overriding the switch rule.** The switch rule is still computed and
+    reported every run. Why: the random forest's win in 5b7d361 (32 of 60 drugs, needing more than 30) is a
+    tie-sized margin, and the hosted app's size matters (the 60 random forests took 73,143,794 bytes; logistic
+    models are a few hundred KB). Random-forest results stay in every table.
+  - **App contract.** `predict_drugs` returns, for every shipped model that does not abstain, its rank,
+    `p_sensitive`, `roc_auc`, `roc_auc_ci95`, `n_sensitive_test` and `weak` (= the 95% CI lower bound is
+    <= 0.5). The nearest cell lines and their measured sensitivities are the main evidence in loop 2; model ranks
+    are shown second and greyed when `weak`; the probabilities are not calibrated and are shown as ranks, never as
+    percentages.
