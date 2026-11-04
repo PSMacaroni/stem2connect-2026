@@ -64,12 +64,15 @@ everything in WSL. On Linux or macOS, skip step 1 and run the rest in a normal t
    `uv run pytest -q`
    It worked if the last line says `passed` and nothing `failed`.
 6. Optional: check the code style with `uv run ruff check .` (it should say `All checks passed!`).
-7. Get the trained models (they are not in git). Either download them (a 50 MB zip from the GitHub release):
+7. Get the trained models and the cell-line tables (they are not in git). Either download them (a 188 MB zip
+   from the GitHub release, with all 212 models and the 4 DepMap tables the Cell lines tab reads):
    `uv run python -c "from molscreen.assets import ensure_models; ensure_models()"`
-   or train them yourself (slow, about 15 minutes): `uv run python -m molscreen.train`.
-   It worked if `models/` now holds `.joblib` files; the download also prints `files verified`.
-   For the owner: `uv run python scripts/bundle_models.py` makes `dist/models-v1.zip`; publish it with
-   `gh release create v1 dist/models-v1.zip`, then update `TAG` in `src/molscreen/assets.py` if you used another tag.
+   or train the loop-1 models yourself (slow, about 15 minutes): `uv run python -m molscreen.train`, and pull the
+   tables with `python scripts/pull_depmap.py`.
+   It worked if `models/` holds `.joblib` files and `data/depmap/derived/` four `.csv` files; the download also
+   prints `files verified`.
+   For the owner: `uv run python scripts/bundle_models.py` makes `dist/models-v2.zip`; publish it with
+   `gh release create v2 dist/models-v2.zip`, then update `TAG` in `src/molscreen/assets.py` if you used another tag.
 8. Start the app: `uv run streamlit run app.py`, then open http://localhost:8501 in your browser. It needs the
    trained models in `models/` (made by `uv run python -m molscreen.train`).
 
