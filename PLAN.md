@@ -104,10 +104,11 @@ Never cut: loops 1 and 2, the evaluation protocol, the README disclosures, the v
   Data registry with licences merged (`docs/data-registry.md`).
 
 ## Next
-- In progress: loop-1 FIX round 1 (reporting fixes, wild-type-only and salt-stripped re-run). First run (pooled, 4c71e50 on the branch): RF ROC-AUC 0.855 to 0.962, reproduced by the manager and an independent reviewer.
 - Done 2026-11-04: Broad DepMap / PRISM licence check (registry section 3b).
 - Done 2026-11-04: loop-2 data layer (DepMap 24Q4 + PRISM 20Q2 pull, derived tables, nearest-cell-line lookup, protocol first). Private GitHub repo created and pushed.
-- Then: loop-1 FIX round lands; the Streamlit app with the activity tab; loop-2 ranking amendment and per-drug models; README disclosures.
+- Done 2026-11-04: loop 1 data and models PASS after two review rounds (wild-type only, salts stripped, RF shipped, ROC-AUC 0.845 to 0.971 with CIs, split variance disclosed). Results: `results/activity_models.md`.
+- In progress: the Streamlit app with the activity tab (branch app/activity-tab); loop-2 ranking amendment and per-drug models (branch models/loop2-drugs).
+- Then: README disclosures; hosting on Streamlit Community Cloud; loop 3 (Tox21).
 
 ## Problems
 - Tox21 has no stated licence (probably US-government public domain): raw file never committed, cited only.
