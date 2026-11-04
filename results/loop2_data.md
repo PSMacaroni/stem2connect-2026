@@ -40,34 +40,36 @@ Built by `python -m molscreen.depmap` from the files pulled by `scripts/pull_dep
 - Total 31,357,970 bytes: over 5 MB.
 
 ## Worked example: nearest cell lines for ['KRAS', 'TP53', 'STK11']
-| # | ModelID | Cell line | Lineage | Primary disease | Jaccard | Shared genes |
-|---|---|---|---|---|---|---|
-| 1 | ACH-001001 | 143B | Bone | Osteosarcoma | 0.6667 | KRAS, TP53 |
-| 2 | ACH-000174 | CAL-62 | Thyroid | Anaplastic Thyroid Cancer | 0.6667 | KRAS, TP53 |
-| 3 | ACH-000138 | CFPAC-1 | Pancreas | Pancreatic Adenocarcinoma | 0.6667 | KRAS, TP53 |
-| 4 | ACH-000803 | COLO 668 | Lung | Lung Neuroendocrine Tumor | 0.6667 | KRAS, TP53 |
-| 5 | ACH-000264 | Calu-6 | Lung | Non-Small Cell Lung Cancer | 0.6667 | KRAS, TP53 |
-| 6 | ACH-000107 | Capan-2 | Pancreas | Pancreatic Adenocarcinoma | 0.6667 | KRAS, TP53 |
-| 7 | ACH-000698 | DMS 53 | Lung | Lung Neuroendocrine Tumor | 0.6667 | STK11, TP53 |
-| 8 | ACH-000485 | GSU | Esophagus/Stomach | Esophagogastric Adenocarcinoma | 0.6667 | KRAS, TP53 |
-| 9 | ACH-000314 | HCC-2108 | Lung | Non-Small Cell Lung Cancer | 0.6667 | KRAS, TP53 |
-| 10 | ACH-000667 | HCC-44 | Lung | Non-Small Cell Lung Cancer | 0.6667 | KRAS, TP53 |
+Ranked by the number of shared mutated genes, then Jaccard, then cell line name (rule amended 2026-11-04, see the protocol's Changes).
 
-43 screened cell lines have Jaccard 0.6667 (the 10th value), so the order among them is only the tie-break by cell line name (case-sensitive sort).
+| # | ModelID | Cell line | Lineage | Primary disease | Shared | Jaccard | Shared genes |
+|---|---|---|---|---|---|---|---|
+| 1 | ACH-000916 | NCI-H1573 | Lung | Non-Small Cell Lung Cancer | 3 | 0.5 | KRAS, STK11, TP53 |
+| 2 | ACH-001001 | 143B | Bone | Osteosarcoma | 2 | 0.6667 | KRAS, TP53 |
+| 3 | ACH-000174 | CAL-62 | Thyroid | Anaplastic Thyroid Cancer | 2 | 0.6667 | KRAS, TP53 |
+| 4 | ACH-000138 | CFPAC-1 | Pancreas | Pancreatic Adenocarcinoma | 2 | 0.6667 | KRAS, TP53 |
+| 5 | ACH-000803 | COLO 668 | Lung | Lung Neuroendocrine Tumor | 2 | 0.6667 | KRAS, TP53 |
+| 6 | ACH-000264 | Calu-6 | Lung | Non-Small Cell Lung Cancer | 2 | 0.6667 | KRAS, TP53 |
+| 7 | ACH-000107 | Capan-2 | Pancreas | Pancreatic Adenocarcinoma | 2 | 0.6667 | KRAS, TP53 |
+| 8 | ACH-000698 | DMS 53 | Lung | Lung Neuroendocrine Tumor | 2 | 0.6667 | STK11, TP53 |
+| 9 | ACH-000485 | GSU | Esophagus/Stomach | Esophagogastric Adenocarcinoma | 2 | 0.6667 | KRAS, TP53 |
+| 10 | ACH-000314 | HCC-2108 | Lung | Non-Small Cell Lung Cancer | 2 | 0.6667 | KRAS, TP53 |
 
-### Top 10 compounds (lowest `auc`) for ACH-001001 (143B)
+43 screened cell lines share 2 genes with Jaccard 0.6667 (the 10th row), so the order among them is only the tie-break by cell line name (case-sensitive sort).
+
+### Top 10 compounds (lowest `auc`) for ACH-000916 (NCI-H1573)
 | # | Compound | Name | auc | Target | SMILES |
 |---|---|---|---|---|---|
-| 1 | BRD-K59456551 | methotrexate | 0.220 | DHFR | `CN(Cc1cnc2nc(N)nc(N)c2n1)c1ccc(cc1)C(=O)N[C@@H](CCC(O)=O)C(O)=O` |
-| 2 | BRD-K08547377 | irinotecan | 0.253 | TOP1, TOP1MT | `CCc1c2Cn3c(cc4c(COC(=O)[C@]4(O)CC)c3=O)-c2nc2ccc(OC(=O)N3CCC(CC3)N3CCCCC3)cc12` |
-| 3 | BRD-K69776681 | volasertib | 0.345 | PLK1 | `CC[C@H]1N(C(C)C)c2nc(Nc3ccc(cc3OC)C(=O)N[C@H]3CC[C@@H](CC3)N3CCN(CC4CC4)CC3)ncc2N(C)C1=O` |
-| 4 | BRD-K82135108 | elesclomol | 0.345 | HSPA1A | `CN(NC(=O)CC(=O)NN(C)C(=S)c1ccccc1)C(=S)c1ccccc1` |
-| 5 | BRD-K43389675 | daunorubicin | 0.355 | TOP2A, TOP2B | `COc1cccc2C(=O)c3c(O)c4C[C@](O)(C[C@H](O[C@H]5C[C@H](N)[C@H](O)[C@H](C)O5)c4c(O)c3C(=O)c12)C(C)=O` |
-| 6 | BRD-K13662825 | dinaciclib | 0.366 | CDK1, CDK2, CDK5, CDK9 | `CCc1cnn2c(NCc3ccc[n+]([O-])c3)cc(nc12)N1CCCC[C@H]1CCO` |
-| 7 | BRD-K12184916 | NVP-BEZ235 | 0.389 | ATR, MTOR, PIK3CA, PIK3CD, PIK3CG | `Cn1c2cnc3ccc(cc3c2n(-c2ccc(cc2)C(C)(C)C#N)c1=O)-c1cnc2ccccc2c1` |
-| 8 | BRD-K10362825 | teniposide | 0.415 | TOP2A, TOP2B | `COc1cc(cc(OC)c1O)[C@H]1[C@@H]2[C@H](COC2=O)[C@H](O[C@@H]2O[C@@H]3CO[C@H](O[C@H]3[C@H](O)[C@H]2O)c2cccs2)c2cc3OCOc3cc12` |
-| 9 | BRD-K59317601 | MLN0128 | 0.419 | MTOR, PIK3CA, PIK3CD, PIK3CG | `CC(C)n1nc(-c2ccc3oc(N)nc3c2)c2c(N)ncnc12` |
-| 10 | BRD-K30577245 | docetaxel | 0.425 | BCL2, MAP2, MAP4, MAPT, NR1I2, TUBB, TUBB1 | `CC(=O)O[C@@]12CO[C@@H]1C[C@H](O)[C@]1(C)[C@@H]2[C@H](OC(=O)c2ccccc2)[C@]2(O)C[C@H](OC(=O)[C@H](O)[C@@H](NC(=O)OC(C)(C)C)c3ccccc3)C(C)=C([C@@H](O)C1=O)C2(C)C` |
+| 1 | BRD-A64064900 | sangivamycin | 0.019 |  | `NC(=O)c1cn(C2OC(CO)[C@H](O)[C@@H]2O)c2ncnc(N)c12` |
+| 2 | BRD-K39484304 | triptolide | 0.024 | RELA | `CC(C)[C@]12O[C@H]1[C@@H]1O[C@]11[C@]3(O[C@H]3C[C@H]3C4=C(CC[C@]13C)C(=O)OC4)[C@@H]2O` |
+| 3 | BRD-K52762805 | epothilone-d | 0.126 | TUBA1A, TUBA1B, TUBA1C, TUBA3C, TUBA4A, TUBA8, TUBB, TUBB1, TUBB3, TUBB4A, TUBB4B | `C[C@H]1CCC\C(C)=C/C[C@H](OC(=O)C[C@H](O)C(C)(C)C(=O)[C@H](C)[C@H]1O)C(\C)=C\c1csc(C)n1` |
+| 4 | BRD-K78567475 | dolastatin-10 | 0.149 | TUBB | `CC[C@H](C)[C@@H]([C@@H](CC(=O)N1CCC[C@H]1[C@H](OC)[C@@H](C)C(=O)N[C@@H](Cc1ccccc1)c1nccs1)OC)N(C)C(=O)[C@@H](NC(=O)[C@H](C(C)C)N(C)C)C(C)C` |
+| 5 | BRD-K61397605 | romidepsin | 0.187 | HDAC1, HDAC2, HDAC3, HDAC4, HDAC5, HDAC6, HDAC7, HDAC8, HDAC9 | `C\C=C1/NC(=O)[C@H]2CSSCC\C=C\[C@H](CC(=O)N[C@H](C(C)C)C(=O)N2)OC(=O)[C@@H](NC1=O)C(C)C` |
+| 6 | BRD-K37890730 | camptothecin | 0.198 | TOP1 | `CC[C@@]1(O)C(=O)OCc2c1cc1-c3nc4ccccc4cc3Cn1c2=O` |
+| 7 | BRD-K60025295 | crystal-violet | 0.200 |  | `CN(C)c1ccc(cc1)C(c1ccc(cc1)N(C)C)=C1C=CC(C=C1)=[N+](C)C` |
+| 8 | BRD-K68164687 | epothilone-b | 0.203 | TUBA1A, TUBA1B, TUBA1C, TUBA3C, TUBA4A, TUBA8, TUBB, TUBB1, TUBB3, TUBB4A, TUBB4B | `C[C@H]1CCC[C@@]2(C)O[C@H]2C[C@@H](OC(=O)C[C@@H](O)C(C)(C)C(=O)[C@H](C)[C@H]1O)C(\C)=C\c1csc(C)n1` |
+| 9 | BRD-K06858286 | cabazitaxel | 0.205 | TUBA4A, TUBB, TUBB1 | `CO[C@@H]1C[C@H]2OC[C@@]2(OC(C)=O)[C@H]2[C@@H](OC(=O)c3ccccc3)[C@@]3(O)C[C@H](OC(=O)[C@H](O)[C@@H](NC(=O)OC(C)(C)C)c4ccccc4)C(C)=C([C@@H](OC)C(=O)[C@]12C)C3(C)C` |
+| 10 | BRD-K99475619 | genz-644282 | 0.256 | TOP1 | `CNCCn1c2c(cnc3cc4OCOc4cc23)c2cc(OC)c(OC)cc2c1=O` |
 
 ## Credit lines (for the README)
 - **DepMap 24Q4 Public** (hotspot mutations, cell-line annotations, compound map), Broad Institute. Figshare+, doi:10.25452/figshare.plus.27993248. CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/).

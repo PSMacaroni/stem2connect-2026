@@ -116,7 +116,7 @@ def gene_symbols(derived: Path = RAW / "derived") -> list[str]:
 
 
 def nearest_cell_lines(genes: list[str], k: int = 10, derived: Path = RAW / "derived") -> list[dict]:
-    """The k screened cell lines whose hotspot genes are most like `genes` (Jaccard), ties by name.
+    """The k screened cell lines most like `genes`: most shared mutated genes first, then Jaccard, then name.
 
     Only cell lines with PRISM data are searched. Genes not in the matrix are ignored; none known is an error.
     """
@@ -129,13 +129,16 @@ def nearest_cell_lines(genes: list[str], k: int = 10, derived: Path = RAW / "der
     q = hot.columns.isin(query)
     inter = x[:, q].sum(axis=1)
     jac = inter / (x.sum(axis=1) + q.sum() - inter)  # union >= |query| > 0
-    res = pd.DataFrame({"ModelID": hot.index, "jaccard": jac}).join(models, on="ModelID")
+    res = pd.DataFrame({"ModelID": hot.index, "n_shared": inter, "jaccard": jac}).join(models, on="ModelID")
     res["CellLineName"] = res["CellLineName"].fillna(res["ModelID"])
-    res = res.sort_values(["jaccard", "CellLineName"], ascending=[False, True], kind="stable").head(k)
+    res = res.sort_values(
+        ["n_shared", "jaccard", "CellLineName"], ascending=[False, False, True], kind="stable"
+    ).head(k)
     cols = hot.columns.to_numpy()
     return [
         r
         | {
+            "n_shared": int(r["n_shared"]),
             "jaccard": round(float(r["jaccard"]), 4),
             "shared_genes": sorted(cols[x[hot.index.get_loc(r["ModelID"])] & q]),
         }
@@ -211,17 +214,24 @@ def _report(
         f"- Total {total:,} bytes: {'under' if total < 5e6 else 'over'} 5 MB.",
         "",
         f"## Worked example: nearest cell lines for {genes}",
-        "| # | ModelID | Cell line | Lineage | Primary disease | Jaccard | Shared genes |",
-        "|---|---|---|---|---|---|---|",
+        (
+            "Ranked by the number of shared mutated genes, then Jaccard, then cell line name (rule amended "
+            "2026-11-04, see the protocol's Changes)."
+        ),
+        "",
+        "| # | ModelID | Cell line | Lineage | Primary disease | Shared | Jaccard | Shared genes |",
+        "|---|---|---|---|---|---|---|---|",
         *[
             f"| {i} | {r['ModelID']} | {cell(r['CellLineName'])} | {cell(r['OncotreeLineage'])} | "
-            f"{cell(r['OncotreePrimaryDisease'])} | {r['jaccard']} | {', '.join(r['shared_genes'])} |"
+            f"{cell(r['OncotreePrimaryDisease'])} | {r['n_shared']} | {r['jaccard']} | "
+            f"{', '.join(r['shared_genes'])} |"
             for i, r in enumerate(example, 1)
         ],
         "",
         (
-            f"{tied:,} screened cell lines have Jaccard {example[-1]['jaccard']} (the 10th value), so the order among "
-            "them is only the tie-break by cell line name (case-sensitive sort)."
+            f"{tied:,} screened cell lines share {example[-1]['n_shared']} genes with Jaccard "
+            f"{example[-1]['jaccard']} (the 10th row), so the order among them is only the tie-break by cell line "
+            "name (case-sensitive sort)."
         ),
         "",
         f"### Top 10 compounds (lowest `auc`) for {example[0]['ModelID']} ({cell(example[0]['CellLineName'])})",
@@ -267,7 +277,8 @@ def main() -> None:
     example = nearest_cell_lines(genes, derived=a.raw / "derived")
     top = top_compounds(example[0]["ModelID"], derived=a.raw / "derived")
     every = nearest_cell_lines(genes, k=10**6, derived=a.raw / "derived")
-    tied = sum(r["jaccard"] == example[-1]["jaccard"] for r in every)
+    last = (example[-1]["n_shared"], example[-1]["jaccard"])
+    tied = sum((r["n_shared"], r["jaccard"]) == last for r in every)
     pull_info = json.loads((a.raw / "PULL_INFO.json").read_text())
     a.report.parent.mkdir(parents=True, exist_ok=True)
     a.report.write_text(_report(counts, pull_info, example, top, genes, tied), encoding="utf-8")
