@@ -19,9 +19,9 @@ Source: ChEMBL_37 activities for the 9 targets in `docs/data-registry.md`, pulle
 
 ## Split
 `molscreen.chem.scaffold_split(smiles, test_frac=0.2, seed=0)` on the de-duplicated molecules. No Murcko scaffold is
-in both train and test. The test set is never used for any choice (params, features, cut-offs). The one exception
-is the switch rule below, fixed now, so its outcome cannot bend it. Any other model choice uses a second scaffold
-split inside train (same function, on train only).
+in both train and test. The test set is used once, for the pre-registered model-type pick (the switch rule below),
+and for no other choice (params, features, cut-offs). Any other model choice uses a second scaffold split inside
+train (same function, on train only).
 
 ## Baselines every model must beat on the held-out set
 1. Majority class: predicts the train majority for every molecule (constant score, so ROC-AUC = 0.5).
@@ -30,7 +30,9 @@ split inside train (same function, on train only).
 
 ## Models
 Morgan fingerprints (radius 2, 2048 bits, `molscreen.chem.morgan_fp`). LightGBM and scikit-learn RandomForest
-(500 trees), fixed parameters written in `src/molscreen/train.py`, no tuning on test.
+(500 trees), fixed parameters written in `src/molscreen/train.py`, no tuning on test. Note added in review: the
+parameter values (`LGBM_PARAMS`, `RF_PARAMS`) were first committed with the results (4c71e50), not with this
+protocol (1cc2650); that they were not tuned rests on the author's word.
 
 ## Metrics (held-out set)
 - Headline: ROC-AUC and PR-AUC (average precision).
@@ -50,3 +52,25 @@ The rule is applied once, across all targets, and the same model type ships for 
 ## Reporting
 All numbers go to `results/activity_models.json` (and `results/datasets.md`, `results/activity_models.md` built from
 the same run). A target with too few actives or inactives in test to compute an AUC is reported as such, not hidden.
+
+## Amendment 2026-11-04 (a): reporting, added after the first run
+Adds reporting only, changes no decision rule.
+- PR-AUC with **inactive** as the positive class, for every model and for a random ranker (= 1 - active fraction).
+- Bootstrap 95% CI on ROC-AUC for the shipped model: 1000 resamples of the test set, seed 0.
+- Column order: ROC-AUC with its CI next to 1-NN, inactive-class PR-AUC next to its random value, balanced
+  accuracy, then active-class PR-AUC (a random ranker already scores the active fraction there).
+- A target with fewer than 50 test inactives is marked "underpowered" with its count.
+- The first run's random-forest-minus-LightGBM active-class PR-AUC margins (4c71e50): EGFR +0.015, BRAF -0.003,
+  ERBB2 +0.003, CDK4 +0.003, CDK6 +0.024, ALK +0.009, ABL1 +0.005, PARP1 +0.004, BCL2 -0.001. The switch rule
+  rested on margins of 0.003 to 0.024.
+
+## Amendment 2026-11-04 (b): data rules, decided by Prakhar
+Reason: found in review after the first run; results before the change are in git history at 4c71e50. These
+replace "group rows by `molecule_chembl_id`" above. Split, models, metrics, abstain and switch rules are unchanged;
+the switch rule is re-applied once on the new data.
+- **Wild type only.** Drop every row whose assay declares a protein variant: non-empty `assay_variant_mutation`,
+  a field of the ChEMBL activity endpoint, fetched in the same paged query (`only=...,assay_variant_mutation`).
+- **Parent molecule.** Strip salts before aggregating: keep the fragment with the most heavy atoms
+  (`Chem.GetMolFrags`, ties broken by SMILES), canonical SMILES with stereo kept, charges not neutralised.
+  Group rows by that parent SMILES, keep the list of ChEMBL IDs per parent, and take the median pChEMBL over all
+  their rows.
