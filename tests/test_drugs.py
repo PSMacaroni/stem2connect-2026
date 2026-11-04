@@ -74,17 +74,30 @@ def test_select_compounds_needs_a_gene_in_target(derived):
     assert sel["compound"].tolist() == ["BRD-K1"] and sel["oncology_gene"].tolist() == ["BRAF"]
 
 
+def toy(targets: list[str], lines: list[int]) -> pd.DataFrame:
+    return pd.DataFrame({"compound": [f"BRD-{i}" for i in range(len(lines))], "target": targets, "n_lines": lines})
+
+
 def test_pick_up_to_three_per_target():
-    c = pd.DataFrame(
-        {
-            "compound": [f"BRD-E{i}" for i in range(5)] + ["BRD-B0"],
-            "target": ["EGFR"] * 4 + ["EGFR, KDR"] + ["KDR, MET"],
-            "n_lines": [400, 500, 300, 600, 450, 350],
-        }
-    )
-    picked = drugs.pick_per_target(c)
-    assert picked["compound"].tolist() == ["BRD-E3", "BRD-E1", "BRD-E4", "BRD-B0"]  # 3 EGFR + 1 KDR
-    assert picked["oncology_gene"].tolist() == ["EGFR"] * 3 + ["KDR"]  # E4 counts once, under EGFR (first)
+    picked = drugs.pick_per_target(toy(["EGFR"] * 5 + ["KDR"], [300, 600, 450, 500, 400, 350]))
+    genes = picked.groupby("oncology_gene")["compound"].apply(set).to_dict()
+    assert genes == {"EGFR": {"BRD-1", "BRD-3", "BRD-2"}, "KDR": {"BRD-5"}}  # 3 most screened EGFR + 1 KDR
+
+
+def test_multi_target_compound_goes_to_gene_with_fewest():
+    # BRD-2 names BCL2 (already 2) and TUBB (0): it goes to TUBB, not to the first-listed BCL2
+    picked = drugs.pick_per_target(toy(["BCL2", "BCL2", "BCL2, TUBB", "TUBB"], [700, 690, 680, 670]))
+    row = picked.set_index("compound").loc["BRD-2"]
+    assert row["oncology_gene"] == "TUBB" and row["first_gene"] == "BCL2"
+    assert picked["compound"].is_unique
+
+
+def test_selective_rule_adds_single_target_drugs_only():
+    # five EGFR-only compounds and one naming EGFR plus a non-list gene, ranked 4th by lines
+    out = drugs.pick_drug_set(toy(["EGFR"] * 5 + ["EGFR, XYZ1"], [600, 500, 450, 400, 300, 420]))
+    assert out["compound"].tolist() == ["BRD-0", "BRD-1", "BRD-2", "BRD-3", "BRD-4"]
+    assert out["rule"].tolist() == ["3 per gene"] * 3 + ["selective"] * 2  # BRD-3 (4th by lines) still in
+    assert "BRD-5" not in set(out["compound"])  # two target genes: not selective, and EGFR is full
 
 
 def test_label_threshold_from_training_lines_only(derived):
@@ -139,7 +152,9 @@ REAL = Path("data/depmap/derived")
 def test_real_data_smoke():
     sel = drugs.select_compounds()
     assert sel["compound"].is_unique and (sel["n_lines"] >= 300).all()
-    assert sel.groupby("oncology_gene").size().max() <= 3
+    assert sel[sel["rule"] == "3 per gene"].groupby("oncology_gene").size().max() <= 3
+    one_gene = sel["target"].str.split(", ").str.len() == 1
+    assert (one_gene | sel["rule"].eq("3 per gene")).all()  # selective additions name exactly one gene
     train, test = drugs.lineage_split()
     lin = drugs.cell_lines()
     assert not set(lin[list(train)]) & set(lin[list(test)]) and len(train) + len(test) == len(lin)

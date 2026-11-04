@@ -39,13 +39,22 @@ RF_PARAMS = {"n_estimators": 300, "class_weight": "balanced", "random_state": 0,
 # Amendment 2026-11-04 (Prakhar, FIX round 1): logistic regression ships whatever the switch rule says; the switch
 # rule is still computed and reported. See docs/evaluation-loop2.md, Changes.
 SHIPPED = "logreg"
-# The first run (commit 5b7d361: 60 drugs, top 60 by line count; random forest shipped by the switch rule).
-# Medians and beat-1-NN over drugs that are not underpowered (all 60); weak = CI lower bound <= 0.5.
-FIRST_RUN = {
-    "commit": "5b7d361", "drugs": 60, "underpowered": 0, "rf_wins": 32, "powered_drugs": 60, "shipped": "rf",
-    "median_roc_auc": {"majority": 0.5, "nn1": 0.5072, "logreg": 0.5492, "rf": 0.5623},
-    "beat_nn1": {"logreg": 40, "rf": 40}, "weak": {"logreg": 51, "rf": 53}, "model_bytes": 73143794,
-}
+# Earlier runs, from their committed results/loop2_models.json. Medians and beat-1-NN over drugs that are not
+# underpowered (all of them in both runs); weak = CI lower bound <= 0.5, over all drugs.
+EARLIER_RUNS = [
+    {   # first run: the 60 oncology-list matches with the most lines; random forest shipped by the switch rule
+        "label": "First run", "commit": "5b7d361", "drugs": 60, "underpowered": 0, "rf_wins": 32,
+        "powered_drugs": 60, "shipped": "rf",
+        "median_roc_auc": {"majority": 0.5, "nn1": 0.5072, "logreg": 0.5492, "rf": 0.5623},
+        "beat_nn1": {"logreg": 40, "rf": 40}, "weak": {"logreg": 51, "rf": 53}, "model_bytes": 73143794,
+    },
+    {   # FIX round 1: up to 3 per oncology gene (first-listed gene); logistic regression ships by amendment
+        "label": "FIX round 1", "commit": "71dc695", "drugs": 86, "underpowered": 0, "rf_wins": 40,
+        "powered_drugs": 86, "shipped": "logreg",
+        "median_roc_auc": {"majority": 0.5, "nn1": 0.5181, "logreg": 0.5452, "rf": 0.5402},
+        "beat_nn1": {"logreg": 55, "rf": 54}, "weak": {"logreg": 65, "rf": 73}, "model_bytes": 675367,
+    },
+]
 KINDS = ("majority", "nn1", "logreg", "rf")
 NAMES = {"majority": "majority", "nn1": "1-NN", "logreg": "logistic regression", "rf": "random forest"}
 
@@ -78,25 +87,56 @@ def _candidates(derived: Path) -> pd.DataFrame:
     return c[has_gene & (c["n_lines"] >= MIN_LINES)]
 
 
+def oncology_genes(target) -> list[str]:
+    """The oncology-list genes that `target` names, in list order."""
+    tokens = set(str(target).split(", ")) if isinstance(target, str) else set()
+    return [g for g in ONCOLOGY if g in tokens]
+
+
 def oncology_gene(target) -> str | None:
     """The first gene of the oncology list (in list order) that `target` names, or None."""
-    tokens = set(str(target).split(", ")) if isinstance(target, str) else set()
-    return next((g for g in ONCOLOGY if g in tokens), None)
+    return next(iter(oncology_genes(target)), None)
 
 
 def pick_per_target(c: pd.DataFrame) -> pd.DataFrame:
-    """Up to 3 compounds per oncology gene, the most screened first (ties by Broad ID). Each compound counts once,
-    under the first oncology-list gene its `target` names."""
-    c = c.assign(oncology_gene=c["target"].map(oncology_gene)).dropna(subset=["oncology_gene"])
-    c = c.assign(order=c["oncology_gene"].map(ONCOLOGY.index))
-    c = c.sort_values(["order", "n_lines", "compound"], ascending=[True, False, True])
-    return c.groupby("oncology_gene", sort=False).head(PER_TARGET).drop(columns="order").reset_index(drop=True)
+    """Up to 3 compounds per oncology gene. Compounds are taken most screened first (ties by Broad ID); each goes,
+    once, to the oncology gene its `target` names that has the fewest compounds so far (ties by list order), and is
+    skipped when that gene already has 3 (amended 2026-11-04, FIX round 2; was: the first-listed gene)."""
+    count, rows = dict.fromkeys(ONCOLOGY, 0), []
+    for r in c.sort_values(["n_lines", "compound"], ascending=[False, True]).to_dict("records"):
+        genes = oncology_genes(r["target"])
+        if not genes:
+            continue
+        g = min(genes, key=lambda x: (count[x], ONCOLOGY.index(x)))
+        if count[g] < PER_TARGET:
+            count[g] += 1
+            rows.append(r | {"oncology_gene": g, "first_gene": genes[0]})
+    return pd.DataFrame(rows, columns=[*c.columns, "oncology_gene", "first_gene"])
+
+
+def pick_selective(c: pd.DataFrame) -> pd.DataFrame:
+    """Selective drugs: `target` names exactly one gene and that gene is on the oncology list (FIX round 2)."""
+    tokens = c["target"].fillna("").str.split(r",\s*").map(lambda t: [x for x in t if x])
+    one = tokens.map(lambda t: len(t) == 1 and t[0] in ONCOLOGY)
+    return c[one].assign(oncology_gene=tokens[one].str[0], first_gene=tokens[one].str[0])
+
+
+def pick_drug_set(c: pd.DataFrame) -> pd.DataFrame:
+    """3 per oncology gene, plus every selective drug not already in; each compound once. Sorted by gene."""
+    per_gene = pick_per_target(c).assign(rule="3 per gene")
+    selective = pick_selective(c)
+    selective = selective[~selective["compound"].isin(per_gene["compound"])].assign(rule="selective")
+    out = pd.concat([per_gene, selective], ignore_index=True)
+    out = out.assign(order=out["oncology_gene"].map(ONCOLOGY.index), r=out["rule"].ne("3 per gene"))
+    out = out.sort_values(["order", "r", "n_lines", "compound"], ascending=[True, True, False, True])
+    return out.drop(columns=["order", "r"]).reset_index(drop=True)
 
 
 def select_compounds(derived: Path = DERIVED) -> pd.DataFrame:
-    """The drug set (amended 2026-11-04): a gene in `target`, >= 300 hotspot lines, up to 3 per oncology gene."""
-    c = pick_per_target(_candidates(derived))
-    return c[["compound", "name", "target", "moa", "smiles", "n_lines", "oncology_gene"]]
+    """The drug set (amended 2026-11-04, FIX rounds 1 and 2): a gene in `target`, >= 300 hotspot lines; up to 3
+    per oncology gene, plus every selective drug (one target gene, on the oncology list)."""
+    c = pick_drug_set(_candidates(derived))
+    return c[["compound", "name", "target", "moa", "smiles", "n_lines", "oncology_gene", "first_gene", "rule"]]
 
 
 def build_xy(compound: str, derived: Path = DERIVED) -> dict:
@@ -190,9 +230,10 @@ def cell(v) -> str:
 
 def write_md(res: dict, path: Path) -> None:
     g, s, k, sel, st = res["drugs"], res["split"], res["shipped_model"], res["selection"], res["summary"]
-    old, med = res["first_run"], st["median_roc_auc"]
+    runs, med = res["earlier_runs"], st["median_roc_auc"]
+    first = runs[0]
     rows = [
-        [cell(r["name"]), b, cell(r["target"]), r["oncology_gene"], r["n_train"], r["n_test"], r["sensitive_test"],
+        [cell(r["name"]), b, cell(r["target"]), f"{r['oncology_gene']} ({r['rule']})", r["n_train"], r["n_test"], r["sensitive_test"],
          f3(r["majority"]["roc_auc"]), f3(r["nn1"]["roc_auc"]), ci(r["logreg"]), ci(r["rf"]),
          f"{f3(r[k]['pr_auc'])} vs {f3(r['test_prevalence'])}", f3(r[k]["balanced_acc"]),
          "; ".join(x for x in ["weak" if weak(r[k]) else "",
@@ -200,8 +241,12 @@ def write_md(res: dict, path: Path) -> None:
         for b, r in g.items()
     ]
 
-    def change(label, before, after):
-        return f"| {label} | {before} | {after} |"
+    this = {**st, "commit": "this run", "label": "FIX round 2", "rf_wins": res["rf_wins"],
+            "powered_drugs": res["powered_drugs"], "shipped": k}
+    added = sel["selective_added"]
+
+    def change(label, key):
+        return f"| {label} | " + " | ".join(str(key(x)) for x in [*runs, this]) + " |"
 
     lines = [
         "# Loop 2 per-drug sensitivity models: held-out results", "",
@@ -214,11 +259,16 @@ def write_md(res: dict, path: Path) -> None:
          "are not calibrated and must be shown as ranks, never as percentages."), "",
         "## Drug set", "",
         (f"{sel['candidates']:,} compounds name a gene in `target` and have >= {MIN_LINES} lines in the hotspot "
-         f"matrix. For each of the {len(res['oncology_list'])} oncology-list genes, up to {sel['per_target']} of them "
-         f"whose `target` names that gene are kept, the most screened first (ties by Broad ID); a compound counts once, "
-         f"under the first oncology-list gene it names. {sel['genes_with_compounds']} genes have at least one "
-         f"compound, giving **{sel['selected']} compounds**. The \"Gene\" column is the gene a compound was picked "
-         "under."), "",
+         f"matrix. Two rules pick from them (each compound counts once). **3 per gene:** compounds are taken most "
+         f"screened first (ties by Broad ID); each goes to the oncology-list gene its `target` names that has the "
+         f"fewest compounds so far (ties by list order), while that gene has fewer than {sel['per_target']}. "
+         f"{sel['reassigned']} of the {sel['by_rule'].get('3 per gene', 0)} compounds picked this way went to a gene "
+         f"other than the first one they name in list order (the FIX round 1 assignment). **Selective:** every other "
+         f"candidate whose `target` names exactly one gene, on the oncology list: {len(added)} added. "
+         f"{sel['genes_with_compounds']} genes have at least one compound, giving **{sel['selected']} compounds**. "
+         "The \"Gene\" column is the gene and rule a compound was picked under."), "",
+        "Selective drugs added: " + (", ".join(
+            f"{cell(a['name'])} ({cell(a['target'])}, {a['n_lines']} lines)" for a in added) or "none") + ".", "",
         "## Split (leave-lineage-out, one split for every drug)", "",
         (f"{s['n_lines']} cell lines in {s['n_lineages']} lineages. Train: {s['n_train_lines']} lines in "
          f"{len(s['train_lineages'])} lineages. Test: {s['n_test_lines']} lines in {len(s['test_lineages'])} lineages "
@@ -238,7 +288,7 @@ def write_md(res: dict, path: Path) -> None:
          f"needs more than half), so the rule alone would ship the "
          f"{NAMES[res['switch_rule_model']]}. **By the 2026-11-04 amendment, {NAMES[k]} ships for every drug**: the "
          f"first run's random-forest win (32 of 60) was a tie-sized margin, and the hosted app's size matters (the "
-         f"first run's 60 random forests took {old['model_bytes']:,} bytes). Random-forest results stay in every table. "
+         f"first run's 60 random forests took {first['model_bytes']:,} bytes). Random-forest results stay in every table. "
          f"Underpowered drugs: {st['underpowered']} of {st['drugs']}."),
         "",
         "## What this says", "",
@@ -250,21 +300,22 @@ def write_md(res: dict, path: Path) -> None:
          "responds to most of these drugs; the models are a weak signal next to the measured responses of the nearest "
          "cell lines, not a prediction for a person."),
         "",
-        "## What changed from the first run", "",
-        (f"Before = commit {old['commit']} ({old['drugs']} drugs: the 60 oncology-list matches with the most lines; "
-         "random forest shipped by the switch rule). After = this run (up to 3 per oncology gene; logistic regression "
-         "ships by amendment). Same split, seed and model parameters. Medians and beat-1-NN are over drugs that are "
-         "not underpowered; weak counts all drugs."), "",
-        "| | Before | After |",
-        "|---|---|---|",
-        change("Drugs", old["drugs"], st["drugs"]),
-        change("Underpowered", old["underpowered"], st["underpowered"]),
-        *[change(f"Median ROC-AUC, {NAMES[m]}", f3(old["median_roc_auc"][m]), f3(med[m])) for m in KINDS],
-        *[change(f"Beats 1-NN, {NAMES[m]}", old["beat_nn1"][m], st["beat_nn1"][m]) for m in ("logreg", "rf")],
-        *[change(f"Weak, {NAMES[m]}", old["weak"][m], st["weak"][m]) for m in ("logreg", "rf")],
-        change("Switch rule: RF wins", f"{old['rf_wins']} of {old['powered_drugs']}",
-               f"{res['rf_wins']} of {res['powered_drugs']}"),
-        change("Shipped", NAMES[old["shipped"]], f"{NAMES[k]} (amendment)"),
+        "## What changed between runs", "",
+        ("First run = commit 5b7d361 (the 60 oncology-list matches with the most lines; random forest shipped by "
+         "the switch rule). FIX round 1 = commit 71dc695 (up to 3 per oncology gene, first-listed gene; logistic "
+         "regression ships by amendment). FIX round 2 = this run (3 per gene with the fewest-so-far assignment, plus "
+         "selective drugs). Same split, seed and model parameters. Medians and beat-1-NN are over drugs that are not "
+         "underpowered; weak counts all drugs."), "",
+        "| | " + " | ".join(f"{x['label']} ({x['commit']})" for x in [*runs, this]) + " |",
+        "|---|" + "---|" * (len(runs) + 1),
+        change("Drugs", lambda x: x["drugs"]),
+        change("Underpowered", lambda x: x["underpowered"]),
+        *[change(f"Median ROC-AUC, {NAMES[m]}", lambda x, m=m: f3(x["median_roc_auc"][m])) for m in KINDS],
+        *[change(f"Beats 1-NN, {NAMES[m]}", lambda x, m=m: x["beat_nn1"][m]) for m in ("logreg", "rf")],
+        *[change(f"Weak, {NAMES[m]}", lambda x, m=m: x["weak"][m]) for m in ("logreg", "rf")],
+        change("Switch rule: RF wins", lambda x: f"{x['rf_wins']} of {x['powered_drugs']}"),
+        change("Shipped", lambda x: NAMES[x["shipped"]]),
+        change("Model bytes", lambda x: f"{x['model_bytes']:,}"),
         "",
         (f"Models: `models/loop2/<broad_id>.joblib` (git-ignored), {NAMES[k]} fit on the training lines, "
          f"{st['model_bytes']:,} bytes in total."),
@@ -306,14 +357,14 @@ def train_all(
     if full := compounds is None:
         res["drugs"] = {}  # a full run replaces the drug set
     compounds = compounds or sel["compound"].tolist()
-    gene_of = dict(zip(sel["compound"], sel["oncology_gene"]))
+    gene_of = sel.set_index("compound")[["oncology_gene", "rule"]].to_dict("index")
     fitted = {}
     for b in compounds:
         out, fitted[b], d = evaluate(b, derived)
         info = cpd.loc[b]
         res["drugs"][b] = {
             "name": info["name"], "target": info["target"], "smiles": info["smiles"],
-            "oncology_gene": gene_of.get(b, oncology_gene(info["target"])), **out,
+            **gene_of.get(b, {"oncology_gene": oncology_gene(info["target"]), "rule": "requested"}), **out,
         }
         fitted[b]["data"] = d
         print(f"{b} {info['name']}: n_test={out['n_test']} sens={out['sensitive_test']} "
@@ -329,10 +380,14 @@ def train_all(
         sensitive_percentile=SENSITIVE_PERCENTILE, underpowered_below=UNDERPOWERED, oncology_list=ONCOLOGY,
         shipped_model=shipped, switch_rule_model=by_rule, rf_wins=wins, powered_drugs=powered,
         shipped_by="amendment 2026-11-04: logistic regression ships; the switch rule is reported, not applied",
-        first_run=FIRST_RUN,
+        earlier_runs=EARLIER_RUNS,
         selection={
             "candidates": len(cands), "per_target": PER_TARGET, "selected": len(sel),
             "genes_with_compounds": int(sel["oncology_gene"].nunique()),
+            "by_rule": sel["rule"].value_counts().to_dict(),
+            "reassigned": int(((sel["rule"] == "3 per gene") & (sel["oncology_gene"] != sel["first_gene"])).sum()),
+            "selective_added": sel.loc[sel["rule"] == "selective", ["compound", "name", "target", "n_lines"]]
+            .to_dict("records"),
             "per_gene": sel.groupby("oncology_gene", sort=False)["compound"].apply(list).to_dict(),
         },
         split={
