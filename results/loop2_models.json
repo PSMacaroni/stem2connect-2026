@@ -1,0 +1,3354 @@
+{
+  "drugs": {
+    "BRD-K99113996": {
+      "name": "AZD2014",
+      "target": "MTOR",
+      "smiles": "CNC(=O)c1cccc(c1)-c1ccc2c(nc(nc2n1)N1CCOC[C@@H]1C)N1CCOC[C@@H]1C",
+      "n_train": 574,
+      "n_test": 144,
+      "threshold_auc": 0.5734592390456964,
+      "sensitive_train": 58,
+      "sensitive_test": 9,
+      "test_prevalence": 0.0625,
+      "underpowered": false,
+      "majority": {
+        "roc_auc": 0.5,
+        "roc_auc_ci95": [
+          0.5,
+          0.5
+        ],
+        "pr_auc": 0.0625,
+        "balanced_acc": 0.5
+      },
+      "nn1": {
+        "roc_auc": 0.5296296296296296,
+        "roc_auc_ci95": [
+          0.34543888026224984,
+          0.6972627737226276
+        ],
+        "pr_auc": 0.07235822228740856,
+        "balanced_acc": 0.5518518518518518
+      },
+      "logreg": {
+        "roc_auc": 0.5218106995884773,
+        "roc_auc_ci95": [
+          0.3398926136192965,
+          0.7004036125319694
+        ],
+        "pr_auc": 0.07092834489132584,
+        "balanced_acc": 0.47777777777777775
+      },
+      "rf": {
+        "roc_auc": 0.5251028806584362,
+        "roc_auc_ci95": [
+          0.3407180921929124,
+          0.698400242768748
+        ],
+        "pr_auc": 0.0683080808080808,
+        "balanced_acc": 0.4888888888888889
+      },
+      "model_file": {
+        "path": "models/loop2/BRD-K99113996.joblib",
+        "kind": "rf",
+        "bytes": 1310030
+      }
+    },
+    "BRD-K42805893": {
+      "name": "osimertinib",
+      "target": "EGFR",
+      "smiles": "COc1cc(N(C)CCN(C)C)c(NC(=O)C=C)cc1Nc1nccc(n1)-c1cn(C)c2ccccc12",
+      "n_train": 573,
+      "n_test": 141,
+      "threshold_auc": 0.7636997995735689,
+      "sensitive_train": 58,
+      "sensitive_test": 10,
+      "test_prevalence": 0.07092198581560284,
+      "underpowered": false,
+      "majority": {
+        "roc_auc": 0.5,
+        "roc_auc_ci95": [
+          0.5,
+          0.5
+        ],
+        "pr_auc": 0.07092198581560284,
+        "balanced_acc": 0.5
+      },
+      "nn1": {
+        "roc_auc": 0.46335877862595415,
+        "roc_auc_ci95": [
+          0.22271354629622345,
+          0.6785440947940947
+        ],
+        "pr_auc": 0.08710798657607169,
+        "balanced_acc": 0.49236641221374045
+      },
+      "logreg": {
+        "roc_auc": 0.47900763358778625,
+        "roc_auc_ci95": [
+          0.3385426679860522,
+          0.6385059993962872
+        ],
+        "pr_auc": 0.06808527841861176,
+        "balanced_acc": 0.45992366412213737
+      },
+      "rf": {
+        "roc_auc": 0.49809160305343514,
+        "roc_auc_ci95": [
+          0.36349946695095947,
+          0.6388994107744107
+        ],
+        "pr_auc": 0.07073064027394949,
+        "balanced_acc": 0.41374045801526715
+      },
+      "model_file": {
+        "path": "models/loop2/BRD-K42805893.joblib",
+        "kind": "rf",
+        "bytes": 1204188
+      }
+    },
+    "BRD-K44227013": {
+      "name": "ponatinib",
+      "target": "ABL1, BCR, FGFR1, FGFR2, FGFR3, FGFR4, FLT3, KDR, KIT, LCK, LYN, PDGFRA, RET, SRC, TEK",
+      "smiles": "CN1CCN(Cc2ccc(NC(=O)c3ccc(C)c(c3)C#Cc3cnc4cccnn34)cc2C(F)(F)F)CC1",
+      "n_train": 568,
+      "n_test": 142,
+      "threshold_auc": 0.6762081715134036,
+      "sensitive_train": 57,
+      "sensitive_test": 12,
+      "test_prevalence": 0.08450704225352113,
+      "underpowered": false,
+      "majority": {
+        "roc_auc": 0.5,
+        "roc_auc_ci95": [
+          0.5,
+          0.5
+        ],
+        "pr_auc": 0.08450704225352113,
+        "balanced_acc": 0.5
+      },
+      "nn1": {
+        "roc_auc": 0.6022435897435897,
+        "roc_auc_ci95": [
+          0.47978004261564083,
+          0.7175572519083969
+        ],
+        "pr_auc": 0.11800039209745403,
+        "balanced_acc": 0.632051282051282
+      },
+      "logreg": {
+        "roc_auc": 0.6144230769230768,
+        "roc_auc_ci95": [
+          0.4817431994479764,
+          0.7349160101236887
+        ],
+        "pr_auc": 0.12353029674638107,
+        "balanced_acc": 0.6217948717948718
+      },
+      "rf": {
+        "roc_auc": 0.6362179487179487,
+        "roc_auc_ci95": [
+          0.5130541666235098,
+          0.7481787802840435
+        ],
+        "pr_auc": 0.12747371079579373,
+        "balanced_acc": 0.6634615384615384
+      },
+      "model_file": {
+        "path": "models/loop2/BRD-K44227013.joblib",
+        "kind": "rf",
+        "bytes": 1277911
+      }
+    },
+    "BRD-K12343256": {
+      "name": "trametinib",
+      "target": "MAP2K1, MAP2K2",
+      "smiles": "CC(=O)Nc1cccc(c1)-n1c2c(C)c(=O)n(C)c(Nc3ccc(I)cc3F)c2c(=O)n(C2CC2)c1=O",
+      "n_train": 569,
+      "n_test": 140,
+      "threshold_auc": 0.4388354283500733,
+      "sensitive_train": 57,
+      "sensitive_test": 6,
+      "test_prevalence": 0.04285714285714286,
+      "underpowered": false,
+      "majority": {
+        "roc_auc": 0.5,
+        "roc_auc_ci95": [
+          0.5,
+          0.5
+        ],
+        "pr_auc": 0.04285714285714286,
+        "balanced_acc": 0.5
+      },
+      "nn1": {
+        "roc_auc": 0.6057213930348259,
+        "roc_auc_ci95": [
+          0.38914047370773125,
+          0.8067785888077857
+        ],
+        "pr_auc": 0.06472816399286987,
+        "balanced_acc": 0.5497512437810945
+      },
+      "logreg": {
+        "roc_auc": 0.7568407960199005,
+        "roc_auc_ci95": [
+          0.586779388083736,
+          0.9335251798561152
+        ],
+        "pr_auc": 0.13452380952380952,
+        "balanced_acc": 0.6181592039800995
+      },
+      "rf": {
+        "roc_auc": 0.7381840796019901,
+        "roc_auc_ci95": [
+          0.6196448968052022,
+          0.8715073529411765
+        ],
+        "pr_auc": 0.09238482831949257,
+        "balanced_acc": 0.5534825870646767
+      },
+      "model_file": {
+        "path": "models/loop2/BRD-K12343256.joblib",
+        "kind": "rf",
+        "bytes": 1281288
+      }
+    },
+    "BRD-K13514097": {
+      "name": "everolimus",
+      "target": "MTOR",
+      "smiles": "CO[C@@H]1C[C@H](C[C@@H](C)[C@@H]2CC(=O)[C@H](C)\\C=C(C)\\[C@@H](O)[C@@H](OC)C(=O)[C@H](C)C[C@H](C)\\C=C\\C=C\\C=C(C)\\[C@H](C[C@@H]3CC[C@@H](C)[C@@](O)(O3)C(=O)C(=O)N3CCCC[C@H]3C(=O)O2)OC)CC[C@H]1OCCO",
+      "n_train": 567,
+      "n_test": 142,
+      "threshold_auc": 0.36398432601620234,
+      "sensitive_train": 57,
+      "sensitive_test": 14,
+      "test_prevalence": 0.09859154929577464,
+      "underpowered": false,
+      "majority": {
+        "roc_auc": 0.5,
+        "roc_auc_ci95": [
+          0.5,
+          0.5
+        ],
+        "pr_auc": 0.09859154929577464,
+        "balanced_acc": 0.5
+      },
+      "nn1": {
+        "roc_auc": 0.4907924107142857,
+        "roc_auc_ci95": [
+          0.37267214556277056,
+          0.6076401311866428
+        ],
+        "pr_auc": 0.0993092035065661,
+        "balanced_acc": 0.4765625
+      },
+      "logreg": {
+        "roc_auc": 0.48911830357142855,
+        "roc_auc_ci95": [
+          0.33525881718837425,
+          0.6350691380294851
+        ],
+        "pr_auc": 0.11141587713667903,
+        "balanced_acc": 0.4654017857142857
+      },
+      "rf": {
+        "roc_auc": 0.41629464285714285,
+        "roc_auc_ci95": [
+          0.2768473860803771,
+          0.5635688546584944
+        ],
+        "pr_auc": 0.08925436335554983,
+        "balanced_acc": 0.4732142857142857
+      },
+      "model_file": {
+        "path": "models/loop2/BRD-K13514097.joblib",
+        "kind": "rf",
+        "bytes": 1285816
+      }
+    },
+    "BRD-K59369769": {
+      "name": "tozasertib",
+      "target": "AURKA, AURKB, AURKC, LCK",
+      "smiles": "CN1CCN(CC1)c1cc(Nc2cc(C)[nH]n2)nc(Sc2ccc(NC(=O)C3CC3)cc2)n1",
+      "n_train": 568,
+      "n_test": 141,
+      "threshold_auc": 0.5943661356842812,
+      "sensitive_train": 57,
+      "sensitive_test": 25,
+      "test_prevalence": 0.1773049645390071,
+      "underpowered": false,
+      "majority": {
+        "roc_auc": 0.5,
+        "roc_auc_ci95": [
+          0.5,
+          0.5
+        ],
+        "pr_auc": 0.1773049645390071,
+        "balanced_acc": 0.5
+      },
+      "nn1": {
+        "roc_auc": 0.5032758620689655,
+        "roc_auc_ci95": [
+          0.4123789676977229,
+          0.5905640286391192
+        ],
+        "pr_auc": 0.19552662123951237,
+        "balanced_acc": 0.4698275862068966
+      },
+      "logreg": {
+        "roc_auc": 0.6044827586206898,
+        "roc_auc_ci95": [
+          0.4964719970523213,
+          0.7088921231930125
+        ],
+        "pr_auc": 0.2293246182437994,
+        "balanced_acc": 0.5601724137931035
+      },
+      "rf": {
+        "roc_auc": 0.5627586206896551,
+        "roc_auc_ci95": [
+          0.45501984278031876,
+          0.6627287600478646
+        ],
+        "pr_auc": 0.21192457170860696,
+        "balanced_acc": 0.5456896551724137
+      },
+      "model_file": {
+        "path": "models/loop2/BRD-K59369769.joblib",
+        "kind": "rf",
+        "bytes": 1294435
+      }
+    },
+    "BRD-K08799216": {
+      "name": "pelitinib",
+      "target": "EGFR",
+      "smiles": "CCOc1cc2ncc(C#N)c(Nc3ccc(F)c(Cl)c3)c2cc1NC(=O)\\C=C\\CN(C)C",
+      "n_train": 563,
+      "n_test": 144,
+      "threshold_auc": 0.5881169345382231,
+      "sensitive_train": 57,
+      "sensitive_test": 13,
+      "test_prevalence": 0.09027777777777778,
+      "underpowered": false,
+      "majority": {
+        "roc_auc": 0.5,
+        "roc_auc_ci95": [
+          0.5,
+          0.5
+        ],
+        "pr_auc": 0.09027777777777778,
+        "balanced_acc": 0.5
+      },
+      "nn1": {
+        "roc_auc": 0.5055783910745744,
+        "roc_auc_ci95": [
+          0.36937589275303173,
+          0.6524754115513393
+        ],
+        "pr_auc": 0.09088502380757223,
+        "balanced_acc": 0.45977686435701703
+      },
+      "logreg": {
+        "roc_auc": 0.5258367586611862,
+        "roc_auc_ci95": [
+          0.40257443243486135,
+          0.6509153896547796
+        ],
+        "pr_auc": 0.09379792528529782,
+        "balanced_acc": 0.5369935408103347
+      },
+      "rf": {
+        "roc_auc": 0.5046975924838522,
+        "roc_auc_ci95": [
+          0.3625992942513411,
+          0.6627075894451189
+        ],
+        "pr_auc": 0.09070183243768323,
+        "balanced_acc": 0.5217263652378156
+      },
+      "model_file": {
+        "path": "models/loop2/BRD-K08799216.joblib",
+        "kind": "rf",
+        "bytes": 1212984
+      }
+    },
+    "BRD-K33622447": {
+      "name": "abemaciclib",
+      "target": "CDK4, CDK6",
+      "smiles": "CCN1CCN(Cc2ccc(Nc3ncc(F)c(n3)-c3cc(F)c4nc(C)n(C(C)C)c4c3)nc2)CC1",
+      "n_train": 565,
+      "n_test": 142,
+      "threshold_auc": 0.6998118514049609,
+      "sensitive_train": 57,
+      "sensitive_test": 22,
+      "test_prevalence": 0.15492957746478872,
+      "underpowered": false,
+      "majority": {
+        "roc_auc": 0.5,
+        "roc_auc_ci95": [
+          0.5,
+          0.5
+        ],
+        "pr_auc": 0.15492957746478872,
+        "balanced_acc": 0.5
+      },
+      "nn1": {
+        "roc_auc": 0.5653409090909092,
+        "roc_auc_ci95": [
+          0.45844313660477454,
+          0.6604935916997253
+        ],
+        "pr_auc": 0.19045124217641216,
+        "balanced_acc": 0.4708333333333333
+      },
+      "logreg": {
+        "roc_auc": 0.6242424242424243,
+        "roc_auc_ci95": [
+          0.5133886190806463,
+          0.7227606626328217
+        ],
+        "pr_auc": 0.21875072699801884,
+        "balanced_acc": 0.6390151515151515
+      },
+      "rf": {
+        "roc_auc": 0.6443181818181819,
+        "roc_auc_ci95": [
+          0.5462097593582887,
+          0.7346590798204528
+        ],
+        "pr_auc": 0.22214601770700587,
+        "balanced_acc": 0.6079545454545454
+      },
+      "model_file": {
+        "path": "models/loop2/BRD-K33622447.joblib",
+        "kind": "rf",
+        "bytes": 1245846
+      }
+    },
+    "BRD-K50168500": {
+      "name": "canertinib",
+      "target": "AKT1, EGFR, ERBB2, ERBB4",
+      "smiles": "Fc1ccc(Nc2ncnc3cc(OCCCN4CCOCC4)c(NC(=O)C=C)cc23)cc1Cl",
+      "n_train": 566,
+      "n_test": 141,
+      "threshold_auc": 0.7644651444002395,
+      "sensitive_train": 57,
+      "sensitive_test": 7,
+      "test_prevalence": 0.04964539007092199,
+      "underpowered": false,
+      "majority": {
+        "roc_auc": 0.5,
+        "roc_auc_ci95": [
+          0.5,
+          0.5
+        ],
+        "pr_auc": 0.04964539007092199,
+        "balanced_acc": 0.5
+      },
+      "nn1": {
+        "roc_auc": 0.40085287846481876,
+        "roc_auc_ci95": [
+          0.16528776978417264,
+          0.6160314767693903
+        ],
+        "pr_auc": 0.04415794593222967,
+        "balanced_acc": 0.48507462686567165
+      },
+      "logreg": {
+        "roc_auc": 0.4690831556503198,
+        "roc_auc_ci95": [
+          0.2894189765458422,
+          0.6550769030239834
+        ],
+        "pr_auc": 0.04732933155618039,
+        "balanced_acc": 0.47974413646055436
+      },
+      "rf": {
+        "roc_auc": 0.5159914712153517,
+        "roc_auc_ci95": [
+          0.34895475525976816,
+          0.6875367647058823
+        ],
+        "pr_auc": 0.050947411166553935,
+        "balanced_acc": 0.494136460554371
+      },
+      "model_file": {
+        "path": "models/loop2/BRD-K50168500.joblib",
+        "kind": "rf",
+        "bytes": 1258126
+      }
+    },
+    "BRD-K38527262": {
+      "name": "atiprimod",
+      "target": "JAK2, STAT3",
+      "smiles": "CCCC1(CCC)CCC2(CCN(CCCN(CC)CC)C2)CC1",
+      "n_train": 563,
+      "n_test": 143,
+      "threshold_auc": 0.7591061753676539,
+      "sensitive_train": 57,
+      "sensitive_test": 14,
+      "test_prevalence": 0.0979020979020979,
+      "underpowered": false,
+      "majority": {
+        "roc_auc": 0.5,
+        "roc_auc_ci95": [
+          0.5,
+          0.5
+        ],
+        "pr_auc": 0.0979020979020979,
+        "balanced_acc": 0.5
+      },
+      "nn1": {
+        "roc_auc": 0.3128460686600221,
+        "roc_auc_ci95": [
+          0.1958376635982304,
+          0.44112647389107235
+        ],
+        "pr_auc": 0.0810440582184636,
+        "balanced_acc": 0.437984496124031
+      },
+      "logreg": {
+        "roc_auc": 0.5409745293466224,
+        "roc_auc_ci95": [
+          0.38497557979884867,
+          0.6921742684693917
+        ],
+        "pr_auc": 0.120233557618078,
+        "balanced_acc": 0.5213178294573644
+      },
+      "rf": {
+        "roc_auc": 0.5099667774086378,
+        "roc_auc_ci95": [
+          0.35115788246268653,
+          0.6653125
+        ],
+        "pr_auc": 0.10609054368408088,
+        "balanced_acc": 0.5238095238095238
+      },
+      "model_file": {
+        "path": "models/loop2/BRD-K38527262.joblib",
+        "kind": "rf",
+        "bytes": 1199864
+      }
+    },
+    "BRD-K50010139": {
+      "name": "poziotinib",
+      "target": "EGFR, ERBB2, ERBB4",
+      "smiles": "COc1cc2ncnc(Nc3ccc(Cl)c(Cl)c3F)c2cc1OC1CCN(CC1)C(=O)C=C",
+      "n_train": 565,
+      "n_test": 141,
+      "threshold_auc": 0.48114155213599025,
+      "sensitive_train": 57,
+      "sensitive_test": 13,
+      "test_prevalence": 0.09219858156028368,
+      "underpowered": false,
+      "majority": {
+        "roc_auc": 0.5,
+        "roc_auc_ci95": [
+          0.5,
+          0.5
+        ],
+        "pr_auc": 0.09219858156028368,
+        "balanced_acc": 0.5
+      },
+      "nn1": {
+        "roc_auc": 0.40024038461538464,
+        "roc_auc_ci95": [
+          0.22714405964405962,
+          0.5943510780264512
+        ],
+        "pr_auc": 0.1700587004853814,
+        "balanced_acc": 0.35697115384615385
+      },
+      "logreg": {
+        "roc_auc": 0.35787259615384615,
+        "roc_auc_ci95": [
+          0.2545065709786821,
+          0.4725190839694656
+        ],
+        "pr_auc": 0.07264719786002823,
+        "balanced_acc": 0.3602764423076923
+      },
+      "rf": {
+        "roc_auc": 0.5453725961538461,
+        "roc_auc_ci95": [
+          0.36258522727272724,
+          0.7231928643969887
+        ],
+        "pr_auc": 0.1924638609234425,
+        "balanced_acc": 0.5063100961538461
+      },
+      "model_file": {
+        "path": "models/loop2/BRD-K50010139.joblib",
+        "kind": "rf",
+        "bytes": 1170066
+      }
+    },
+    "BRD-K56981171": {
+      "name": "brigatinib",
+      "target": "ALK, EGFR",
+      "smiles": "COc1cc(ccc1Nc1ncc(Cl)c(Nc2ccccc2P(C)(C)=O)n1)N1CCC(CC1)N1CCN(C)CC1",
+      "n_train": 564,
+      "n_test": 142,
+      "threshold_auc": 0.8185095019324862,
+      "sensitive_train": 57,
+      "sensitive_test": 15,
+      "test_prevalence": 0.1056338028169014,
+      "underpowered": false,
+      "majority": {
+        "roc_auc": 0.5,
+        "roc_auc_ci95": [
+          0.5,
+          0.5
+        ],
+        "pr_auc": 0.1056338028169014,
+        "balanced_acc": 0.5
+      },
+      "nn1": {
+        "roc_auc": 0.6490813648293963,
+        "roc_auc_ci95": [
+          0.5384564393939394,
+          0.7535780779954507
+        ],
+        "pr_auc": 0.1538244417954563,
+        "balanced_acc": 0.5154855643044619
+      },
+      "logreg": {
+        "roc_auc": 0.5482939632545932,
+        "roc_auc_ci95": [
+          0.40563423056722697,
+          0.6851048388688257
+        ],
+        "pr_auc": 0.12132510394037194,
+        "balanced_acc": 0.5133858267716536
+      },
+      "rf": {
+        "roc_auc": 0.60498687664042,
+        "roc_auc_ci95": [
+          0.48683051444679354,
+          0.7179749503968254
+        ],
+        "pr_auc": 0.1345973609569614,
+        "balanced_acc": 0.5251968503937008
+      },
+      "model_file": {
+        "path": "models/loop2/BRD-K56981171.joblib",
+        "kind": "rf",
+        "bytes": 1213927
+      }
+    },
+    "BRD-K81418486": {
+      "name": "vorinostat",
+      "target": "HDAC1, HDAC10, HDAC11, HDAC2, HDAC3, HDAC5, HDAC6, HDAC8, HDAC9",
+      "smiles": "ONC(=O)CCCCCCC(=O)Nc1ccccc1",
+      "n_train": 562,
+      "n_test": 144,
+      "threshold_auc": 0.6858254950736861,
+      "sensitive_train": 57,
+      "sensitive_test": 10,
+      "test_prevalence": 0.06944444444444445,
+      "underpowered": false,
+      "majority": {
+        "roc_auc": 0.5,
+        "roc_auc_ci95": [
+          0.5,
+          0.5
+        ],
+        "pr_auc": 0.06944444444444445,
+        "balanced_acc": 0.5
+      },
+      "nn1": {
+        "roc_auc": 0.6082089552238805,
+        "roc_auc_ci95": [
+          0.43134328358208956,
+          0.740604984683932
+        ],
+        "pr_auc": 0.09723545318775646,
+        "balanced_acc": 0.6313432835820896
+      },
+      "logreg": {
+        "roc_auc": 0.4880597014925373,
+        "roc_auc_ci95": [
+          0.3596715550156196,
+          0.612515592959672
+        ],
+        "pr_auc": 0.0795623274363432,
+        "balanced_acc": 0.3686567164179104
+      },
+      "rf": {
+        "roc_auc": 0.6432835820895522,
+        "roc_auc_ci95": [
+          0.47460545449361313,
+          0.8000181159420289
+        ],
+        "pr_auc": 0.12630830389715247,
+        "balanced_acc": 0.5753731343283582
+      },
+      "model_file": {
+        "path": "models/loop2/BRD-K81418486.joblib",
+        "kind": "rf",
+        "bytes": 1217252
+      }
+    },
+    "BRD-K23984367": {
+      "name": "sorafenib",
+      "target": "BRAF, DDR2, FGFR1, FLT1, FLT3, FLT4, KDR, KIT, PDGFRB, RAF1, RET",
+      "smiles": "CNC(=O)c1cc(Oc2ccc(NC(=O)Nc3ccc(Cl)c(c3)C(F)(F)F)cc2)ccn1",
+      "n_train": 563,
+      "n_test": 142,
+      "threshold_auc": 0.8139136217413807,
+      "sensitive_train": 57,
+      "sensitive_test": 18,
+      "test_prevalence": 0.1267605633802817,
+      "underpowered": false,
+      "majority": {
+        "roc_auc": 0.5,
+        "roc_auc_ci95": [
+          0.5,
+          0.5
+        ],
+        "pr_auc": 0.1267605633802817,
+        "balanced_acc": 0.5
+      },
+      "nn1": {
+        "roc_auc": 0.5004480286738351,
+        "roc_auc_ci95": [
+          0.38318449993123055,
+          0.6136745406824146
+        ],
+        "pr_auc": 0.16201839297335768,
+        "balanced_acc": 0.45116487455197135
+      },
+      "logreg": {
+        "roc_auc": 0.5367383512544802,
+        "roc_auc_ci95": [
+          0.4152822776237153,
+          0.6507635323063756
+        ],
+        "pr_auc": 0.14082087341085775,
+        "balanced_acc": 0.47804659498207885
+      },
+      "rf": {
+        "roc_auc": 0.596326164874552,
+        "roc_auc_ci95": [
+          0.45105247110554836,
+          0.7352236376247464
+        ],
+        "pr_auc": 0.16608473517101083,
+        "balanced_acc": 0.6263440860215054
+      },
+      "model_file": {
+        "path": "models/loop2/BRD-K23984367.joblib",
+        "kind": "rf",
+        "bytes": 1165838
+      }
+    },
+    "BRD-K44408410": {
+      "name": "2-methoxyestradiol",
+      "target": "COMT, CYP19A1, CYP1A1, CYP1B1, HIF1A, TUBB",
+      "smiles": "COc1cc2[C@H]3CC[C@]4(C)[C@@H](O)CC[C@H]4[C@@H]3CCc2cc1O",
+      "n_train": 563,
+      "n_test": 142,
+      "threshold_auc": 0.788479093765164,
+      "sensitive_train": 57,
+      "sensitive_test": 13,
+      "test_prevalence": 0.09154929577464789,
+      "underpowered": false,
+      "majority": {
+        "roc_auc": 0.5,
+        "roc_auc_ci95": [
+          0.5,
+          0.5
+        ],
+        "pr_auc": 0.09154929577464789,
+        "balanced_acc": 0.5
+      },
+      "nn1": {
+        "roc_auc": 0.5682766845557543,
+        "roc_auc_ci95": [
+          0.4082026924141749,
+          0.7093097014925374
+        ],
+        "pr_auc": 0.11401900964677894,
+        "balanced_acc": 0.5113297555158021
+      },
+      "logreg": {
+        "roc_auc": 0.5748360166964818,
+        "roc_auc_ci95": [
+          0.41373353802185925,
+          0.7298747763864043
+        ],
+        "pr_auc": 0.13384376536281434,
+        "balanced_acc": 0.5474060822898033
+      },
+      "rf": {
+        "roc_auc": 0.5760286225402503,
+        "roc_auc_ci95": [
+          0.3965621943422929,
+          0.7280424360795454
+        ],
+        "pr_auc": 0.12225463782977665,
+        "balanced_acc": 0.5819916517590936
+      },
+      "model_file": {
+        "path": "models/loop2/BRD-K44408410.joblib",
+        "kind": "rf",
+        "bytes": 1190794
+      }
+    },
+    "BRD-K17743125": {
+      "name": "belinostat",
+      "target": "HDAC1, HDAC10, HDAC11, HDAC2, HDAC3, HDAC4, HDAC5, HDAC6, HDAC7, HDAC8, HDAC9",
+      "smiles": "ONC(=O)\\C=C\\c1cccc(c1)S(=O)(=O)Nc1ccccc1",
+      "n_train": 562,
+      "n_test": 142,
+      "threshold_auc": 0.6772926314812465,
+      "sensitive_train": 57,
+      "sensitive_test": 12,
+      "test_prevalence": 0.08450704225352113,
+      "underpowered": false,
+      "majority": {
+        "roc_auc": 0.5,
+        "roc_auc_ci95": [
+          0.5,
+          0.5
+        ],
+        "pr_auc": 0.08450704225352113,
+        "balanced_acc": 0.5
+      },
+      "nn1": {
+        "roc_auc": 0.4570512820512821,
+        "roc_auc_ci95": [
+          0.28593631332118175,
+          0.6048009080260989
+        ],
+        "pr_auc": 0.07712453992530324,
+        "balanced_acc": 0.4653846153846154
+      },
+      "logreg": {
+        "roc_auc": 0.48493589743589743,
+        "roc_auc_ci95": [
+          0.3327985209235209,
+          0.6307865045075375
+        ],
+        "pr_auc": 0.08101294316571209,
+        "balanced_acc": 0.43141025641025643
+      },
+      "rf": {
+        "roc_auc": 0.503525641025641,
+        "roc_auc_ci95": [
+          0.3035945412446695,
+          0.6932728074153812
+        ],
+        "pr_auc": 0.0982606384250252,
+        "balanced_acc": 0.5166666666666666
+      },
+      "model_file": {
+        "path": "models/loop2/BRD-K17743125.joblib",
+        "kind": "rf",
+        "bytes": 1271853
+      }
+    },
+    "BRD-K43389675": {
+      "name": "daunorubicin",
+      "target": "TOP2A, TOP2B",
+      "smiles": "COc1cccc2C(=O)c3c(O)c4C[C@](O)(C[C@H](O[C@H]5C[C@H](N)[C@H](O)[C@H](C)O5)c4c(O)c3C(=O)c12)C(C)=O",
+      "n_train": 562,
+      "n_test": 142,
+      "threshold_auc": 0.3748621028957536,
+      "sensitive_train": 57,
+      "sensitive_test": 17,
+      "test_prevalence": 0.11971830985915492,
+      "underpowered": false,
+      "majority": {
+        "roc_auc": 0.5,
+        "roc_auc_ci95": [
+          0.5,
+          0.5
+        ],
+        "pr_auc": 0.11971830985915492,
+        "balanced_acc": 0.5
+      },
+      "nn1": {
+        "roc_auc": 0.47058823529411764,
+        "roc_auc_ci95": [
+          0.32960555812876324,
+          0.603178731414411
+        ],
+        "pr_auc": 0.12370367182779896,
+        "balanced_acc": 0.4974117647058824
+      },
+      "logreg": {
+        "roc_auc": 0.4642352941176471,
+        "roc_auc_ci95": [
+          0.32862088350162755,
+          0.597108554356978
+        ],
+        "pr_auc": 0.1114721655912777,
+        "balanced_acc": 0.4854117647058824
+      },
+      "rf": {
+        "roc_auc": 0.572235294117647,
+        "roc_auc_ci95": [
+          0.43829970472440943,
+          0.710581528871391
+        ],
+        "pr_auc": 0.15108474964683807,
+        "balanced_acc": 0.548235294117647
+      },
+      "model_file": {
+        "path": "models/loop2/BRD-K43389675.joblib",
+        "kind": "rf",
+        "bytes": 1253942
+      }
+    },
+    "BRD-K33610132": {
+      "name": "rociletinib",
+      "target": "EGFR",
+      "smiles": "COc1cc(ccc1Nc1ncc(c(Nc2cccc(NC(=O)C=C)c2)n1)C(F)(F)F)N1CCN(CC1)C(C)=O",
+      "n_train": 560,
+      "n_test": 143,
+      "threshold_auc": 0.839238700420123,
+      "sensitive_train": 56,
+      "sensitive_test": 11,
+      "test_prevalence": 0.07692307692307693,
+      "underpowered": false,
+      "majority": {
+        "roc_auc": 0.5,
+        "roc_auc_ci95": [
+          0.5,
+          0.5
+        ],
+        "pr_auc": 0.07692307692307693,
+        "balanced_acc": 0.5
+      },
+      "nn1": {
+        "roc_auc": 0.5802341597796143,
+        "roc_auc_ci95": [
+          0.4389809079142012,
+          0.6935155264395835
+        ],
+        "pr_auc": 0.10329801777170197,
+        "balanced_acc": 0.49242424242424243
+      },
+      "logreg": {
+        "roc_auc": 0.5712809917355371,
+        "roc_auc_ci95": [
+          0.40751555035526343,
+          0.7268638888888889
+        ],
+        "pr_auc": 0.10452563785291713,
+        "balanced_acc": 0.5984848484848484
+      },
+      "rf": {
+        "roc_auc": 0.5988292011019284,
+        "roc_auc_ci95": [
+          0.438342856519408,
+          0.7453928275290216
+        ],
+        "pr_auc": 0.10952761898832777,
+        "balanced_acc": 0.5946969696969697
+      },
+      "model_file": {
+        "path": "models/loop2/BRD-K33610132.joblib",
+        "kind": "rf",
+        "bytes": 1227505
+      }
+    },
+    "BRD-K51313569": {
+      "name": "palbociclib",
+      "target": "CDK4, CDK6",
+      "smiles": "CC(=O)c1c(C)c2cnc(Nc3ccc(cn3)N3CCNCC3)nc2n(C2CCCC2)c1=O",
+      "n_train": 560,
+      "n_test": 142,
+      "threshold_auc": 0.7317176227105292,
+      "sensitive_train": 56,
+      "sensitive_test": 22,
+      "test_prevalence": 0.15492957746478872,
+      "underpowered": false,
+      "majority": {
+        "roc_auc": 0.5,
+        "roc_auc_ci95": [
+          0.5,
+          0.5
+        ],
+        "pr_auc": 0.15492957746478872,
+        "balanced_acc": 0.5
+      },
+      "nn1": {
+        "roc_auc": 0.5280303030303031,
+        "roc_auc_ci95": [
+          0.42414205687736684,
+          0.6352271505376345
+        ],
+        "pr_auc": 0.15901708315321947,
+        "balanced_acc": 0.4871212121212121
+      },
+      "logreg": {
+        "roc_auc": 0.5903409090909091,
+        "roc_auc_ci95": [
+          0.4599796911592506,
+          0.7182421117574475
+        ],
+        "pr_auc": 0.21126908513839165,
+        "balanced_acc": 0.556060606060606
+      },
+      "rf": {
+        "roc_auc": 0.5619318181818181,
+        "roc_auc_ci95": [
+          0.435478316893273,
+          0.6781062311226784
+        ],
+        "pr_auc": 0.17892452394083444,
+        "balanced_acc": 0.5928030303030303
+      },
+      "model_file": {
+        "path": "models/loop2/BRD-K51313569.joblib",
+        "kind": "rf",
+        "bytes": 1243849
+      }
+    },
+    "BRD-K69776681": {
+      "name": "volasertib",
+      "target": "PLK1",
+      "smiles": "CC[C@H]1N(C(C)C)c2nc(Nc3ccc(cc3OC)C(=O)N[C@H]3CC[C@@H](CC3)N3CCN(CC4CC4)CC3)ncc2N(C)C1=O",
+      "n_train": 561,
+      "n_test": 141,
+      "threshold_auc": 0.3827025017512755,
+      "sensitive_train": 56,
+      "sensitive_test": 7,
+      "test_prevalence": 0.04964539007092199,
+      "underpowered": false,
+      "majority": {
+        "roc_auc": 0.5,
+        "roc_auc_ci95": [
+          0.5,
+          0.5
+        ],
+        "pr_auc": 0.04964539007092199,
+        "balanced_acc": 0.5
+      },
+      "nn1": {
+        "roc_auc": 0.46268656716417905,
+        "roc_auc_ci95": [
+          0.16244485294117647,
+          0.7730015432098764
+        ],
+        "pr_auc": 0.05535996945802681,
+        "balanced_acc": 0.5314498933901919
+      },
+      "logreg": {
+        "roc_auc": 0.5639658848614073,
+        "roc_auc_ci95": [
+          0.3813686715017197,
+          0.7666622918955006
+        ],
+        "pr_auc": 0.05988315037267391,
+        "balanced_acc": 0.5127931769722814
+      },
+      "rf": {
+        "roc_auc": 0.47654584221748403,
+        "roc_auc_ci95": [
+          0.27493055555555557,
+          0.6830548796972149
+        ],
+        "pr_auc": 0.05161930363543267,
+        "balanced_acc": 0.517590618336887
+      },
+      "model_file": {
+        "path": "models/loop2/BRD-K69776681.joblib",
+        "kind": "rf",
+        "bytes": 1253161
+      }
+    },
+    "BRD-K82746043": {
+      "name": "navitoclax",
+      "target": "BCL2, BCL2L1, BCL2L2",
+      "smiles": "CC1(C)CCC(=C(CN2CCN(CC2)c2ccc(cc2)C(=O)NS(=O)(=O)c2ccc(N[C@H](CCN3CCOCC3)CSc3ccccc3)c(c2)S(=O)(=O)C(F)(F)F)C1)c1ccc(Cl)cc1",
+      "n_train": 556,
+      "n_test": 146,
+      "threshold_auc": 0.5418474910786567,
+      "sensitive_train": 56,
+      "sensitive_test": 12,
+      "test_prevalence": 0.0821917808219178,
+      "underpowered": false,
+      "majority": {
+        "roc_auc": 0.5,
+        "roc_auc_ci95": [
+          0.5,
+          0.5
+        ],
+        "pr_auc": 0.0821917808219178,
+        "balanced_acc": 0.5
+      },
+      "nn1": {
+        "roc_auc": 0.44340796019900497,
+        "roc_auc_ci95": [
+          0.29951441498316494,
+          0.5794759493978244
+        ],
+        "pr_auc": 0.08370305563544471,
+        "balanced_acc": 0.48507462686567165
+      },
+      "logreg": {
+        "roc_auc": 0.4741915422885572,
+        "roc_auc_ci95": [
+          0.3043925637056442,
+          0.6264822242028124
+        ],
+        "pr_auc": 0.08300863383504178,
+        "balanced_acc": 0.4664179104477612
+      },
+      "rf": {
+        "roc_auc": 0.46299751243781095,
+        "roc_auc_ci95": [
+          0.30923331264323917,
+          0.6165235690235691
+        ],
+        "pr_auc": 0.08197075948601083,
+        "balanced_acc": 0.48818407960199006
+      },
+      "model_file": {
+        "path": "models/loop2/BRD-K82746043.joblib",
+        "kind": "rf",
+        "bytes": 1219786
+      }
+    },
+    "BRD-K85402309": {
+      "name": "dovitinib",
+      "target": "CSF1R, EGFR, FGFR1, FGFR2, FGFR3, FLT1, FLT3, FLT4, INSR, KDR, KIT, PDGFRA, PDGFRB",
+      "smiles": "CN1CCN(CC1)c1ccc2nc([nH]c2c1)-c1c(N)c2c(F)cccc2[nH]c1=O",
+      "n_train": 559,
+      "n_test": 143,
+      "threshold_auc": 0.738701823206118,
+      "sensitive_train": 56,
+      "sensitive_test": 23,
+      "test_prevalence": 0.16083916083916083,
+      "underpowered": false,
+      "majority": {
+        "roc_auc": 0.5,
+        "roc_auc_ci95": [
+          0.5,
+          0.5
+        ],
+        "pr_auc": 0.16083916083916083,
+        "balanced_acc": 0.5
+      },
+      "nn1": {
+        "roc_auc": 0.5161231884057971,
+        "roc_auc_ci95": [
+          0.3900343964978112,
+          0.6369655797101449
+        ],
+        "pr_auc": 0.1826075877774862,
+        "balanced_acc": 0.4791666666666667
+      },
+      "logreg": {
+        "roc_auc": 0.5931159420289854,
+        "roc_auc_ci95": [
+          0.48243627931968974,
+          0.6937881282034849
+        ],
+        "pr_auc": 0.2046742872508574,
+        "balanced_acc": 0.5659420289855073
+      },
+      "rf": {
+        "roc_auc": 0.6385869565217391,
+        "roc_auc_ci95": [
+          0.521686799719888,
+          0.7417552716839186
+        ],
+        "pr_auc": 0.2217120898042672,
+        "balanced_acc": 0.6344202898550725
+      },
+      "model_file": {
+        "path": "models/loop2/BRD-K85402309.joblib",
+        "kind": "rf",
+        "bytes": 1186039
+      }
+    },
+    "BRD-K18961567": {
+      "name": "LY2801653",
+      "target": "MET",
+      "smiles": "Cc1ccc(C(=O)Nc2ccc(Oc3cc4cnn(C)c4cc3-c3cn[nH]c3)c(F)c2)c(=O)n1-c1ccc(F)cc1",
+      "n_train": 555,
+      "n_test": 145,
+      "threshold_auc": 0.7592862918865897,
+      "sensitive_train": 56,
+      "sensitive_test": 24,
+      "test_prevalence": 0.16551724137931034,
+      "underpowered": false,
+      "majority": {
+        "roc_auc": 0.5,
+        "roc_auc_ci95": [
+          0.5,
+          0.5
+        ],
+        "pr_auc": 0.16551724137931034,
+        "balanced_acc": 0.5
+      },
+      "nn1": {
+        "roc_auc": 0.6160468319559229,
+        "roc_auc_ci95": [
+          0.5069484703614047,
+          0.7201709800903736
+        ],
+        "pr_auc": 0.21820703514597203,
+        "balanced_acc": 0.6103650137741047
+      },
+      "logreg": {
+        "roc_auc": 0.4931129476584022,
+        "roc_auc_ci95": [
+          0.3798352783923304,
+          0.5993103131622122
+        ],
+        "pr_auc": 0.1690698575111991,
+        "balanced_acc": 0.45919421487603307
+      },
+      "rf": {
+        "roc_auc": 0.5960743801652892,
+        "roc_auc_ci95": [
+          0.49147534090909084,
+          0.6902572178477691
+        ],
+        "pr_auc": 0.21299295965244242,
+        "balanced_acc": 0.509469696969697
+      },
+      "model_file": {
+        "path": "models/loop2/BRD-K18961567.joblib",
+        "kind": "rf",
+        "bytes": 1257695
+      }
+    },
+    "BRD-K28822270": {
+      "name": "resminostat",
+      "target": "HDAC1, HDAC3, HDAC6, HDAC8",
+      "smiles": "CN(C)Cc1ccc(cc1)S(=O)(=O)n1ccc(c1)\\C=C\\C(=O)NO",
+      "n_train": 556,
+      "n_test": 144,
+      "threshold_auc": 0.6547015026058475,
+      "sensitive_train": 56,
+      "sensitive_test": 12,
+      "test_prevalence": 0.08333333333333333,
+      "underpowered": false,
+      "majority": {
+        "roc_auc": 0.5,
+        "roc_auc_ci95": [
+          0.5,
+          0.5
+        ],
+        "pr_auc": 0.08333333333333333,
+        "balanced_acc": 0.5
+      },
+      "nn1": {
+        "roc_auc": 0.528409090909091,
+        "roc_auc_ci95": [
+          0.3445977902680466,
+          0.7142886537330982
+        ],
+        "pr_auc": 0.12333291395501106,
+        "balanced_acc": 0.5303030303030303
+      },
+      "logreg": {
+        "roc_auc": 0.5773358585858586,
+        "roc_auc_ci95": [
+          0.41266658755233215,
+          0.7445093919467375
+        ],
+        "pr_auc": 0.13190857752995352,
+        "balanced_acc": 0.5568181818181819
+      },
+      "rf": {
+        "roc_auc": 0.48737373737373735,
+        "roc_auc_ci95": [
+          0.33465677338498345,
+          0.6608520814804023
+        ],
+        "pr_auc": 0.08882045074973216,
+        "balanced_acc": 0.4734848484848485
+      },
+      "model_file": {
+        "path": "models/loop2/BRD-K28822270.joblib",
+        "kind": "rf",
+        "bytes": 1201298
+      }
+    },
+    "BRD-K70401845": {
+      "name": "erlotinib",
+      "target": "EGFR, NR1I2",
+      "smiles": "COCCOc1cc2ncnc(Nc3cccc(c3)C#C)c2cc1OCCOC",
+      "n_train": 558,
+      "n_test": 141,
+      "threshold_auc": 0.7664639144139855,
+      "sensitive_train": 56,
+      "sensitive_test": 16,
+      "test_prevalence": 0.11347517730496454,
+      "underpowered": false,
+      "majority": {
+        "roc_auc": 0.5,
+        "roc_auc_ci95": [
+          0.5,
+          0.5
+        ],
+        "pr_auc": 0.11347517730496454,
+        "balanced_acc": 0.5
+      },
+      "nn1": {
+        "roc_auc": 0.48424999999999996,
+        "roc_auc_ci95": [
+          0.3667301355361057,
+          0.6053396087117017
+        ],
+        "pr_auc": 0.10882893600422584,
+        "balanced_acc": 0.43875
+      },
+      "logreg": {
+        "roc_auc": 0.558,
+        "roc_auc_ci95": [
+          0.4356481481481482,
+          0.6649071087786259
+        ],
+        "pr_auc": 0.12269166230028988,
+        "balanced_acc": 0.57425
+      },
+      "rf": {
+        "roc_auc": 0.6930000000000001,
+        "roc_auc_ci95": [
+          0.5501321138211382,
+          0.8196909090909091
+        ],
+        "pr_auc": 0.24116368814769978,
+        "balanced_acc": 0.6214999999999999
+      },
+      "model_file": {
+        "path": "models/loop2/BRD-K70401845.joblib",
+        "kind": "rf",
+        "bytes": 1179261
+      }
+    },
+    "BRD-K23228615": {
+      "name": "GDC-0980",
+      "target": "FGR, MAP3K9, MTOR, PIK3CA, PIK3CB, PIK3CD, PIK3CG, SYK",
+      "smiles": "C[C@H](O)C(=O)N1CCN(Cc2sc3c(nc(nc3c2C)-c2cnc(N)nc2)N2CCOCC2)CC1",
+      "n_train": 556,
+      "n_test": 142,
+      "threshold_auc": 0.4327253202419944,
+      "sensitive_train": 56,
+      "sensitive_test": 12,
+      "test_prevalence": 0.08450704225352113,
+      "underpowered": false,
+      "majority": {
+        "roc_auc": 0.5,
+        "roc_auc_ci95": [
+          0.5,
+          0.5
+        ],
+        "pr_auc": 0.08450704225352113,
+        "balanced_acc": 0.5
+      },
+      "nn1": {
+        "roc_auc": 0.3076923076923077,
+        "roc_auc_ci95": [
+          0.14038367037579957,
+          0.49416037796697626
+        ],
+        "pr_auc": 0.0802873808170623,
+        "balanced_acc": 0.5147435897435897
+      },
+      "logreg": {
+        "roc_auc": 0.635576923076923,
+        "roc_auc_ci95": [
+          0.4131699156161548,
+          0.8153953664799252
+        ],
+        "pr_auc": 0.22491090722218982,
+        "balanced_acc": 0.6012820512820513
+      },
+      "rf": {
+        "roc_auc": 0.532051282051282,
+        "roc_auc_ci95": [
+          0.2928483995805833,
+          0.7675239430625435
+        ],
+        "pr_auc": 0.15374366119549338,
+        "balanced_acc": 0.6282051282051282
+      },
+      "model_file": {
+        "path": "models/loop2/BRD-K23228615.joblib",
+        "kind": "rf",
+        "bytes": 1257618
+      }
+    },
+    "BRD-K03765900": {
+      "name": "XL-647",
+      "target": "EGFR, EPHB4, ERBB2, FLT4, KDR",
+      "smiles": "COc1cc2c(Nc3ccc(Cl)c(Cl)c3F)ncnc2cc1OC[C@H]1C[C@H]2CN(C)C[C@H]2C1",
+      "n_train": 554,
+      "n_test": 143,
+      "threshold_auc": 0.6523049044066692,
+      "sensitive_train": 56,
+      "sensitive_test": 16,
+      "test_prevalence": 0.11188811188811189,
+      "underpowered": false,
+      "majority": {
+        "roc_auc": 0.5,
+        "roc_auc_ci95": [
+          0.5,
+          0.5
+        ],
+        "pr_auc": 0.11188811188811189,
+        "balanced_acc": 0.5
+      },
+      "nn1": {
+        "roc_auc": 0.47219488188976383,
+        "roc_auc_ci95": [
+          0.3322567327235772,
+          0.6045225420421283
+        ],
+        "pr_auc": 0.11272154340822281,
+        "balanced_acc": 0.4763779527559055
+      },
+      "logreg": {
+        "roc_auc": 0.5364173228346456,
+        "roc_auc_ci95": [
+          0.4012085556402439,
+          0.6727546751968504
+        ],
+        "pr_auc": 0.12093687416514383,
+        "balanced_acc": 0.4899114173228346
+      },
+      "rf": {
+        "roc_auc": 0.5536417322834646,
+        "roc_auc_ci95": [
+          0.4105088336615129,
+          0.6906310377634661
+        ],
+        "pr_auc": 0.12538153700717258,
+        "balanced_acc": 0.5130413385826772
+      },
+      "model_file": {
+        "path": "models/loop2/BRD-K03765900.joblib",
+        "kind": "rf",
+        "bytes": 1102436
+      }
+    },
+    "BRD-K08542803": {
+      "name": "gambogic-acid",
+      "target": "BCL2",
+      "smiles": "CC(C)=CCC[C@@]1(C)Oc2c(CC=C(C)C)c3O[C@@]45[C@H]6C[C@@H](C=C4C(=O)c3c(O)c2C=C1)C(=O)[C@]5(C\\C=C(\\C)C(O)=O)OC6(C)C",
+      "n_train": 554,
+      "n_test": 143,
+      "threshold_auc": 0.6651349083434354,
+      "sensitive_train": 56,
+      "sensitive_test": 10,
+      "test_prevalence": 0.06993006993006994,
+      "underpowered": false,
+      "majority": {
+        "roc_auc": 0.5,
+        "roc_auc_ci95": [
+          0.5,
+          0.5
+        ],
+        "pr_auc": 0.06993006993006994,
+        "balanced_acc": 0.5
+      },
+      "nn1": {
+        "roc_auc": 0.6259398496240601,
+        "roc_auc_ci95": [
+          0.45980503265462924,
+          0.75
+        ],
+        "pr_auc": 0.10025336981858722,
+        "balanced_acc": 0.6406015037593985
+      },
+      "logreg": {
+        "roc_auc": 0.6973684210526316,
+        "roc_auc_ci95": [
+          0.5555268595041323,
+          0.8095805264254462
+        ],
+        "pr_auc": 0.12025435289811275,
+        "balanced_acc": 0.7007518796992481
+      },
+      "rf": {
+        "roc_auc": 0.5402255639097744,
+        "roc_auc_ci95": [
+          0.38969227766278103,
+          0.6654243567261614
+        ],
+        "pr_auc": 0.0870643915890734,
+        "balanced_acc": 0.6180451127819548
+      },
+      "model_file": {
+        "path": "models/loop2/BRD-K08542803.joblib",
+        "kind": "rf",
+        "bytes": 1218959
+      }
+    },
+    "BRD-K15179879": {
+      "name": "carfilzomib",
+      "target": "PSMA1, PSMA2, PSMA3, PSMA4, PSMA5, PSMA6, PSMA7, PSMA8, PSMB1, PSMB10, PSMB11, PSMB2, PSMB3, PSMB4, PSMB5, PSMB6, PSMB7, PSMB8, PSMB9",
+      "smiles": "CC(C)C[C@H](NC(=O)[C@H](CCc1ccccc1)NC(=O)CN1CCOCC1)C(=O)N[C@@H](Cc1ccccc1)C(=O)N[C@@H](CC(C)C)C(=O)[C@@]1(C)CO1",
+      "n_train": 559,
+      "n_test": 138,
+      "threshold_auc": 0.21225419889087974,
+      "sensitive_train": 56,
+      "sensitive_test": 9,
+      "test_prevalence": 0.06521739130434782,
+      "underpowered": false,
+      "majority": {
+        "roc_auc": 0.5,
+        "roc_auc_ci95": [
+          0.5,
+          0.5
+        ],
+        "pr_auc": 0.06521739130434782,
+        "balanced_acc": 0.5
+      },
+      "nn1": {
+        "roc_auc": 0.40267011197243757,
+        "roc_auc_ci95": [
+          0.2079805585169391,
+          0.5883897274988692
+        ],
+        "pr_auc": 0.056922648586145624,
+        "balanced_acc": 0.4806201550387597
+      },
+      "logreg": {
+        "roc_auc": 0.46253229974160204,
+        "roc_auc_ci95": [
+          0.2701948721031675,
+          0.657545710932768
+        ],
+        "pr_auc": 0.06255856196741183,
+        "balanced_acc": 0.48578811369509045
+      },
+      "rf": {
+        "roc_auc": 0.4198966408268734,
+        "roc_auc_ci95": [
+          0.20677525955188616,
+          0.6361134506940428
+        ],
+        "pr_auc": 0.06225632834356713,
+        "balanced_acc": 0.5167958656330749
+      },
+      "model_file": {
+        "path": "models/loop2/BRD-K15179879.joblib",
+        "kind": "rf",
+        "bytes": 1256543
+      }
+    },
+    "BRD-K51791723": {
+      "name": "P276-00",
+      "target": "CDK1, CDK4, CDK9",
+      "smiles": "CN1CC[C@H]([C@@H]1CO)c1c(O)cc(O)c2c1oc(cc2=O)-c1ccccc1Cl",
+      "n_train": 555,
+      "n_test": 142,
+      "threshold_auc": 0.6552389063513371,
+      "sensitive_train": 56,
+      "sensitive_test": 20,
+      "test_prevalence": 0.14084507042253522,
+      "underpowered": false,
+      "majority": {
+        "roc_auc": 0.5,
+        "roc_auc_ci95": [
+          0.5,
+          0.5
+        ],
+        "pr_auc": 0.14084507042253522,
+        "balanced_acc": 0.5
+      },
+      "nn1": {
+        "roc_auc": 0.519672131147541,
+        "roc_auc_ci95": [
+          0.3981883403361345,
+          0.6481030701754384
+        ],
+        "pr_auc": 0.16708853195487477,
+        "balanced_acc": 0.5086065573770492
+      },
+      "logreg": {
+        "roc_auc": 0.6434426229508197,
+        "roc_auc_ci95": [
+          0.5025595617016352,
+          0.7547318135798706
+        ],
+        "pr_auc": 0.20786549917994965,
+        "balanced_acc": 0.6200819672131148
+      },
+      "rf": {
+        "roc_auc": 0.6526639344262295,
+        "roc_auc_ci95": [
+          0.4970376674598978,
+          0.7776185857202632
+        ],
+        "pr_auc": 0.26854157200019096,
+        "balanced_acc": 0.6323770491803279
+      },
+      "model_file": {
+        "path": "models/loop2/BRD-K51791723.joblib",
+        "kind": "rf",
+        "bytes": 1276179
+      }
+    },
+    "BRD-K57169635": {
+      "name": "dacomitinib",
+      "target": "EGFR, ERBB2, ERBB4",
+      "smiles": "COc1cc2ncnc(Nc3ccc(F)c(Cl)c3)c2cc1NC(=O)\\C=C\\CN1CCCCC1",
+      "n_train": 554,
+      "n_test": 143,
+      "threshold_auc": 0.6300856565315786,
+      "sensitive_train": 56,
+      "sensitive_test": 14,
+      "test_prevalence": 0.0979020979020979,
+      "underpowered": false,
+      "majority": {
+        "roc_auc": 0.5,
+        "roc_auc_ci95": [
+          0.5,
+          0.5
+        ],
+        "pr_auc": 0.0979020979020979,
+        "balanced_acc": 0.5
+      },
+      "nn1": {
+        "roc_auc": 0.4039313399778516,
+        "roc_auc_ci95": [
+          0.2612645625692137,
+          0.56232782369146
+        ],
+        "pr_auc": 0.08343027545760433,
+        "balanced_acc": 0.39174972314507195
+      },
+      "logreg": {
+        "roc_auc": 0.41029900332225916,
+        "roc_auc_ci95": [
+          0.255908714273416,
+          0.5863861299938707
+        ],
+        "pr_auc": 0.08811806107724475,
+        "balanced_acc": 0.436046511627907
+      },
+      "rf": {
+        "roc_auc": 0.4889258028792912,
+        "roc_auc_ci95": [
+          0.33947125686353286,
+          0.6453177901499381
+        ],
+        "pr_auc": 0.10712739818834492,
+        "balanced_acc": 0.4485049833887043
+      },
+      "model_file": {
+        "path": "models/loop2/BRD-K57169635.joblib",
+        "kind": "rf",
+        "bytes": 1188996
+      }
+    },
+    "BRD-K16730910": {
+      "name": "regorafenib",
+      "target": "ABL1, BRAF, DDR2, EPHA2, FGFR1, FGFR2, FLT1, FLT4, FRK, KDR, KIT, MAPK11, NTRK1, PDGFRA, PDGFRB, RAF1, RET, TEK",
+      "smiles": "CNC(=O)c1cc(Oc2ccc(NC(=O)Nc3ccc(Cl)c(c3)C(F)(F)F)c(F)c2)ccn1",
+      "n_train": 553,
+      "n_test": 141,
+      "threshold_auc": 0.8506517535265852,
+      "sensitive_train": 56,
+      "sensitive_test": 18,
+      "test_prevalence": 0.1276595744680851,
+      "underpowered": false,
+      "majority": {
+        "roc_auc": 0.5,
+        "roc_auc_ci95": [
+          0.5,
+          0.5
+        ],
+        "pr_auc": 0.1276595744680851,
+        "balanced_acc": 0.5
+      },
+      "nn1": {
+        "roc_auc": 0.5833333333333334,
+        "roc_auc_ci95": [
+          0.48357975141178267,
+          0.6930996951219511
+        ],
+        "pr_auc": 0.15654271928178345,
+        "balanced_acc": 0.491869918699187
+      },
+      "logreg": {
+        "roc_auc": 0.6002710027100271,
+        "roc_auc_ci95": [
+          0.46718764097744364,
+          0.7055881507046303
+        ],
+        "pr_auc": 0.1687660353021888,
+        "balanced_acc": 0.46747967479674796
+      },
+      "rf": {
+        "roc_auc": 0.6587624209575429,
+        "roc_auc_ci95": [
+          0.5265575782732448,
+          0.7803640180265654
+        ],
+        "pr_auc": 0.2088691705961771,
+        "balanced_acc": 0.6659891598915989
+      },
+      "model_file": {
+        "path": "models/loop2/BRD-K16730910.joblib",
+        "kind": "rf",
+        "bytes": 1214191
+      }
+    },
+    "BRD-K76239644": {
+      "name": "BMS-690514",
+      "target": "EGFR, ERBB2, FLT3, KDR",
+      "smiles": "COc1cccc(Nc2ncnn3ccc(CN4CC[C@@H](N)[C@H](O)C4)c23)c1",
+      "n_train": 554,
+      "n_test": 140,
+      "threshold_auc": 0.7050929966062363,
+      "sensitive_train": 56,
+      "sensitive_test": 14,
+      "test_prevalence": 0.1,
+      "underpowered": false,
+      "majority": {
+        "roc_auc": 0.5,
+        "roc_auc_ci95": [
+          0.5,
+          0.5
+        ],
+        "pr_auc": 0.1,
+        "balanced_acc": 0.5
+      },
+      "nn1": {
+        "roc_auc": 0.34495464852607716,
+        "roc_auc_ci95": [
+          0.20548658098157144,
+          0.490839404082541
+        ],
+        "pr_auc": 0.0787660930232157,
+        "balanced_acc": 0.47619047619047616
+      },
+      "logreg": {
+        "roc_auc": 0.3795351473922903,
+        "roc_auc_ci95": [
+          0.26952536908927055,
+          0.49423114778921867
+        ],
+        "pr_auc": 0.0852588184357817,
+        "balanced_acc": 0.36904761904761907
+      },
+      "rf": {
+        "roc_auc": 0.42318594104308394,
+        "roc_auc_ci95": [
+          0.2599349868881119,
+          0.5990913883016208
+        ],
+        "pr_auc": 0.09300874611197987,
+        "balanced_acc": 0.36904761904761907
+      },
+      "model_file": {
+        "path": "models/loop2/BRD-K76239644.joblib",
+        "kind": "rf",
+        "bytes": 1135499
+      }
+    },
+    "BRD-K08547377": {
+      "name": "irinotecan",
+      "target": "TOP1, TOP1MT",
+      "smiles": "CCc1c2Cn3c(cc4c(COC(=O)[C@]4(O)CC)c3=O)-c2nc2ccc(OC(=O)N3CCC(CC3)N3CCCCC3)cc12",
+      "n_train": 552,
+      "n_test": 141,
+      "threshold_auc": 0.29216806708117793,
+      "sensitive_train": 56,
+      "sensitive_test": 15,
+      "test_prevalence": 0.10638297872340426,
+      "underpowered": false,
+      "majority": {
+        "roc_auc": 0.5,
+        "roc_auc_ci95": [
+          0.5,
+          0.5
+        ],
+        "pr_auc": 0.10638297872340426,
+        "balanced_acc": 0.5
+      },
+      "nn1": {
+        "roc_auc": 0.6174603174603175,
+        "roc_auc_ci95": [
+          0.4760175521821632,
+          0.726570706407563
+        ],
+        "pr_auc": 0.1532540689394311,
+        "balanced_acc": 0.6634920634920635
+      },
+      "logreg": {
+        "roc_auc": 0.6193121693121693,
+        "roc_auc_ci95": [
+          0.5083810187381405,
+          0.7192355371900826
+        ],
+        "pr_auc": 0.14127095070583245,
+        "balanced_acc": 0.538888888888889
+      },
+      "rf": {
+        "roc_auc": 0.612962962962963,
+        "roc_auc_ci95": [
+          0.49907734375,
+          0.7120616156582239
+        ],
+        "pr_auc": 0.13948606389461002,
+        "balanced_acc": 0.530952380952381
+      },
+      "model_file": {
+        "path": "models/loop2/BRD-K08547377.joblib",
+        "kind": "rf",
+        "bytes": 1146450
+      }
+    },
+    "BRD-K62008436": {
+      "name": "paclitaxel",
+      "target": "BCL2, MAP2, MAP4, MAPT, NR1I2, TLR4, TUBB, TUBB1",
+      "smiles": "CC(=O)O[C@@H]1C2=C(C)[C@H](C[C@@](O)([C@@H](OC(=O)c3ccccc3)[C@@H]3[C@@]4(CO[C@@H]4C[C@H](O)[C@@]3(C)C1=O)OC(C)=O)C2(C)C)OC(=O)[C@H](O)[C@@H](NC(=O)c1ccccc1)c1ccccc1",
+      "n_train": 552,
+      "n_test": 141,
+      "threshold_auc": 0.358469381094807,
+      "sensitive_train": 56,
+      "sensitive_test": 14,
+      "test_prevalence": 0.09929078014184398,
+      "underpowered": false,
+      "majority": {
+        "roc_auc": 0.5,
+        "roc_auc_ci95": [
+          0.5,
+          0.5
+        ],
+        "pr_auc": 0.09929078014184398,
+        "balanced_acc": 0.5
+      },
+      "nn1": {
+        "roc_auc": 0.6616985376827897,
+        "roc_auc_ci95": [
+          0.46119304523601407,
+          0.8491660912812726
+        ],
+        "pr_auc": 0.23597918263032433,
+        "balanced_acc": 0.5399325084364455
+      },
+      "logreg": {
+        "roc_auc": 0.7488751406074241,
+        "roc_auc_ci95": [
+          0.619173567066009,
+          0.8654187499999999
+        ],
+        "pr_auc": 0.2287518896474597,
+        "balanced_acc": 0.6751968503937008
+      },
+      "rf": {
+        "roc_auc": 0.6296400449943758,
+        "roc_auc_ci95": [
+          0.4549030935086602,
+          0.8040782152456302
+        ],
+        "pr_auc": 0.1916780812680211,
+        "balanced_acc": 0.6119235095613048
+      },
+      "model_file": {
+        "path": "models/loop2/BRD-K62008436.joblib",
+        "kind": "rf",
+        "bytes": 1300393
+      }
+    },
+    "BRD-K10362825": {
+      "name": "teniposide",
+      "target": "TOP2A, TOP2B",
+      "smiles": "COc1cc(cc(OC)c1O)[C@H]1[C@@H]2[C@H](COC2=O)[C@H](O[C@@H]2O[C@@H]3CO[C@H](O[C@H]3[C@H](O)[C@H]2O)c2cccs2)c2cc3OCOc3cc12",
+      "n_train": 554,
+      "n_test": 138,
+      "threshold_auc": 0.38894997674410187,
+      "sensitive_train": 56,
+      "sensitive_test": 17,
+      "test_prevalence": 0.12318840579710146,
+      "underpowered": false,
+      "majority": {
+        "roc_auc": 0.5,
+        "roc_auc_ci95": [
+          0.5,
+          0.5
+        ],
+        "pr_auc": 0.12318840579710146,
+        "balanced_acc": 0.5
+      },
+      "nn1": {
+        "roc_auc": 0.5325717063684978,
+        "roc_auc_ci95": [
+          0.3763757680491551,
+          0.6781892790774
+        ],
+        "pr_auc": 0.151144424000412,
+        "balanced_acc": 0.5340301409820126
+      },
+      "logreg": {
+        "roc_auc": 0.46183762761302866,
+        "roc_auc_ci95": [
+          0.3154531798541723,
+          0.5958830511980374
+        ],
+        "pr_auc": 0.11646834747772421,
+        "balanced_acc": 0.4880894506562956
+      },
+      "rf": {
+        "roc_auc": 0.5080213903743316,
+        "roc_auc_ci95": [
+          0.3611230895867119,
+          0.6496254310775689
+        ],
+        "pr_auc": 0.15215778544488326,
+        "balanced_acc": 0.4973262032085562
+      },
+      "model_file": {
+        "path": "models/loop2/BRD-K10362825.joblib",
+        "kind": "rf",
+        "bytes": 1296827
+      }
+    },
+    "BRD-K12184916": {
+      "name": "NVP-BEZ235",
+      "target": "ATR, MTOR, PIK3CA, PIK3CD, PIK3CG",
+      "smiles": "Cn1c2cnc3ccc(cc3c2n(-c2ccc(cc2)C(C)(C)C#N)c1=O)-c1cnc2ccccc2c1",
+      "n_train": 549,
+      "n_test": 142,
+      "threshold_auc": 0.3484195560144103,
+      "sensitive_train": 55,
+      "sensitive_test": 15,
+      "test_prevalence": 0.1056338028169014,
+      "underpowered": false,
+      "majority": {
+        "roc_auc": 0.5,
+        "roc_auc_ci95": [
+          0.5,
+          0.5
+        ],
+        "pr_auc": 0.1056338028169014,
+        "balanced_acc": 0.5
+      },
+      "nn1": {
+        "roc_auc": 0.45643044619422574,
+        "roc_auc_ci95": [
+          0.2900196850393701,
+          0.6250169551174525
+        ],
+        "pr_auc": 0.10109244021144524,
+        "balanced_acc": 0.4860892388451443
+      },
+      "logreg": {
+        "roc_auc": 0.6015748031496063,
+        "roc_auc_ci95": [
+          0.44746304635589706,
+          0.7658739177489177
+        ],
+        "pr_auc": 0.22873552545544204,
+        "balanced_acc": 0.5976377952755906
+      },
+      "rf": {
+        "roc_auc": 0.5244094488188976,
+        "roc_auc_ci95": [
+          0.3669378443526171,
+          0.6672123548286338
+        ],
+        "pr_auc": 0.11795286358943788,
+        "balanced_acc": 0.4622047244094488
+      },
+      "model_file": {
+        "path": "models/loop2/BRD-K12184916.joblib",
+        "kind": "rf",
+        "bytes": 1286501
+      }
+    },
+    "BRD-K30577245": {
+      "name": "docetaxel",
+      "target": "BCL2, MAP2, MAP4, MAPT, NR1I2, TUBB, TUBB1",
+      "smiles": "CC(=O)O[C@@]12CO[C@@H]1C[C@H](O)[C@]1(C)[C@@H]2[C@H](OC(=O)c2ccccc2)[C@]2(O)C[C@H](OC(=O)[C@H](O)[C@@H](NC(=O)OC(C)(C)C)c3ccccc3)C(C)=C([C@@H](O)C1=O)C2(C)C",
+      "n_train": 550,
+      "n_test": 141,
+      "threshold_auc": 0.3609399693356264,
+      "sensitive_train": 55,
+      "sensitive_test": 16,
+      "test_prevalence": 0.11347517730496454,
+      "underpowered": false,
+      "majority": {
+        "roc_auc": 0.5,
+        "roc_auc_ci95": [
+          0.5,
+          0.5
+        ],
+        "pr_auc": 0.11347517730496454,
+        "balanced_acc": 0.5
+      },
+      "nn1": {
+        "roc_auc": 0.43575,
+        "roc_auc_ci95": [
+          0.2846013708513708,
+          0.5807557471264367
+        ],
+        "pr_auc": 0.10838350601271697,
+        "balanced_acc": 0.488
+      },
+      "logreg": {
+        "roc_auc": 0.6062500000000002,
+        "roc_auc_ci95": [
+          0.46117047869016375,
+          0.7460372023809524
+        ],
+        "pr_auc": 0.14849047673923957,
+        "balanced_acc": 0.606
+      },
+      "rf": {
+        "roc_auc": 0.57825,
+        "roc_auc_ci95": [
+          0.4256059948442761,
+          0.7387640265531213
+        ],
+        "pr_auc": 0.15325217450891845,
+        "balanced_acc": 0.59075
+      },
+      "model_file": {
+        "path": "models/loop2/BRD-K30577245.joblib",
+        "kind": "rf",
+        "bytes": 1212796
+      }
+    },
+    "BRD-K03449891": {
+      "name": "foretinib",
+      "target": "FLT1, FLT4, KDR, MET",
+      "smiles": "COc1cc2c(Oc3ccc(NC(=O)C4(CC4)C(=O)Nc4ccc(F)cc4)cc3F)ccnc2cc1OCCCN1CCOCC1",
+      "n_train": 546,
+      "n_test": 143,
+      "threshold_auc": 0.665797831519878,
+      "sensitive_train": 55,
+      "sensitive_test": 16,
+      "test_prevalence": 0.11188811188811189,
+      "underpowered": false,
+      "majority": {
+        "roc_auc": 0.5,
+        "roc_auc_ci95": [
+          0.5,
+          0.5
+        ],
+        "pr_auc": 0.11188811188811189,
+        "balanced_acc": 0.5
+      },
+      "nn1": {
+        "roc_auc": 0.593503937007874,
+        "roc_auc_ci95": [
+          0.443524358974359,
+          0.7441936543020051
+        ],
+        "pr_auc": 0.24617385687063004,
+        "balanced_acc": 0.53125
+      },
+      "logreg": {
+        "roc_auc": 0.5895669291338582,
+        "roc_auc_ci95": [
+          0.43107976773713064,
+          0.7412289901511726
+        ],
+        "pr_auc": 0.15518822453643727,
+        "balanced_acc": 0.5804625984251969
+      },
+      "rf": {
+        "roc_auc": 0.5570866141732284,
+        "roc_auc_ci95": [
+          0.3996905300581771,
+          0.7192407700785232
+        ],
+        "pr_auc": 0.14650089009022255,
+        "balanced_acc": 0.47416338582677164
+      },
+      "model_file": {
+        "path": "models/loop2/BRD-K03449891.joblib",
+        "kind": "rf",
+        "bytes": 1120156
+      }
+    },
+    "BRD-K19540840": {
+      "name": "saracatinib",
+      "target": "ABL1, LCK, SRC, YES1",
+      "smiles": "CN1CCN(CCOc2cc(OC3CCOCC3)c3c(Nc4c5OCOc5ccc4Cl)ncnc3c2)CC1",
+      "n_train": 546,
+      "n_test": 143,
+      "threshold_auc": 0.7694091157006524,
+      "sensitive_train": 55,
+      "sensitive_test": 17,
+      "test_prevalence": 0.11888111888111888,
+      "underpowered": false,
+      "majority": {
+        "roc_auc": 0.5,
+        "roc_auc_ci95": [
+          0.5,
+          0.5
+        ],
+        "pr_auc": 0.11888111888111888,
+        "balanced_acc": 0.5
+      },
+      "nn1": {
+        "roc_auc": 0.5555555555555556,
+        "roc_auc_ci95": [
+          0.4060896850867516,
+          0.7131477591036416
+        ],
+        "pr_auc": 0.14935379816291852,
+        "balanced_acc": 0.49206349206349204
+      },
+      "logreg": {
+        "roc_auc": 0.40966386554621853,
+        "roc_auc_ci95": [
+          0.2652825011262585,
+          0.5685964494410567
+        ],
+        "pr_auc": 0.10533513662094907,
+        "balanced_acc": 0.4122315592903828
+      },
+      "rf": {
+        "roc_auc": 0.43487394957983194,
+        "roc_auc_ci95": [
+          0.25870222060429565,
+          0.6056620239264867
+        ],
+        "pr_auc": 0.1117827632984711,
+        "balanced_acc": 0.4456115779645191
+      },
+      "model_file": {
+        "path": "models/loop2/BRD-K19540840.joblib",
+        "kind": "rf",
+        "bytes": 1201604
+      }
+    },
+    "BRD-K39974922": {
+      "name": "lenvatinib",
+      "target": "FLT4, KDR",
+      "smiles": "COc1cc2nccc(Oc3ccc(NC(=O)NC4CC4)c(Cl)c3)c2cc1C(N)=O",
+      "n_train": 552,
+      "n_test": 137,
+      "threshold_auc": 0.7618644348787328,
+      "sensitive_train": 56,
+      "sensitive_test": 15,
+      "test_prevalence": 0.10948905109489052,
+      "underpowered": false,
+      "majority": {
+        "roc_auc": 0.5,
+        "roc_auc_ci95": [
+          0.5,
+          0.5
+        ],
+        "pr_auc": 0.10948905109489052,
+        "balanced_acc": 0.5
+      },
+      "nn1": {
+        "roc_auc": 0.4598360655737705,
+        "roc_auc_ci95": [
+          0.2891801760074108,
+          0.6257917607630213
+        ],
+        "pr_auc": 0.10899440653676216,
+        "balanced_acc": 0.5010928961748634
+      },
+      "logreg": {
+        "roc_auc": 0.4101092896174864,
+        "roc_auc_ci95": [
+          0.3030615609308142,
+          0.5392308298319327
+        ],
+        "pr_auc": 0.09491620671698481,
+        "balanced_acc": 0.394535519125683
+      },
+      "rf": {
+        "roc_auc": 0.32814207650273225,
+        "roc_auc_ci95": [
+          0.2252430501705955,
+          0.4413838250353905
+        ],
+        "pr_auc": 0.08840864989196681,
+        "balanced_acc": 0.38032786885245906
+      },
+      "model_file": {
+        "path": "models/loop2/BRD-K39974922.joblib",
+        "kind": "rf",
+        "bytes": 1232943
+      }
+    },
+    "BRD-K59317601": {
+      "name": "MLN0128",
+      "target": "MTOR, PIK3CA, PIK3CD, PIK3CG",
+      "smiles": "CC(C)n1nc(-c2ccc3oc(N)nc3c2)c2c(N)ncnc12",
+      "n_train": 548,
+      "n_test": 141,
+      "threshold_auc": 0.34870922929783393,
+      "sensitive_train": 55,
+      "sensitive_test": 12,
+      "test_prevalence": 0.0851063829787234,
+      "underpowered": false,
+      "majority": {
+        "roc_auc": 0.5,
+        "roc_auc_ci95": [
+          0.5,
+          0.5
+        ],
+        "pr_auc": 0.0851063829787234,
+        "balanced_acc": 0.5
+      },
+      "nn1": {
+        "roc_auc": 0.44089147286821695,
+        "roc_auc_ci95": [
+          0.313926014929952,
+          0.5804608585858585
+        ],
+        "pr_auc": 0.08380319861852097,
+        "balanced_acc": 0.49224806201550386
+      },
+      "logreg": {
+        "roc_auc": 0.4308785529715763,
+        "roc_auc_ci95": [
+          0.2983658633702577,
+          0.5728841901603096
+        ],
+        "pr_auc": 0.0797155789187253,
+        "balanced_acc": 0.4496124031007752
+      },
+      "rf": {
+        "roc_auc": 0.4993540051679587,
+        "roc_auc_ci95": [
+          0.3740313921659341,
+          0.6242387981311928
+        ],
+        "pr_auc": 0.08720284037445786,
+        "balanced_acc": 0.45930232558139533
+      },
+      "model_file": {
+        "path": "models/loop2/BRD-K59317601.joblib",
+        "kind": "rf",
+        "bytes": 1232915
+      }
+    },
+    "BRD-K77625799": {
+      "name": "vandetanib",
+      "target": "EGFR, EPHA1, EPHA10, EPHA2, EPHA3, EPHA4, EPHA5, EPHA6, EPHA7, EPHA8, EPHB1, EPHB2, EPHB3, EPHB4, EPHB6, ERBB2, ERBB3, ERBB4, FLT1, FLT4, KDR, PTK6, RET, SRC, TEK, VEGFA",
+      "smiles": "COc1cc2c(Nc3ccc(Br)cc3F)ncnc2cc1OCC1CCN(C)CC1",
+      "n_train": 550,
+      "n_test": 139,
+      "threshold_auc": 0.8622436421440405,
+      "sensitive_train": 55,
+      "sensitive_test": 21,
+      "test_prevalence": 0.1510791366906475,
+      "underpowered": false,
+      "majority": {
+        "roc_auc": 0.5,
+        "roc_auc_ci95": [
+          0.5,
+          0.5
+        ],
+        "pr_auc": 0.1510791366906475,
+        "balanced_acc": 0.5
+      },
+      "nn1": {
+        "roc_auc": 0.5149313962873284,
+        "roc_auc_ci95": [
+          0.40164950406392064,
+          0.6331620399802217
+        ],
+        "pr_auc": 0.16502083206870172,
+        "balanced_acc": 0.4957627118644068
+      },
+      "logreg": {
+        "roc_auc": 0.635593220338983,
+        "roc_auc_ci95": [
+          0.5088061932089909,
+          0.7710250125691301
+        ],
+        "pr_auc": 0.23023411159999002,
+        "balanced_acc": 0.5690072639225181
+      },
+      "rf": {
+        "roc_auc": 0.5887812752219532,
+        "roc_auc_ci95": [
+          0.4556784759358289,
+          0.7235552115583075
+        ],
+        "pr_auc": 0.20036281402522163,
+        "balanced_acc": 0.557909604519774
+      },
+      "model_file": {
+        "path": "models/loop2/BRD-K77625799.joblib",
+        "kind": "rf",
+        "bytes": 1187974
+      }
+    },
+    "BRD-K13390322": {
+      "name": "AT-7519",
+      "target": "CDK1, CDK2, CDK4, CDK5, CDK6, CDK9",
+      "smiles": "Clc1cccc(Cl)c1C(=O)Nc1c[nH]nc1C(=O)NC1CCNCC1",
+      "n_train": 548,
+      "n_test": 140,
+      "threshold_auc": 0.6446575469266004,
+      "sensitive_train": 55,
+      "sensitive_test": 11,
+      "test_prevalence": 0.07857142857142857,
+      "underpowered": false,
+      "majority": {
+        "roc_auc": 0.5,
+        "roc_auc_ci95": [
+          0.5,
+          0.5
+        ],
+        "pr_auc": 0.07857142857142857,
+        "balanced_acc": 0.5
+      },
+      "nn1": {
+        "roc_auc": 0.53276955602537,
+        "roc_auc_ci95": [
+          0.3925243942104408,
+          0.6433946161083773
+        ],
+        "pr_auc": 0.08977069030260519,
+        "balanced_acc": 0.4806201550387597
+      },
+      "logreg": {
+        "roc_auc": 0.49788583509513745,
+        "roc_auc_ci95": [
+          0.34101498595389573,
+          0.641821079262777
+        ],
+        "pr_auc": 0.08727018734798521,
+        "balanced_acc": 0.5884425651867513
+      },
+      "rf": {
+        "roc_auc": 0.55461592670895,
+        "roc_auc_ci95": [
+          0.4038445909656264,
+          0.7226346554092847
+        ],
+        "pr_auc": 0.09580152155238102,
+        "balanced_acc": 0.5796335447498239
+      },
+      "model_file": {
+        "path": "models/loop2/BRD-K13390322.joblib",
+        "kind": "rf",
+        "bytes": 1208829
+      }
+    },
+    "BRD-K29905972": {
+      "name": "axitinib",
+      "target": "CSF1, FLT1, FLT4, KDR, PLK4",
+      "smiles": "CNC(=O)c1ccccc1Sc1ccc2c(\\C=C\\c3ccccn3)n[nH]c2c1",
+      "n_train": 550,
+      "n_test": 137,
+      "threshold_auc": 0.798715703792947,
+      "sensitive_train": 55,
+      "sensitive_test": 18,
+      "test_prevalence": 0.13138686131386862,
+      "underpowered": false,
+      "majority": {
+        "roc_auc": 0.5,
+        "roc_auc_ci95": [
+          0.5,
+          0.5
+        ],
+        "pr_auc": 0.13138686131386862,
+        "balanced_acc": 0.5
+      },
+      "nn1": {
+        "roc_auc": 0.6300186741363211,
+        "roc_auc_ci95": [
+          0.5081639983579639,
+          0.7468891352797541
+        ],
+        "pr_auc": 0.1983314716394053,
+        "balanced_acc": 0.515172735760971
+      },
+      "logreg": {
+        "roc_auc": 0.5779645191409897,
+        "roc_auc_ci95": [
+          0.4415037080405933,
+          0.704737273747518
+        ],
+        "pr_auc": 0.16698579088613502,
+        "balanced_acc": 0.5702614379084967
+      },
+      "rf": {
+        "roc_auc": 0.6265172735760971,
+        "roc_auc_ci95": [
+          0.47611321948134094,
+          0.7483733881483627
+        ],
+        "pr_auc": 0.20246020707894496,
+        "balanced_acc": 0.6157796451914099
+      },
+      "model_file": {
+        "path": "models/loop2/BRD-K29905972.joblib",
+        "kind": "rf",
+        "bytes": 1217067
+      }
+    },
+    "BRD-K42898655": {
+      "name": "temsirolimus",
+      "target": "MTOR",
+      "smiles": "CO[C@@H]1C[C@H](C[C@@H](C)[C@@H]2CC(=O)[C@H](C)\\C=C(C)\\[C@@H](O)[C@@H](OC)C(=O)[C@H](C)C[C@H](C)\\C=C\\C=C\\C=C(C)\\[C@H](C[C@H]3CC[C@@H](C)[C@@](O)(O3)C(=O)C(=O)N3CCCC[C@H]3C(=O)O2)OC)CC[C@@H]1OC(=O)C(C)(CO)CO",
+      "n_train": 547,
+      "n_test": 140,
+      "threshold_auc": 0.42240697251659004,
+      "sensitive_train": 55,
+      "sensitive_test": 13,
+      "test_prevalence": 0.09285714285714286,
+      "underpowered": false,
+      "majority": {
+        "roc_auc": 0.5,
+        "roc_auc_ci95": [
+          0.5,
+          0.5
+        ],
+        "pr_auc": 0.09285714285714286,
+        "balanced_acc": 0.5
+      },
+      "nn1": {
+        "roc_auc": 0.582374318594791,
+        "roc_auc_ci95": [
+          0.4042220643939394,
+          0.7437926925360544
+        ],
+        "pr_auc": 0.12706774411406735,
+        "balanced_acc": 0.4881889763779528
+      },
+      "logreg": {
+        "roc_auc": 0.553603876438522,
+        "roc_auc_ci95": [
+          0.35634805830644267,
+          0.7481572959068296
+        ],
+        "pr_auc": 0.15146018674010597,
+        "balanced_acc": 0.5899454875832829
+      },
+      "rf": {
+        "roc_auc": 0.46880678376741375,
+        "roc_auc_ci95": [
+          0.2988233715103794,
+          0.6530310667155423
+        ],
+        "pr_auc": 0.1022500198011707,
+        "balanced_acc": 0.5021199273167778
+      },
+      "model_file": {
+        "path": "models/loop2/BRD-K42898655.joblib",
+        "kind": "rf",
+        "bytes": 1239822
+      }
+    },
+    "BRD-K54997624": {
+      "name": "alpelisib",
+      "target": "PIK3CA, PIK3CB, PIK3CD, PIK3CG",
+      "smiles": "Cc1nc(NC(=O)N2CCC[C@H]2C(N)=O)sc1-c1ccnc(c1)C(C)(C)C(F)(F)F",
+      "n_train": 550,
+      "n_test": 137,
+      "threshold_auc": 0.7866232218818072,
+      "sensitive_train": 55,
+      "sensitive_test": 13,
+      "test_prevalence": 0.0948905109489051,
+      "underpowered": false,
+      "majority": {
+        "roc_auc": 0.5,
+        "roc_auc_ci95": [
+          0.5,
+          0.5
+        ],
+        "pr_auc": 0.0948905109489051,
+        "balanced_acc": 0.5
+      },
+      "nn1": {
+        "roc_auc": 0.4606079404466501,
+        "roc_auc_ci95": [
+          0.2839083333333334,
+          0.6381925853018373
+        ],
+        "pr_auc": 0.1343330319479025,
+        "balanced_acc": 0.4959677419354839
+      },
+      "logreg": {
+        "roc_auc": 0.5210918114143921,
+        "roc_auc_ci95": [
+          0.38851199624316934,
+          0.6507073821339949
+        ],
+        "pr_auc": 0.09662110602676274,
+        "balanced_acc": 0.4137717121588089
+      },
+      "rf": {
+        "roc_auc": 0.45595533498759305,
+        "roc_auc_ci95": [
+          0.3112173228346457,
+          0.6150213414634146
+        ],
+        "pr_auc": 0.08548431615091878,
+        "balanced_acc": 0.46650124069478904
+      },
+      "model_file": {
+        "path": "models/loop2/BRD-K54997624.joblib",
+        "kind": "rf",
+        "bytes": 1179128
+      }
+    },
+    "BRD-K02130563": {
+      "name": "panobinostat",
+      "target": "HDAC1, HDAC2, HDAC3, HDAC4, HDAC6, HDAC7, HDAC8, HDAC9",
+      "smiles": "Cc1[nH]c2ccccc2c1CCNCc1ccc(\\C=C\\C(=O)NO)cc1",
+      "n_train": 548,
+      "n_test": 138,
+      "threshold_auc": 0.3809180468826459,
+      "sensitive_train": 55,
+      "sensitive_test": 13,
+      "test_prevalence": 0.09420289855072464,
+      "underpowered": false,
+      "majority": {
+        "roc_auc": 0.5,
+        "roc_auc_ci95": [
+          0.5,
+          0.5
+        ],
+        "pr_auc": 0.09420289855072464,
+        "balanced_acc": 0.5
+      },
+      "nn1": {
+        "roc_auc": 0.5750769230769232,
+        "roc_auc_ci95": [
+          0.4224308943089431,
+          0.7275480530753967
+        ],
+        "pr_auc": 0.12284713157504619,
+        "balanced_acc": 0.5184615384615384
+      },
+      "logreg": {
+        "roc_auc": 0.5800000000000001,
+        "roc_auc_ci95": [
+          0.43579050522648083,
+          0.7356563346883469
+        ],
+        "pr_auc": 0.18259889689170694,
+        "balanced_acc": 0.5636923076923077
+      },
+      "rf": {
+        "roc_auc": 0.5640000000000001,
+        "roc_auc_ci95": [
+          0.4343617788461538,
+          0.7095115043460343
+        ],
+        "pr_auc": 0.1393916940069962,
+        "balanced_acc": 0.5372307692307692
+      },
+      "model_file": {
+        "path": "models/loop2/BRD-K02130563.joblib",
+        "kind": "rf",
+        "bytes": 1235245
+      }
+    },
+    "BRD-K31928526": {
+      "name": "barasertib",
+      "target": "AURKA, AURKB",
+      "smiles": "CCN(CCCOc1ccc2c(Nc3cc(CC(=O)Nc4cccc(F)c4)[nH]n3)ncnc2c1)CCOP(O)(O)=O",
+      "n_train": 548,
+      "n_test": 138,
+      "threshold_auc": 0.6918937910576664,
+      "sensitive_train": 55,
+      "sensitive_test": 17,
+      "test_prevalence": 0.12318840579710146,
+      "underpowered": false,
+      "majority": {
+        "roc_auc": 0.5,
+        "roc_auc_ci95": [
+          0.5,
+          0.5
+        ],
+        "pr_auc": 0.12318840579710146,
+        "balanced_acc": 0.5
+      },
+      "nn1": {
+        "roc_auc": 0.5311132717549829,
+        "roc_auc_ci95": [
+          0.42869116362529697,
+          0.6219542456454918
+        ],
+        "pr_auc": 0.1455580895459788,
+        "balanced_acc": 0.4669421487603306
+      },
+      "logreg": {
+        "roc_auc": 0.5828877005347594,
+        "roc_auc_ci95": [
+          0.4694770239847449,
+          0.6892739055299539
+        ],
+        "pr_auc": 0.15660633647912664,
+        "balanced_acc": 0.6266407389402042
+      },
+      "rf": {
+        "roc_auc": 0.5967428293631503,
+        "roc_auc_ci95": [
+          0.48070708724764183,
+          0.704719502048131
+        ],
+        "pr_auc": 0.16121295097498678,
+        "balanced_acc": 0.6560525036460865
+      },
+      "model_file": {
+        "path": "models/loop2/BRD-K31928526.joblib",
+        "kind": "rf",
+        "bytes": 1193452
+      }
+    },
+    "BRD-K53414658": {
+      "name": "tivozanib",
+      "target": "FLT1, FLT4, KDR, KIT, PDGFRA, PDGFRB",
+      "smiles": "COc1cc2nccc(Oc3ccc(NC(=O)Nc4cc(C)on4)c(Cl)c3)c2cc1OC",
+      "n_train": 548,
+      "n_test": 138,
+      "threshold_auc": 0.7959056144166266,
+      "sensitive_train": 55,
+      "sensitive_test": 12,
+      "test_prevalence": 0.08695652173913043,
+      "underpowered": false,
+      "majority": {
+        "roc_auc": 0.5,
+        "roc_auc_ci95": [
+          0.5,
+          0.5
+        ],
+        "pr_auc": 0.08695652173913043,
+        "balanced_acc": 0.5
+      },
+      "nn1": {
+        "roc_auc": 0.5985449735449735,
+        "roc_auc_ci95": [
+          0.4633417743324721,
+          0.720489476075106
+        ],
+        "pr_auc": 0.1108008881818548,
+        "balanced_acc": 0.49603174603174605
+      },
+      "logreg": {
+        "roc_auc": 0.7923280423280423,
+        "roc_auc_ci95": [
+          0.6713824074074074,
+          0.8931962563811685
+        ],
+        "pr_auc": 0.24155655852084423,
+        "balanced_acc": 0.6845238095238095
+      },
+      "rf": {
+        "roc_auc": 0.664021164021164,
+        "roc_auc_ci95": [
+          0.49439711290001986,
+          0.8121057137548994
+        ],
+        "pr_auc": 0.14980899442075413,
+        "balanced_acc": 0.6051587301587301
+      },
+      "model_file": {
+        "path": "models/loop2/BRD-K53414658.joblib",
+        "kind": "rf",
+        "bytes": 1156530
+      }
+    },
+    "BRD-K57080016": {
+      "name": "selumetinib",
+      "target": "MAP2K1",
+      "smiles": "Cn1cnc2c(F)c(Nc3ccc(Br)cc3Cl)c(cc12)C(=O)NOCCO",
+      "n_train": 549,
+      "n_test": 137,
+      "threshold_auc": 0.6561882289496517,
+      "sensitive_train": 55,
+      "sensitive_test": 6,
+      "test_prevalence": 0.043795620437956206,
+      "underpowered": false,
+      "majority": {
+        "roc_auc": 0.5,
+        "roc_auc_ci95": [
+          0.5,
+          0.5
+        ],
+        "pr_auc": 0.043795620437956206,
+        "balanced_acc": 0.5
+      },
+      "nn1": {
+        "roc_auc": 0.4669211195928753,
+        "roc_auc_ci95": [
+          0.23019097950395662,
+          0.724290145549988
+        ],
+        "pr_auc": 0.05343346621655002,
+        "balanced_acc": 0.4732824427480916
+      },
+      "logreg": {
+        "roc_auc": 0.8600508905852418,
+        "roc_auc_ci95": [
+          0.7098749277038751,
+          0.9657344859544695
+        ],
+        "pr_auc": 0.22531833781833782,
+        "balanced_acc": 0.7798982188295165
+      },
+      "rf": {
+        "roc_auc": 0.6221374045801527,
+        "roc_auc_ci95": [
+          0.32351835471030516,
+          0.8966240227434257
+        ],
+        "pr_auc": 0.0980547196780273,
+        "balanced_acc": 0.6208651399491094
+      },
+      "model_file": {
+        "path": "models/loop2/BRD-K57080016.joblib",
+        "kind": "rf",
+        "bytes": 1226754
+      }
+    },
+    "BRD-K87737963": {
+      "name": "cyt387",
+      "target": "JAK1, JAK2, JAK3",
+      "smiles": "O=C(NCC#N)c1ccc(cc1)-c1ccnc(Nc2ccc(cc2)N2CCOCC2)n1",
+      "n_train": 548,
+      "n_test": 138,
+      "threshold_auc": 0.7800258079217907,
+      "sensitive_train": 55,
+      "sensitive_test": 18,
+      "test_prevalence": 0.13043478260869565,
+      "underpowered": false,
+      "majority": {
+        "roc_auc": 0.5,
+        "roc_auc_ci95": [
+          0.5,
+          0.5
+        ],
+        "pr_auc": 0.13043478260869565,
+        "balanced_acc": 0.5
+      },
+      "nn1": {
+        "roc_auc": 0.5087962962962962,
+        "roc_auc_ci95": [
+          0.36479299690854194,
+          0.6403816598360654
+        ],
+        "pr_auc": 0.1430468720354897,
+        "balanced_acc": 0.4875
+      },
+      "logreg": {
+        "roc_auc": 0.48333333333333334,
+        "roc_auc_ci95": [
+          0.34931413374301307,
+          0.6125880528251078
+        ],
+        "pr_auc": 0.1257133407832532,
+        "balanced_acc": 0.4361111111111111
+      },
+      "rf": {
+        "roc_auc": 0.4180555555555555,
+        "roc_auc_ci95": [
+          0.2857908285440613,
+          0.5571479055533871
+        ],
+        "pr_auc": 0.1145163711357841,
+        "balanced_acc": 0.44999999999999996
+      },
+      "model_file": {
+        "path": "models/loop2/BRD-K87737963.joblib",
+        "kind": "rf",
+        "bytes": 1181255
+      }
+    },
+    "BRD-K88510285": {
+      "name": "bortezomib",
+      "target": "PSMA1, PSMA2, PSMA3, PSMA4, PSMA5, PSMA6, PSMA7, PSMA8, PSMB1, PSMB10, PSMB11, PSMB2, PSMB3, PSMB4, PSMB5, PSMB6, PSMB7, PSMB8, PSMB9, PSMD1, PSMD2, RELA",
+      "smiles": "CC(C)C[C@H](NC(=O)[C@H](Cc1ccccc1)NC(=O)c1cnccn1)B(O)O",
+      "n_train": 546,
+      "n_test": 140,
+      "threshold_auc": 0.382480715481322,
+      "sensitive_train": 55,
+      "sensitive_test": 8,
+      "test_prevalence": 0.05714285714285714,
+      "underpowered": false,
+      "majority": {
+        "roc_auc": 0.5,
+        "roc_auc_ci95": [
+          0.5,
+          0.5
+        ],
+        "pr_auc": 0.05714285714285714,
+        "balanced_acc": 0.5
+      },
+      "nn1": {
+        "roc_auc": 0.45359848484848475,
+        "roc_auc_ci95": [
+          0.1814966832504146,
+          0.7379941128721477
+        ],
+        "pr_auc": 0.10999184054038075,
+        "balanced_acc": 0.4943181818181818
+      },
+      "logreg": {
+        "roc_auc": 0.45407196969696967,
+        "roc_auc_ci95": [
+          0.22121100700875182,
+          0.6915790989903424
+        ],
+        "pr_auc": 0.06429631961561819,
+        "balanced_acc": 0.5
+      },
+      "rf": {
+        "roc_auc": 0.6055871212121212,
+        "roc_auc_ci95": [
+          0.35284005649043243,
+          0.8234210693690638
+        ],
+        "pr_auc": 0.08763400751547304,
+        "balanced_acc": 0.571969696969697
+      },
+      "model_file": {
+        "path": "models/loop2/BRD-K88510285.joblib",
+        "kind": "rf",
+        "bytes": 1289685
+      }
+    },
+    "BRD-K33379087": {
+      "name": "tivantinib",
+      "target": "MET",
+      "smiles": "O=C1NC(=O)[C@H]([C@@H]1c1c[nH]c2ccccc12)c1cn2CCCc3cccc1c23",
+      "n_train": 544,
+      "n_test": 141,
+      "threshold_auc": 0.707664472854739,
+      "sensitive_train": 55,
+      "sensitive_test": 7,
+      "test_prevalence": 0.04964539007092199,
+      "underpowered": false,
+      "majority": {
+        "roc_auc": 0.5,
+        "roc_auc_ci95": [
+          0.5,
+          0.5
+        ],
+        "pr_auc": 0.04964539007092199,
+        "balanced_acc": 0.5
+      },
+      "nn1": {
+        "roc_auc": 0.47068230277185497,
+        "roc_auc_ci95": [
+          0.2602574143692565,
+          0.6531617647058822
+        ],
+        "pr_auc": 0.04816096208661157,
+        "balanced_acc": 0.48880597014925375
+      },
+      "logreg": {
+        "roc_auc": 0.43496801705756927,
+        "roc_auc_ci95": [
+          0.19602888720368497,
+          0.6971140848878076
+        ],
+        "pr_auc": 0.06169358740737324,
+        "balanced_acc": 0.4115138592750533
+      },
+      "rf": {
+        "roc_auc": 0.4093816631130064,
+        "roc_auc_ci95": [
+          0.2621002132196162,
+          0.568791261944247
+        ],
+        "pr_auc": 0.042199930402154404,
+        "balanced_acc": 0.412046908315565
+      },
+      "model_file": {
+        "path": "models/loop2/BRD-K33379087.joblib",
+        "kind": "rf",
+        "bytes": 1198452
+      }
+    },
+    "BRD-K87782578": {
+      "name": "AVL-292",
+      "target": "BTK, YES1",
+      "smiles": "COCCOc1ccc(Nc2ncc(F)c(Nc3cccc(NC(=O)C=C)c3)n2)cc1",
+      "n_train": 543,
+      "n_test": 142,
+      "threshold_auc": 0.8202400763884301,
+      "sensitive_train": 55,
+      "sensitive_test": 14,
+      "test_prevalence": 0.09859154929577464,
+      "underpowered": false,
+      "majority": {
+        "roc_auc": 0.5,
+        "roc_auc_ci95": [
+          0.5,
+          0.5
+        ],
+        "pr_auc": 0.09859154929577464,
+        "balanced_acc": 0.5
+      },
+      "nn1": {
+        "roc_auc": 0.3663504464285714,
+        "roc_auc_ci95": [
+          0.23981626157407412,
+          0.5109966754151165
+        ],
+        "pr_auc": 0.08469806623636222,
+        "balanced_acc": 0.47265625
+      },
+      "logreg": {
+        "roc_auc": 0.5463169642857143,
+        "roc_auc_ci95": [
+          0.40679881966991344,
+          0.680745777446597
+        ],
+        "pr_auc": 0.11194177012095731,
+        "balanced_acc": 0.5061383928571428
+      },
+      "rf": {
+        "roc_auc": 0.56640625,
+        "roc_auc_ci95": [
+          0.4315145732130465,
+          0.7021518467852257
+        ],
+        "pr_auc": 0.11668679060275607,
+        "balanced_acc": 0.5513392857142857
+      },
+      "model_file": {
+        "path": "models/loop2/BRD-K87782578.joblib",
+        "kind": "rf",
+        "bytes": 1196182
+      }
+    },
+    "BRD-K15600710": {
+      "name": "obatoclax",
+      "target": "BCL2",
+      "smiles": "COC1=CC(=N\\C\\1=C/c1[nH]c(C)cc1C)c1cc2ccccc2[nH]1",
+      "n_train": 543,
+      "n_test": 141,
+      "threshold_auc": 0.5586821555956398,
+      "sensitive_train": 55,
+      "sensitive_test": 8,
+      "test_prevalence": 0.05673758865248227,
+      "underpowered": false,
+      "majority": {
+        "roc_auc": 0.5,
+        "roc_auc_ci95": [
+          0.5,
+          0.5
+        ],
+        "pr_auc": 0.05673758865248227,
+        "balanced_acc": 0.5
+      },
+      "nn1": {
+        "roc_auc": 0.487781954887218,
+        "roc_auc_ci95": [
+          0.33491479543637814,
+          0.5884722222222223
+        ],
+        "pr_auc": 0.06816236134891684,
+        "balanced_acc": 0.4849624060150376
+      },
+      "logreg": {
+        "roc_auc": 0.5977443609022557,
+        "roc_auc_ci95": [
+          0.48117660880141533,
+          0.7087632670691881
+        ],
+        "pr_auc": 0.07343092231151932,
+        "balanced_acc": 0.5169172932330828
+      },
+      "rf": {
+        "roc_auc": 0.6212406015037595,
+        "roc_auc_ci95": [
+          0.49778263357581837,
+          0.7411803698752227
+        ],
+        "pr_auc": 0.076747311827957,
+        "balanced_acc": 0.5831766917293233
+      },
+      "model_file": {
+        "path": "models/loop2/BRD-K15600710.joblib",
+        "kind": "rf",
+        "bytes": 1202258
+      }
+    },
+    "BRD-K69001009": {
+      "name": "golvatinib",
+      "target": "KDR, MET",
+      "smiles": "CN1CCN(CC1)C1CCN(CC1)C(=O)Nc1cc(Oc2ccc(NC(=O)C3(CC3)C(=O)Nc3ccc(F)cc3)c(F)c2)ccn1",
+      "n_train": 544,
+      "n_test": 140,
+      "threshold_auc": 0.7870981876251644,
+      "sensitive_train": 55,
+      "sensitive_test": 14,
+      "test_prevalence": 0.1,
+      "underpowered": false,
+      "majority": {
+        "roc_auc": 0.5,
+        "roc_auc_ci95": [
+          0.5,
+          0.5
+        ],
+        "pr_auc": 0.1,
+        "balanced_acc": 0.5
+      },
+      "nn1": {
+        "roc_auc": 0.48270975056689347,
+        "roc_auc_ci95": [
+          0.3637102947845805,
+          0.6111181115591399
+        ],
+        "pr_auc": 0.09570107202317982,
+        "balanced_acc": 0.5079365079365079
+      },
+      "logreg": {
+        "roc_auc": 0.43934240362811794,
+        "roc_auc_ci95": [
+          0.2977898888221154,
+          0.586554943224109
+        ],
+        "pr_auc": 0.09132020774642631,
+        "balanced_acc": 0.46825396825396826
+      },
+      "rf": {
+        "roc_auc": 0.5708616780045351,
+        "roc_auc_ci95": [
+          0.4098003965435606,
+          0.7295984360665384
+        ],
+        "pr_auc": 0.1445963534271682,
+        "balanced_acc": 0.5555555555555556
+      },
+      "model_file": {
+        "path": "models/loop2/BRD-K69001009.joblib",
+        "kind": "rf",
+        "bytes": 1240825
+      }
+    },
+    "BRD-K60997853": {
+      "name": "PHA-848125",
+      "target": "CDK2, CDK4, CDK7, NTRK1",
+      "smiles": "CNC(=O)c1nn(C)c-2c1C(C)(C)Cc1cnc(Nc3ccc(cc3)N3CCN(C)CC3)nc-21",
+      "n_train": 540,
+      "n_test": 143,
+      "threshold_auc": 0.641538691057387,
+      "sensitive_train": 54,
+      "sensitive_test": 17,
+      "test_prevalence": 0.11888111888111888,
+      "underpowered": false,
+      "majority": {
+        "roc_auc": 0.5,
+        "roc_auc_ci95": [
+          0.5,
+          0.5
+        ],
+        "pr_auc": 0.11888111888111888,
+        "balanced_acc": 0.5
+      },
+      "nn1": {
+        "roc_auc": 0.6174136321195145,
+        "roc_auc_ci95": [
+          0.5112696781015037,
+          0.7281752122711129
+        ],
+        "pr_auc": 0.18613056239831088,
+        "balanced_acc": 0.5175070028011204
+      },
+      "logreg": {
+        "roc_auc": 0.550186741363212,
+        "roc_auc_ci95": [
+          0.43636015625,
+          0.6740404194222068
+        ],
+        "pr_auc": 0.1418373514852527,
+        "balanced_acc": 0.5639589169000934
+      },
+      "rf": {
+        "roc_auc": 0.6991129785247432,
+        "roc_auc_ci95": [
+          0.5829979734492481,
+          0.8026650078041281
+        ],
+        "pr_auc": 0.2047473865167186,
+        "balanced_acc": 0.6409897292250233
+      },
+      "model_file": {
+        "path": "models/loop2/BRD-K60997853.joblib",
+        "kind": "rf",
+        "bytes": 1179314
+      }
+    },
+    "BRD-K89014967": {
+      "name": "AS-703026",
+      "target": "MAP2K1, MAP2K2",
+      "smiles": "OC[C@@H](O)CNC(=O)c1ccncc1Nc1ccc(I)cc1F",
+      "n_train": 541,
+      "n_test": 142,
+      "threshold_auc": 0.460121772853189,
+      "sensitive_train": 54,
+      "sensitive_test": 9,
+      "test_prevalence": 0.06338028169014084,
+      "underpowered": false,
+      "majority": {
+        "roc_auc": 0.5,
+        "roc_auc_ci95": [
+          0.5,
+          0.5
+        ],
+        "pr_auc": 0.06338028169014084,
+        "balanced_acc": 0.5
+      },
+      "nn1": {
+        "roc_auc": 0.6232247284878866,
+        "roc_auc_ci95": [
+          0.38776995713127094,
+          0.8107188644688644
+        ],
+        "pr_auc": 0.11481587422662938,
+        "balanced_acc": 0.5329991645781119
+      },
+      "logreg": {
+        "roc_auc": 0.6495405179615705,
+        "roc_auc_ci95": [
+          0.4168185975888627,
+          0.8413147375738615
+        ],
+        "pr_auc": 0.15183287621248684,
+        "balanced_acc": 0.5772765246449456
+      },
+      "rf": {
+        "roc_auc": 0.5885547201336675,
+        "roc_auc_ci95": [
+          0.35443054107287686,
+          0.797591401544907
+        ],
+        "pr_auc": 0.11070348014009984,
+        "balanced_acc": 0.6290726817042607
+      },
+      "model_file": {
+        "path": "models/loop2/BRD-K89014967.joblib",
+        "kind": "rf",
+        "bytes": 1113522
+      }
+    },
+    "BRD-K70301465": {
+      "name": "ibrutinib",
+      "target": "BLK, BMX, BTK",
+      "smiles": "Nc1ncnc2n(nc(-c3ccc(Oc4ccccc4)cc3)c12)[C@@H]1CCCN(C1)C(=O)C=C",
+      "n_train": 545,
+      "n_test": 136,
+      "threshold_auc": 0.6764663979971286,
+      "sensitive_train": 55,
+      "sensitive_test": 5,
+      "test_prevalence": 0.03676470588235294,
+      "underpowered": false,
+      "majority": {
+        "roc_auc": 0.5,
+        "roc_auc_ci95": [
+          0.5,
+          0.5
+        ],
+        "pr_auc": 0.03676470588235294,
+        "balanced_acc": 0.5
+      },
+      "nn1": {
+        "roc_auc": 0.2603053435114504,
+        "roc_auc_ci95": [
+          0.04049072817729536,
+          0.5231796829125073
+        ],
+        "pr_auc": 0.027273091471874435,
+        "balanced_acc": 0.4847328244274809
+      },
+      "logreg": {
+        "roc_auc": 0.36106870229007637,
+        "roc_auc_ci95": [
+          0.16519423558897242,
+          0.5659368113982371
+        ],
+        "pr_auc": 0.03096889164376626,
+        "balanced_acc": 0.32137404580152673
+      },
+      "rf": {
+        "roc_auc": 0.2862595419847328,
+        "roc_auc_ci95": [
+          0.04444962686567164,
+          0.5214451408165626
+        ],
+        "pr_auc": 0.028021072065189712,
+        "balanced_acc": 0.483206106870229
+      },
+      "model_file": {
+        "path": "models/loop2/BRD-K70301465.joblib",
+        "kind": "rf",
+        "bytes": 1193740
+      }
+    }
+  },
+  "protocol": "docs/evaluation-loop2.md",
+  "lr_params": {
+    "C": 1.0,
+    "class_weight": "balanced",
+    "max_iter": 1000
+  },
+  "rf_params": {
+    "n_estimators": 300,
+    "class_weight": "balanced",
+    "random_state": 0,
+    "n_jobs": -1
+  },
+  "n_boot": 1000,
+  "sensitive_percentile": 10,
+  "underpowered_below": 5,
+  "oncology_list": [
+    "EGFR",
+    "BRAF",
+    "ERBB2",
+    "CDK4",
+    "CDK6",
+    "ALK",
+    "ABL1",
+    "PARP1",
+    "BCL2",
+    "MAP2K1",
+    "MAP2K2",
+    "MTOR",
+    "PIK3CA",
+    "KIT",
+    "FLT3",
+    "BTK",
+    "JAK1",
+    "JAK2",
+    "AURKA",
+    "AURKB",
+    "PLK1",
+    "TOP1",
+    "TOP2A",
+    "TUBB",
+    "HDAC1",
+    "PSMB5",
+    "MDM2",
+    "BCL2L1",
+    "KDR",
+    "MET",
+    "RET",
+    "FGFR1"
+  ],
+  "shipped_model": "rf",
+  "rf_wins": 32,
+  "powered_drugs": 60,
+  "selection": {
+    "candidates": 1173,
+    "oncology_matches": 361,
+    "selected": 60,
+    "compounds": [
+      "BRD-K99113996",
+      "BRD-K42805893",
+      "BRD-K44227013",
+      "BRD-K12343256",
+      "BRD-K13514097",
+      "BRD-K59369769",
+      "BRD-K08799216",
+      "BRD-K33622447",
+      "BRD-K50168500",
+      "BRD-K38527262",
+      "BRD-K50010139",
+      "BRD-K56981171",
+      "BRD-K81418486",
+      "BRD-K23984367",
+      "BRD-K44408410",
+      "BRD-K17743125",
+      "BRD-K43389675",
+      "BRD-K33610132",
+      "BRD-K51313569",
+      "BRD-K69776681",
+      "BRD-K82746043",
+      "BRD-K85402309",
+      "BRD-K18961567",
+      "BRD-K28822270",
+      "BRD-K70401845",
+      "BRD-K23228615",
+      "BRD-K03765900",
+      "BRD-K08542803",
+      "BRD-K15179879",
+      "BRD-K51791723",
+      "BRD-K57169635",
+      "BRD-K16730910",
+      "BRD-K76239644",
+      "BRD-K08547377",
+      "BRD-K62008436",
+      "BRD-K10362825",
+      "BRD-K12184916",
+      "BRD-K30577245",
+      "BRD-K03449891",
+      "BRD-K19540840",
+      "BRD-K39974922",
+      "BRD-K59317601",
+      "BRD-K77625799",
+      "BRD-K13390322",
+      "BRD-K29905972",
+      "BRD-K42898655",
+      "BRD-K54997624",
+      "BRD-K02130563",
+      "BRD-K31928526",
+      "BRD-K53414658",
+      "BRD-K57080016",
+      "BRD-K87737963",
+      "BRD-K88510285",
+      "BRD-K33379087",
+      "BRD-K87782578",
+      "BRD-K15600710",
+      "BRD-K69001009",
+      "BRD-K60997853",
+      "BRD-K89014967",
+      "BRD-K70301465"
+    ]
+  },
+  "split": {
+    "test_frac": 0.2,
+    "seed": 0,
+    "n_lines": 726,
+    "n_lineages": 24,
+    "n_train_lines": 580,
+    "n_test_lines": 146,
+    "train_lineages": {
+      "Lung": 119,
+      "Lymphoid": 63,
+      "CNS/Brain": 56,
+      "Esophagus/Stomach": 52,
+      "Skin": 44,
+      "Bowel": 38,
+      "Ovary/Fallopian Tube": 36,
+      "Pancreas": 36,
+      "Myeloid": 33,
+      "Breast": 30,
+      "Head and Neck": 29,
+      "Uterus": 27,
+      "Peripheral Nervous System": 13,
+      "Prostate": 4
+    },
+    "test_lineages": {
+      "Bone": 26,
+      "Bladder/Urinary Tract": 24,
+      "Kidney": 24,
+      "Soft Tissue": 23,
+      "Liver": 21,
+      "Pleura": 10,
+      "Thyroid": 9,
+      "Biliary Tract": 6,
+      "Ampulla of Vater": 2,
+      "Fibroblast": 1
+    }
+  },
+  "summary": {
+    "powered": 60,
+    "underpowered": 0,
+    "beat_nn1": 40,
+    "below_half": 16,
+    "ci_includes_half": 52,
+    "median_roc_auc": 0.5623452194357366,
+    "median_logreg": 0.5492403523089027,
+    "median_rf": 0.5623452194357366,
+    "median_nn1": 0.5071873436854353,
+    "median_roc_auc_all": 0.5623452194357366,
+    "max_roc_auc": 0.7381840796019901,
+    "max_drug": "trametinib",
+    "model_bytes": 73143794
+  }
+}

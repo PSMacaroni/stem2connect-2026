@@ -1,12 +1,11 @@
 """Small pure chemistry helpers built on RDKit."""
 
-import random
-from collections import defaultdict
-
 import numpy as np
 from rdkit import Chem, RDLogger
 from rdkit.Chem import rdFingerprintGenerator
 from rdkit.Chem.Scaffolds import MurckoScaffold
+
+from molscreen.split import group_split
 
 RDLogger.DisableLog("rdApp.*")  # invalid SMILES are expected input; we return None instead of printing
 
@@ -48,15 +47,4 @@ def scaffold_split(smiles_list: list[str], test_frac: float = 0.2, seed: int = 0
     Scaffold groups go to train largest first while they fit under (1 - test_frac) of the data;
     groups that do not fit go to test. `seed` only breaks ties between groups of equal size.
     """
-    groups = defaultdict(list)
-    for i, s in enumerate(smiles_list):
-        groups[murcko_scaffold(s)].append(i)
-    sets = list(groups.values())
-    random.Random(seed).shuffle(sets)
-    sets.sort(key=len, reverse=True)  # stable, so equal-size groups keep the seeded order
-
-    train_cutoff = (1 - test_frac) * len(smiles_list)
-    train, test = [], []
-    for idx in sets:
-        (train if len(train) + len(idx) <= train_cutoff else test).extend(idx)
-    return sorted(train), sorted(test)
+    return group_split([murcko_scaffold(s) for s in smiles_list], test_frac, seed)
