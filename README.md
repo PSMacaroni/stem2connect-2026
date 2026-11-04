@@ -1,7 +1,7 @@
-# [Project name]
+# Molecule Screening Workbench
 
 Entry for the [STEM2Connect AI Hackathon 2026](https://stem2connect-online-hackathon.devpost.com/).
-Primary track: [Education / Healthcare / Sustainability / Scientific Research / Community Impact]
+Primary track: Scientific Research
 
 > Template. Fill each section in before submitting. Devpost requires this README to say what the project does,
 > how to run it, and which AI tools or services it uses. The submission deadline is Nov 21, 2026, 11:59 PM EST.
@@ -101,9 +101,9 @@ an active-class PR-AUC that looked high only because most molecules are active, 
 the table. Those findings led to the wild-type-only and salt-stripping amendments in `docs/evaluation.md`. The
 owner, Prakhar Suryansh, chose the project, the data sources, the metrics and the cut-offs, and made every decision
 in the Decisions table of `PLAN.md` after seeing the evidence for it. Before anything was merged, the manager
-session re-ran the tests and the reproduction of the reported numbers. Every non-merge commit carries a
-Co-Authored-By line naming a Claude model: Claude Sonnet 5.5 on the first two setup commits, Claude Opus 5.5 on the
-loop-3 and model-bundle commits, and Claude Fable 5.1 on the rest. No AI tool decided what this project claims: the
+session re-ran the tests and the reproduction of the reported numbers.
+Commits carry Co-Authored-By trailers. The two setup commits (88889f6, bd5723a) name Claude Sonnet 5.5. Commits up to the loop-2 and app work name Claude Fable 5.1 although the subagents that wrote them ran on Claude Opus 5.5: the manager's briefs specified the manager's own attribution line by mistake, noticed during this README review; from the loop-3 work on, commits name Claude Opus 5.5. Git history was not rewritten.
+No AI tool decided what this project claims: the
 wording rules (a research and learning tool, not medical advice; cell lines, not patients) are the owner's, in
 `PLAN.md`.
 

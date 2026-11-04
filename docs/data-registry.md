@@ -292,6 +292,7 @@ Install with `uv add <name>==<version>`. Sizes are not tracked (installed packag
 | LightGBM | `lightgbm==4.7.0` | 2026-07-18 | MIT, https://github.com/lightgbm-org/LightGBM/blob/main/LICENSE (github.com/microsoft/LightGBM now redirects to lightgbm-org) | Yes | Ke et al., NeurIPS 2017 | per-target activity models |
 | Streamlit | `streamlit==1.66.1` | 2026-10-21 | Apache-2.0, https://github.com/streamlit/streamlit/blob/develop/LICENSE | Yes | https://streamlit.io | the app |
 | pandas | `pandas==3.1.0` | 2026-10-22 | BSD-3-Clause, https://github.com/pandas-dev/pandas/blob/main/LICENSE | Yes | https://pandas.pydata.org | tables |
+| joblib | `joblib==1.6.0` | 2026-08-31 | BSD-3-Clause, https://github.com/joblib/joblib/blob/main/LICENSE.txt (page opens, checked 2026-11-04; PyPI `license_expression` BSD-3-Clause) | Yes | https://joblib.readthedocs.io | saving and loading the trained models |
 | numpy | `numpy==2.5.4` | 2026-10-10 | BSD-3-Clause (bundled parts: 0BSD, MIT, Zlib, CC0-1.0), https://github.com/numpy/numpy/blob/main/LICENSE.txt | Yes | Harris et al., Nature 585, 2020 | arrays |
 | pytest | `pytest==9.2.0` | 2026-10-27 | MIT, https://github.com/pytest-dev/pytest/blob/main/LICENSE | Yes | https://pytest.org | tests (dev only) |
 | ruff | `ruff==0.17.3` | 2026-10-27 | MIT, https://github.com/astral-sh/ruff/blob/main/LICENSE | Yes | https://docs.astral.sh/ruff | lint (dev only) |
@@ -372,13 +373,17 @@ Paste into the README under "Credits" (trim the list to what the shipped code ac
   molecular machine learning. Chem. Sci. 2018;9:513-530. doi:10.1039/C7SC02664A. Huang R, et al. Tox21Challenge to
   build predictive models of nuclear receptor and stress response pathways as mediated by exposure to environmental
   chemicals and drugs. Front. Environ. Sci. 2016;3:85. doi:10.3389/fenvs.2015.00085
-- **Genomics of Drug Sensitivity in Cancer (GDSC1, GDSC2)**, Wellcome Sanger Institute, downloaded from the Cell Model
-  Passports and used under the Sanger DepMap Data Usage Policy
-  (https://depmap.sanger.ac.uk/documentation/data-usage-policy/) for non-commercial educational use. Not
-  redistributed here. Yang W, et al. Nucleic Acids Res. 2013;41(D1):D955-D961. doi:10.1093/nar/gks1111.
-  Iorio F, et al. Cell 2016;166(3):740-754. doi:10.1016/j.cell.2016.06.017
-- **Cell Model Passports** (cell-line mutations and annotations), Wellcome Sanger Institute, same Data Usage Policy.
-  Not redistributed here. van der Meer D, et al. Nucleic Acids Res. 2019;47(D1):D923-D929. doi:10.1093/nar/gky872
+- **DepMap 24Q4 Public** (hotspot mutations, cell-line annotations, compound map), Broad Institute. Figshare+,
+  doi:10.25452/figshare.plus.27993248. CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/).
+- **PRISM Repurposing 20Q2** (secondary-screen dose-response), Broad Institute; DepMap, Corsello S, Kocak M, Golub T.
+  figshare, doi:10.6084/m9.figshare.20564034. CC BY 4.0. Corsello SM, Nagari RT, Spangler RD, et al. Discovering
+  the anticancer potential of non-oncology drugs by systematic viability profiling. *Nat Cancer.*
+  2020;1(2):235-248. doi:10.1038/s43018-019-0018-6
+- Tsherniak A, Vazquez F, Montgomery PG, et al. Defining a Cancer Dependency Map. *Cell.* 2017;170(3):564-576.e16.
+  doi:10.1016/j.cell.2017.06.010
+- Mutation data: Ghandi M, Huang FW, Jané-Valbuena J, et al. Next-generation characterization of the Cancer Cell
+  Line Encyclopedia. *Nature.* 2019;569(7757):503-508. doi:10.1038/s41586-019-1186-3
+- Not used: Sanger GDSC and Cell Model Passports (non-transferable policy; see Blockers 2), so no credit line.
 
 ### Models
 - **ChemBERTa-100M-MLM** (DeepChem, MIT), https://huggingface.co/DeepChem/ChemBERTa-100M-MLM. Ahmad W, et al.
@@ -388,6 +393,6 @@ Paste into the README under "Credits" (trim the list to what the shipped code ac
 
 ### Libraries
 RDKit (BSD-3-Clause), scikit-learn (BSD-3-Clause), LightGBM (MIT), Streamlit (Apache-2.0), pandas (BSD-3-Clause),
-NumPy (BSD-3-Clause), PyTorch (BSD-3-Clause), Hugging Face Transformers (Apache-2.0), chembl_webresource_client
+NumPy (BSD-3-Clause), joblib (BSD-3-Clause), PyTorch (BSD-3-Clause), Hugging Face Transformers (Apache-2.0), chembl_webresource_client
 (Apache-2.0), pytest (MIT), ruff (MIT), uv (MIT or Apache-2.0).
 ```

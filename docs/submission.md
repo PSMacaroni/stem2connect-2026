@@ -7,7 +7,7 @@ Draft written 2026-11-04. Before pasting: update "What it does" when the cell-li
 links, and re-run the numbers pass against the results files (a re-run changes them).
 
 ## Project name
-Molecule Screening Workbench (working name)
+Molecule Screening Workbench
 
 ## Track (one primary)
 Scientific Research
@@ -79,8 +79,7 @@ changed the protocol (mutant-protein assays pooled with wild-type ones, salts co
 inflated metric, a missing metric); those led to the wild-type-only and salt-stripping amendments. Prakhar Suryansh
 chose the project, the data sources, the metrics and the cut-offs, and made every decision in the plan's decisions
 table after seeing the evidence. The manager session re-ran the tests and the reproduction of the reported numbers
-before every merge. Every non-merge commit carries a Co-Authored-By line naming the Claude model involved (Claude Sonnet 5.5,
-Claude Fable 5.1 or Claude Opus 5.5).
+before every merge. Commits carry Co-Authored-By trailers. The two setup commits (88889f6, bd5723a) name Claude Sonnet 5.5. Commits up to the loop-2 and app work name Claude Fable 5.1 although the subagents that wrote them ran on Claude Opus 5.5: the manager's briefs specified the manager's own attribution line by mistake, noticed during this README review; from the loop-3 work on, commits name Claude Opus 5.5. Git history was not rewritten.
 
 ## What we learned
 - A high score can come from the data, not the model: a random ranking already scores 0.68 to 0.95 on active-class
