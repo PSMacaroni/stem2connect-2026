@@ -12,6 +12,23 @@ Primary track: [Education / Healthcare / Sustainability / Scientific Research / 
 
 ## How to run it
 
+These steps use WSL (Linux inside Windows). On the owner's PC, Windows Smart App Control blocks numpy, so we run
+everything in WSL. On Linux or macOS, skip step 1 and run the rest in a normal terminal.
+
+1. Open a WSL terminal: press the Windows key, type `wsl`, press Enter.
+2. Install uv (it installs Python and the libraries for you). Run this once:
+   `curl -LsSf https://astral.sh/uv/install.sh | sh`
+   Then close the terminal and open a new one, so the `uv` command is found.
+3. Go to the project folder, for example:
+   `cd /mnt/c/Users/<you>/Documents/stem2connect-2026`
+4. Install Python 3.12 and every library the project needs:
+   `uv sync`
+   The first time takes a few minutes (on a Windows drive, about 3).
+5. Run the tests:
+   `uv run pytest -q`
+   It worked if the last line says `passed` and nothing `failed`.
+6. Optional: check the code style with `uv run ruff check .` (it should say `All checks passed!`).
+
 ## AI tools and services used
 **Inside the project:**
 

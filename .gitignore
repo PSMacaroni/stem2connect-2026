@@ -28,3 +28,10 @@ CLAUDE.local.md
 .claude/settings.local.json
 
 .DS_Store
+
+# Local data and trained models (folders kept with .gitkeep)
+data/*
+!data/.gitkeep
+models/*
+!models/.gitkeep
+*.pkl
