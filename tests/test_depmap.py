@@ -91,11 +91,28 @@ def test_nearest_ranking_tiebreak_and_screened_only(derived):
     # ACH-1 and ACH-2 tie at 2/2 (STK11 is not in the matrix): name breaks the tie. ACH-5 has no PRISM data.
     assert [r["ModelID"] for r in res] == ["ACH-2", "ACH-1", "ACH-3", "ACH-4"]
     assert [r["jaccard"] for r in res] == [1.0, 1.0, 0.5, 0.0]
+    assert [r["n_shared"] for r in res] == [2, 2, 1, 0]
     assert res[0]["shared_genes"] == ["KRAS", "TP53"] and res[3]["shared_genes"] == []
     assert res[0]["OncotreeLineage"] == "Lung" and "Age" not in res[0]
     assert len(depmap.nearest_cell_lines(["KRAS"], k=2, derived=derived)) == 2
     with pytest.raises(ValueError):
         depmap.nearest_cell_lines(["NOTAGENE"], derived=derived)
+
+
+def test_nearest_ranks_shared_genes_before_jaccard(tmp_path):
+    # X carries only KRAS (1 shared, Jaccard 1/2); Y carries KRAS, TP53 and three more (2 shared, Jaccard 2/5).
+    pd.DataFrame(
+        {"KRAS": [1, 1], "TP53": [0, 1], "G1": [0, 1], "G2": [0, 1], "G3": [0, 1]}, index=["ACH-X", "ACH-Y"]
+    ).rename_axis("ModelID").to_csv(tmp_path / "hotspot_binary.csv")
+    pd.DataFrame({"ModelID": ["ACH-X", "ACH-Y"], "CellLineName": ["A", "B"]}).to_csv(
+        tmp_path / "models.csv", index=False
+    )
+    pd.DataFrame({"ModelID": ["ACH-X", "ACH-Y"], "compound": "c", "auc": 0.5}).to_csv(
+        tmp_path / "sensitivity.csv", index=False
+    )
+    pd.DataFrame({"compound": ["c"]}).to_csv(tmp_path / "compounds.csv", index=False)
+    res = depmap.nearest_cell_lines(["KRAS", "TP53"], derived=tmp_path)
+    assert [(r["ModelID"], r["n_shared"], r["jaccard"]) for r in res] == [("ACH-Y", 2, 0.4), ("ACH-X", 1, 0.5)]
 
 
 def test_top_compounds_order(derived):
@@ -112,6 +129,7 @@ REAL = Path("data/depmap/derived")
 def test_real_data_smoke():
     res = depmap.nearest_cell_lines(["KRAS", "TP53", "STK11"])
     assert len(res) == 10
-    assert [r["jaccard"] for r in res] == sorted((r["jaccard"] for r in res), reverse=True)
+    keys = [(r["n_shared"], r["jaccard"]) for r in res]
+    assert keys == sorted(keys, reverse=True)
     top = depmap.top_compounds(res[0]["ModelID"])
     assert len(top) == 10 and [t["auc"] for t in top] == sorted(t["auc"] for t in top)

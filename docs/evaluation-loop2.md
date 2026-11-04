@@ -26,8 +26,9 @@ PRISM `depmap_id` = DepMap `ModelID` = hotspot-matrix row ID. Never join on name
 
 ## Nearest cell lines (a lookup, not a prediction)
 Query = 1 for each listed gene that is a matrix column, 0 elsewhere; listed genes not in the matrix are reported
-and ignored (none in the matrix is an error). Jaccard similarity between the query and each cell line's 0/1
-vector (0 when both are empty). Top k = 10, ties broken by cell line name. It shows which screened cell lines
+and ignored (none in the matrix is an error). Rank by the number of shared mutated genes (query genes the
+line carries), then by Jaccard similarity between the query and the line's 0/1 vector (0 when both are empty),
+then by cell line name (amended 2026-11-04, see Changes). Top k = 10. It shows which screened cell lines
 carry similar hotspot mutations and what was measured on them. It does not predict anything for a person.
 
 ## Evidence shown per nearest cell line
@@ -51,3 +52,9 @@ Counts and the worked example go to `results/loop2_data.md`, built from one run 
 - 2026-11-04, after the download, before the lookup was first run: nearest cell lines are searched only among
   lines that have at least one PRISM `auc` after QC. Why: only 726 of the 1,929 hotspot-matrix lines are in PRISM,
   so most neighbours would otherwise have no drug evidence to show.
+- 2026-11-04, after the first lookup run, decided by Prakhar: nearest cell lines rank by the **number of shared
+  mutated genes first**, then Jaccard, then cell line name (was: Jaccard, then name). Each result also carries
+  `n_shared`. Why: plain Jaccard rewards lines that carry nothing but the listed genes, so a line with 2 of 3
+  listed genes and no other hotspot outranked a line with all 3 plus other hotspots. For KRAS/TP53/STK11, 43
+  screened lines tied at Jaccard 0.667 and the top 10 was decided by the name sort. Rejected: plain Jaccard;
+  weighting genes by rarity.
