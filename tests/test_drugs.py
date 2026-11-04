@@ -68,11 +68,23 @@ def test_lineage_split_shared_and_disjoint(derived):
     assert set(lin[list(train)]) == {"A", "B"} and set(lin[list(test)]) == {"C", "D"}
 
 
-def test_select_compounds_needs_a_gene_in_target(derived, monkeypatch):
+def test_select_compounds_needs_a_gene_in_target(derived):
+    # K2 has no target gene, K3's gene is not on the oncology list, K4 has too few lines
     sel = drugs.select_compounds(derived)
-    assert sel["compound"].tolist() == ["BRD-K1", "BRD-K3"]  # K2 has no target gene, K4 too few lines
-    monkeypatch.setattr(drugs, "MAX_DRUGS", 1)  # more candidates than the cap: oncology list applies
-    assert drugs.select_compounds(derived)["compound"].tolist() == ["BRD-K1"]
+    assert sel["compound"].tolist() == ["BRD-K1"] and sel["oncology_gene"].tolist() == ["BRAF"]
+
+
+def test_pick_up_to_three_per_target():
+    c = pd.DataFrame(
+        {
+            "compound": [f"BRD-E{i}" for i in range(5)] + ["BRD-B0"],
+            "target": ["EGFR"] * 4 + ["EGFR, KDR"] + ["KDR, MET"],
+            "n_lines": [400, 500, 300, 600, 450, 350],
+        }
+    )
+    picked = drugs.pick_per_target(c)
+    assert picked["compound"].tolist() == ["BRD-E3", "BRD-E1", "BRD-E4", "BRD-B0"]  # 3 EGFR + 1 KDR
+    assert picked["oncology_gene"].tolist() == ["EGFR"] * 3 + ["KDR"]  # E4 counts once, under EGFR (first)
 
 
 def test_label_threshold_from_training_lines_only(derived):
@@ -95,6 +107,11 @@ def test_metrics_sane():
     assert drugs.metrics(np.zeros(4, int), np.arange(4.0), np.zeros(4, int))["roc_auc"] is None
 
 
+def test_weak_is_ci_lower_bound_at_or_below_half():
+    assert drugs.weak({"roc_auc_ci95": [0.5, 0.8]}) and drugs.weak({"roc_auc_ci95": None})
+    assert not drugs.weak({"roc_auc_ci95": [0.51, 0.8]})
+
+
 def test_jaccard_nn():
     ref = np.array([[1, 0, 0], [1, 1, 0], [0, 0, 0]])
     assert drugs.jaccard_nn(np.array([[1, 1, 0], [0, 0, 1], [0, 0, 0]]), ref).tolist() == [1, 0, 0]
@@ -109,6 +126,8 @@ def test_train_all_and_predict_abstains(derived, tmp_path):
     assert "rafdrug" in (tmp_path / "results" / "loop2_models.md").read_text()
     out = drugs.predict_drugs(["braf"], tmp_path / "models")
     assert [o["name"] for o in out] == ["rafdrug"] and 0 <= out[0]["p_sensitive"] <= 1
+    assert out[0]["rank"] == 1 and out[0]["model"] == "logreg"
+    assert out[0]["n_sensitive_test"] == r["sensitive_test"] and out[0]["weak"] == drugs.weak(r["logreg"])
     assert drugs.predict_drugs(["NOTAGENE"], tmp_path / "models") == []
     assert drugs.predict_drugs(["G4"], tmp_path / "models") == []  # mutated only in test lineages
 
@@ -119,10 +138,12 @@ REAL = Path("data/depmap/derived")
 @pytest.mark.skipif(not (REAL / "sensitivity.csv").exists(), reason="real DepMap/PRISM tables not built")
 def test_real_data_smoke():
     sel = drugs.select_compounds()
-    assert len(sel) == 60 and sel["target"].notna().all() and (sel["n_lines"] >= 300).all()
+    assert sel["compound"].is_unique and (sel["n_lines"] >= 300).all()
+    assert sel.groupby("oncology_gene").size().max() <= 3
     train, test = drugs.lineage_split()
     lin = drugs.cell_lines()
     assert not set(lin[list(train)]) & set(lin[list(test)]) and len(train) + len(test) == len(lin)
     if any(drugs.MODELS.glob("*.joblib")):
         out = drugs.predict_drugs(["KRAS", "TP53"])
-        assert out and out == sorted(out, key=lambda o: (-o["p_sensitive"], o["name"]))
+        assert out and [o["rank"] for o in out] == list(range(1, len(out) + 1))
+        assert out == sorted(out, key=lambda o: (-o["p_sensitive"], o["name"]))

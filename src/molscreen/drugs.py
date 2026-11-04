@@ -10,7 +10,6 @@ updates their entries and keeps the others already in the JSON. `predict_drugs` 
 
 import argparse
 import json
-import re
 from functools import lru_cache
 from pathlib import Path
 
@@ -33,10 +32,20 @@ ONCOLOGY = [
     "KIT", "FLT3", "BTK", "JAK1", "JAK2", "AURKA", "AURKB", "PLK1", "TOP1", "TOP2A", "TUBB", "HDAC1", "PSMB5", "MDM2",
     "BCL2L1", "KDR", "MET", "RET", "FGFR1",
 ]
-MIN_LINES, MAX_DRUGS, TEST_FRAC, SEED = 300, 60, 0.2, 0
+MIN_LINES, PER_TARGET, TEST_FRAC, SEED = 300, 3, 0.2, 0
 SENSITIVE_PERCENTILE, UNDERPOWERED, N_BOOT = 10, 5, 1000
 LR_PARAMS = {"C": 1.0, "class_weight": "balanced", "max_iter": 1000}  # sklearn's default penalty is L2
 RF_PARAMS = {"n_estimators": 300, "class_weight": "balanced", "random_state": 0, "n_jobs": -1}
+# Amendment 2026-11-04 (Prakhar, FIX round 1): logistic regression ships whatever the switch rule says; the switch
+# rule is still computed and reported. See docs/evaluation-loop2.md, Changes.
+SHIPPED = "logreg"
+# The first run (commit 5b7d361: 60 drugs, top 60 by line count; random forest shipped by the switch rule).
+# Medians and beat-1-NN over drugs that are not underpowered (all 60); weak = CI lower bound <= 0.5.
+FIRST_RUN = {
+    "commit": "5b7d361", "drugs": 60, "underpowered": 0, "rf_wins": 32, "powered_drugs": 60, "shipped": "rf",
+    "median_roc_auc": {"majority": 0.5, "nn1": 0.5072, "logreg": 0.5492, "rf": 0.5623},
+    "beat_nn1": {"logreg": 40, "rf": 40}, "weak": {"logreg": 51, "rf": 53}, "model_bytes": 73143794,
+}
 KINDS = ("majority", "nn1", "logreg", "rf")
 NAMES = {"majority": "majority", "nn1": "1-NN", "logreg": "logistic regression", "rf": "random forest"}
 
@@ -60,27 +69,34 @@ def lineage_split(derived: str = str(DERIVED)) -> tuple[frozenset, frozenset]:
     return frozenset(lin.index[tr]), frozenset(lin.index[te])
 
 
-def _candidates(derived: Path) -> tuple[pd.DataFrame, pd.Series]:
-    """Compounds naming a gene in `target` with >= 300 hotspot lines, and whether each matches the oncology list."""
+def _candidates(derived: Path) -> pd.DataFrame:
+    """Compounds naming a gene in `target` with >= 300 lines in the hotspot matrix, with their line count."""
     hot, _, sens, cpd = _tables(derived)
     n = sens[sens["ModelID"].isin(hot.index)].groupby("compound").size()
     c = cpd.assign(n_lines=n.reindex(cpd.index).fillna(0).astype(int)).rename_axis("compound").reset_index()
-    tokens = c["target"].fillna("").str.split(r",\s*").map(lambda t: {x for x in t if x})
-    keep = tokens.map(bool) & (c["n_lines"] >= MIN_LINES)
-    c, tokens = c[keep], tokens[keep]
-    word = re.compile(r"\b(" + "|".join(ONCOLOGY) + r")\b")
-    onco = tokens.map(lambda t: bool(t & set(ONCOLOGY))) | c["moa"].fillna("").map(lambda m: bool(word.search(m)))
-    return c, onco
+    has_gene = c["target"].fillna("").str.split(r",\s*").map(lambda t: any(t))
+    return c[has_gene & (c["n_lines"] >= MIN_LINES)]
+
+
+def oncology_gene(target) -> str | None:
+    """The first gene of the oncology list (in list order) that `target` names, or None."""
+    tokens = set(str(target).split(", ")) if isinstance(target, str) else set()
+    return next((g for g in ONCOLOGY if g in tokens), None)
+
+
+def pick_per_target(c: pd.DataFrame) -> pd.DataFrame:
+    """Up to 3 compounds per oncology gene, the most screened first (ties by Broad ID). Each compound counts once,
+    under the first oncology-list gene its `target` names."""
+    c = c.assign(oncology_gene=c["target"].map(oncology_gene)).dropna(subset=["oncology_gene"])
+    c = c.assign(order=c["oncology_gene"].map(ONCOLOGY.index))
+    c = c.sort_values(["order", "n_lines", "compound"], ascending=[True, False, True])
+    return c.groupby("oncology_gene", sort=False).head(PER_TARGET).drop(columns="order").reset_index(drop=True)
 
 
 def select_compounds(derived: Path = DERIVED) -> pd.DataFrame:
-    """The drug set: a gene in `target`, >= 300 hotspot lines; if more than 60, oncology-list matches only;
-    then the 60 with the most lines (ties by Broad ID)."""
-    c, onco = _candidates(derived)
-    if len(c) > MAX_DRUGS:
-        c = c[onco]
-    c = c.sort_values(["n_lines", "compound"], ascending=[False, True]).head(MAX_DRUGS)
-    return c[["compound", "name", "target", "moa", "smiles", "n_lines"]].reset_index(drop=True)
+    """The drug set (amended 2026-11-04): a gene in `target`, >= 300 hotspot lines, up to 3 per oncology gene."""
+    c = pick_per_target(_candidates(derived))
+    return c[["compound", "name", "target", "moa", "smiles", "n_lines", "oncology_gene"]]
 
 
 def build_xy(compound: str, derived: Path = DERIVED) -> dict:
@@ -173,52 +189,82 @@ def cell(v) -> str:
 
 
 def write_md(res: dict, path: Path) -> None:
-    g, s, k = res["drugs"], res["split"], res["shipped_model"]
-    sel = res["selection"]
+    g, s, k, sel, st = res["drugs"], res["split"], res["shipped_model"], res["selection"], res["summary"]
+    old, med = res["first_run"], st["median_roc_auc"]
     rows = [
-        [cell(r["name"]), b, cell(r["target"]), r["n_train"], r["n_test"], r["sensitive_test"],
-         f3(r["majority"]["roc_auc"]), f3(r["nn1"]["roc_auc"]), f3(r["logreg"]["roc_auc"]), f3(r["rf"]["roc_auc"]),
-         ci(r[k]), f"{f3(r[k]['pr_auc'])} vs {f3(r['test_prevalence'])}", f3(r[k]["balanced_acc"]),
-         f"underpowered ({r['sensitive_test']})" if r["underpowered"] else ""]
+        [cell(r["name"]), b, cell(r["target"]), r["oncology_gene"], r["n_train"], r["n_test"], r["sensitive_test"],
+         f3(r["majority"]["roc_auc"]), f3(r["nn1"]["roc_auc"]), ci(r["logreg"]), ci(r["rf"]),
+         f"{f3(r[k]['pr_auc'])} vs {f3(r['test_prevalence'])}", f3(r[k]["balanced_acc"]),
+         "; ".join(x for x in ["weak" if weak(r[k]) else "",
+                               f"underpowered ({r['sensitive_test']})" if r["underpowered"] else ""] if x)]
         for b, r in g.items()
     ]
-    st = res["summary"]
+
+    def change(label, before, after):
+        return f"| {label} | {before} | {after} |"
+
     lines = [
         "# Loop 2 per-drug sensitivity models: held-out results", "",
         "Built by `python -m molscreen.drugs`; every number is in `results/loop2_models.json`. Protocol:",
-        "`docs/evaluation-loop2.md` (\"Per-drug models\"). **Cell lines, not patients.** Research and learning tool,",
-        "not medical advice. Features: the 0/1 hotspot vector (542 genes). Label: sensitive when `auc` is below the",
-        "10th percentile of the drug's `auc` over its training lines.", "",
+        "`docs/evaluation-loop2.md` (\"Per-drug models\" and its dated Changes). **Cell lines, not patients.**",
+        "Research and learning tool, not medical advice. Features: the 0/1 hotspot vector (542 genes). Label: sensitive",
+        "when `auc` is below the 10th percentile of the drug's `auc` over its training lines.", "",
+        ("**How the app uses this.** The nearest cell lines and their measured sensitivities are the main evidence in "
+         "loop 2; model ranks are shown second and greyed when `weak` (95% CI lower bound <= 0.5); the probabilities "
+         "are not calibrated and must be shown as ranks, never as percentages."), "",
         "## Drug set", "",
-        f"{sel['candidates']:,} compounds name a gene in `target` and have >= {MIN_LINES} lines in the hotspot matrix;",
-        f"{sel['oncology_matches']:,} of them match the oncology target list; the {sel['selected']} with the most lines",
-        "are kept (ties by Broad ID). The table lists every trained drug with its name, Broad ID and PRISM target.", "",
+        (f"{sel['candidates']:,} compounds name a gene in `target` and have >= {MIN_LINES} lines in the hotspot "
+         f"matrix. For each of the {len(res['oncology_list'])} oncology-list genes, up to {sel['per_target']} of them "
+         f"whose `target` names that gene are kept, the most screened first (ties by Broad ID); a compound counts once, "
+         f"under the first oncology-list gene it names. {sel['genes_with_compounds']} genes have at least one "
+         f"compound, giving **{sel['selected']} compounds**. The \"Gene\" column is the gene a compound was picked "
+         "under."), "",
         "## Split (leave-lineage-out, one split for every drug)", "",
         (f"{s['n_lines']} cell lines in {s['n_lineages']} lineages. Train: {s['n_train_lines']} lines in "
-        f"{len(s['train_lineages'])} lineages. Test: {s['n_test_lines']} lines in {len(s['test_lineages'])} lineages "
-        f"({', '.join(f'{x} {n}' for x, n in s['test_lineages'].items())})."), "",
+         f"{len(s['train_lineages'])} lineages. Test: {s['n_test_lines']} lines in {len(s['test_lineages'])} lineages "
+         f"({', '.join(f'{x} {n}' for x, n in s['test_lineages'].items())})."), "",
         "## Results", "",
-        (f"ROC-AUC 95% CI: bootstrap over the test lines ({N_BOOT} resamples, seed 0), shown for the shipped model "
-        f"({NAMES[k]}). PR-AUC is for the sensitive class, next to its test prevalence (a random ranking's PR-AUC)."),
-        f"Balanced accuracy at 0.5. \"Underpowered\": fewer than {UNDERPOWERED} sensitive test lines.", "",
-        ("| Drug | Broad ID | Target | n train | n test | Sensitive in test | Majority | 1-NN | Logistic | RF | "
-        f"{NAMES[k]} ROC-AUC (95% CI) | PR-AUC vs prevalence | Bal. acc. | Note |"),
+        (f"ROC-AUC with its 95% CI: bootstrap over the test lines ({N_BOOT} resamples, seed 0). PR-AUC (sensitive "
+         f"class, next to its test prevalence = a random ranking's PR-AUC) and balanced accuracy at 0.5 are for the "
+         f"shipped model ({NAMES[k]}). \"Weak\": the shipped model's CI lower bound is <= 0.5. \"Underpowered\": "
+         f"fewer than {UNDERPOWERED} sensitive test lines."), "",
+        ("| Drug | Broad ID | Target | Gene | n train | n test | Sensitive in test | Majority | 1-NN | "
+         "Logistic (95% CI) | RF (95% CI) | PR-AUC vs prevalence | Bal. acc. | Note |"),
         "|" + "---|" * 14,
         *["| " + " | ".join(str(c) for c in r) + " |" for r in rows],
         "",
-        (f"**Switch rule:** the random forest had the higher held-out ROC-AUC on {res['rf_wins']} of "
-         f"{res['powered_drugs']} drugs that are not underpowered (it needed more than half), so **{NAMES[k]}** "
-         f"ships for every drug. Underpowered drugs: {st['underpowered']} of {len(g)}. The models are close: "
-         f"median ROC-AUC {f3(st['median_logreg'])} (logistic) vs {f3(st['median_rf'])} (random forest)."),
+        (f"**Which model ships:** the pre-registered switch rule, re-applied for the record, gives the random forest the "
+         f"higher held-out ROC-AUC on {res['rf_wins']} of {res['powered_drugs']} drugs that are not underpowered (it "
+         f"needs more than half), so the rule alone would ship the "
+         f"{NAMES[res['switch_rule_model']]}. **By the 2026-11-04 amendment, {NAMES[k]} ships for every drug**: the "
+         f"first run's random-forest win (32 of 60) was a tie-sized margin, and the hosted app's size matters (the "
+         f"first run's 60 random forests took {old['model_bytes']:,} bytes). Random-forest results stay in every table. "
+         f"Underpowered drugs: {st['underpowered']} of {st['drugs']}."),
         "",
         "## What this says", "",
-        (f"Of the {st['powered']} drugs that are not underpowered, the shipped model ({NAMES[k]}) has a higher "
-         f"held-out ROC-AUC than the 1-NN baseline on {st['beat_nn1']} (1-NN median {f3(st['median_nn1'])}), and its 95% CI includes 0.5 on "
-         f"{st['ci_includes_half']} (no better than chance at this test size); {st['below_half']} are below 0.5. Its median ROC-AUC is "
-         f"{f3(st['median_roc_auc'])} over those drugs ({f3(st['median_roc_auc_all'])} over all {len(g)}); the "
-         f"highest is {f3(st['max_roc_auc'])} ({st['max_drug']}). Hotspot mutations alone explain little of how "
-         "a cell line responds to most of these drugs; the models are shown as a weak, honest signal next to the "
-         "measured responses of the nearest cell lines, not as a prediction for a person."),
+        (f"Over the {st['powered']} drugs that are not underpowered: median held-out ROC-AUC {f3(med['logreg'])} "
+         f"(logistic), {f3(med['rf'])} (random forest), {f3(med['nn1'])} (1-NN). Logistic regression beats 1-NN on "
+         f"{st['beat_nn1']['logreg']} drugs; the random forest beats 1-NN on {st['beat_nn1']['rf']}. {st['weak'][k]} of "
+         f"{st['drugs']} shipped models are weak (CI reaches 0.5) and {st['below_half']} are below 0.5; the highest "
+         f"is {f3(st['max_roc_auc'])} ({st['max_drug']}). Hotspot mutations alone explain little of how a cell line "
+         "responds to most of these drugs; the models are a weak signal next to the measured responses of the nearest "
+         "cell lines, not a prediction for a person."),
+        "",
+        "## What changed from the first run", "",
+        (f"Before = commit {old['commit']} ({old['drugs']} drugs: the 60 oncology-list matches with the most lines; "
+         "random forest shipped by the switch rule). After = this run (up to 3 per oncology gene; logistic regression "
+         "ships by amendment). Same split, seed and model parameters. Medians and beat-1-NN are over drugs that are "
+         "not underpowered; weak counts all drugs."), "",
+        "| | Before | After |",
+        "|---|---|---|",
+        change("Drugs", old["drugs"], st["drugs"]),
+        change("Underpowered", old["underpowered"], st["underpowered"]),
+        *[change(f"Median ROC-AUC, {NAMES[m]}", f3(old["median_roc_auc"][m]), f3(med[m])) for m in KINDS],
+        *[change(f"Beats 1-NN, {NAMES[m]}", old["beat_nn1"][m], st["beat_nn1"][m]) for m in ("logreg", "rf")],
+        *[change(f"Weak, {NAMES[m]}", old["weak"][m], st["weak"][m]) for m in ("logreg", "rf")],
+        change("Switch rule: RF wins", f"{old['rf_wins']} of {old['powered_drugs']}",
+               f"{res['rf_wins']} of {res['powered_drugs']}"),
+        change("Shipped", NAMES[old["shipped"]], f"{NAMES[k]} (amendment)"),
         "",
         (f"Models: `models/loop2/<broad_id>.joblib` (git-ignored), {NAMES[k]} fit on the training lines, "
          f"{st['model_bytes']:,} bytes in total."),
@@ -227,22 +273,22 @@ def write_md(res: dict, path: Path) -> None:
     path.write_text("\n".join(lines), encoding="utf-8")
 
 
+def weak(m: dict) -> bool:
+    """A model is weak when its held-out ROC-AUC 95% CI reaches 0.5 or below (or there is no CI)."""
+    return m["roc_auc_ci95"] is None or m["roc_auc_ci95"][0] <= 0.5
+
+
 def summarise(res: dict, models_dir: Path) -> dict:
     g, k = res["drugs"], res["shipped_model"]
     powered = {b: r for b, r in g.items() if not r["underpowered"] and r[k]["roc_auc"] is not None}
-    aucs = [r[k]["roc_auc"] for r in powered.values()]
-    every = [r[k]["roc_auc"] for r in g.values() if r[k]["roc_auc"] is not None]
     best = max(powered, key=lambda b: powered[b][k]["roc_auc"]) if powered else None
+    med = {m: float(np.median([r[m]["roc_auc"] for r in powered.values()])) if powered else None for m in KINDS}
     return {
-        "powered": len(powered), "underpowered": len(g) - len(powered),
-        "beat_nn1": sum(r[k]["roc_auc"] > r["nn1"]["roc_auc"] for r in powered.values()),
+        "drugs": len(g), "powered": len(powered), "underpowered": len(g) - len(powered),
+        "median_roc_auc": med,
+        "beat_nn1": {m: sum(r[m]["roc_auc"] > r["nn1"]["roc_auc"] for r in powered.values()) for m in ("logreg", "rf")},
+        "weak": {m: sum(weak(r[m]) for r in g.values()) for m in ("logreg", "rf")},
         "below_half": sum(r[k]["roc_auc"] < 0.5 for r in powered.values()),
-        "ci_includes_half": sum(r[k]["roc_auc_ci95"][0] <= 0.5 <= r[k]["roc_auc_ci95"][1] for r in powered.values()),
-        "median_roc_auc": float(np.median(aucs)) if aucs else None,
-        "median_logreg": float(np.median([r["logreg"]["roc_auc"] for r in powered.values()])) if powered else None,
-        "median_rf": float(np.median([r["rf"]["roc_auc"] for r in powered.values()])) if powered else None,
-        "median_nn1": float(np.median([r["nn1"]["roc_auc"] for r in powered.values()])) if powered else None,
-        "median_roc_auc_all": float(np.median(every)) if every else None,
         "max_roc_auc": powered[best][k]["roc_auc"] if best else None,
         "max_drug": g[best]["name"] if best else None,
         "model_bytes": sum(f.stat().st_size for f in models_dir.glob("*.joblib")),
@@ -254,30 +300,40 @@ def train_all(
 ) -> dict:
     """Evaluate and save the given drugs (default: the selected set), update the JSON and the Markdown."""
     sel = select_compounds(derived)
-    compounds = compounds or sel["compound"].tolist()
     cpd = _tables(derived)[3]
     path = results / "loop2_models.json"
     res = json.loads(path.read_text()) if path.exists() else {"drugs": {}}
+    if full := compounds is None:
+        res["drugs"] = {}  # a full run replaces the drug set
+    compounds = compounds or sel["compound"].tolist()
+    gene_of = dict(zip(sel["compound"], sel["oncology_gene"]))
     fitted = {}
     for b in compounds:
         out, fitted[b], d = evaluate(b, derived)
         info = cpd.loc[b]
-        res["drugs"][b] = {"name": info["name"], "target": info["target"], "smiles": info["smiles"], **out}
+        res["drugs"][b] = {
+            "name": info["name"], "target": info["target"], "smiles": info["smiles"],
+            "oncology_gene": gene_of.get(b, oncology_gene(info["target"])), **out,
+        }
         fitted[b]["data"] = d
         print(f"{b} {info['name']}: n_test={out['n_test']} sens={out['sensitive_test']} "
               f"logreg={f3(out['logreg']['roc_auc'])} rf={f3(out['rf']['roc_auc'])}")
 
-    shipped, wins, powered = switch_rule(res["drugs"])
+    by_rule, wins, powered = switch_rule(res["drugs"])
+    shipped = SHIPPED
     train, test = lineage_split(str(derived))
     lin = cell_lines(derived)
-    cands, onco = _candidates(derived)
+    cands = _candidates(derived)
     res.update(
         protocol="docs/evaluation-loop2.md", lr_params=LR_PARAMS, rf_params=RF_PARAMS, n_boot=N_BOOT,
         sensitive_percentile=SENSITIVE_PERCENTILE, underpowered_below=UNDERPOWERED, oncology_list=ONCOLOGY,
-        shipped_model=shipped, rf_wins=wins, powered_drugs=powered,
+        shipped_model=shipped, switch_rule_model=by_rule, rf_wins=wins, powered_drugs=powered,
+        shipped_by="amendment 2026-11-04: logistic regression ships; the switch rule is reported, not applied",
+        first_run=FIRST_RUN,
         selection={
-            "candidates": len(cands), "oncology_matches": int(onco.sum()),
-            "selected": len(sel), "compounds": sel["compound"].tolist(),
+            "candidates": len(cands), "per_target": PER_TARGET, "selected": len(sel),
+            "genes_with_compounds": int(sel["oncology_gene"].nunique()),
+            "per_gene": sel.groupby("oncology_gene", sort=False)["compound"].apply(list).to_dict(),
         },
         split={
             "test_frac": TEST_FRAC, "seed": SEED, "n_lines": len(lin), "n_lineages": int(lin.nunique()),
@@ -286,8 +342,11 @@ def train_all(
             "test_lineages": lin[lin.index.isin(test)].value_counts().to_dict(),
         },
     )
-    # ponytail: only this run's drugs are re-saved; if the switch rule flips, re-run all drugs.
     models_dir.mkdir(parents=True, exist_ok=True)
+    if full:  # drop model files of drugs no longer in the set (generated files, git-ignored)
+        for f in models_dir.glob("*.joblib"):
+            if f.stem not in res["drugs"]:
+                f.unlink()
     for b in compounds:
         r, d = res["drugs"][b], fitted[b]["data"]
         joblib.dump({
@@ -296,6 +355,7 @@ def train_all(
             "train_genes": sorted(np.array(d["genes"])[d["X_tr"].any(axis=0)]),
             "threshold_auc": r["threshold_auc"], "roc_auc": r[shipped]["roc_auc"],
             "roc_auc_ci95": r[shipped]["roc_auc_ci95"], "underpowered": r["underpowered"],
+            "n_sensitive_test": r["sensitive_test"],
         }, models_dir / f"{b}.joblib", compress=3)
         r["model_file"] = {"path": f"{models_dir.as_posix()}/{b}.joblib", "kind": shipped,
                            "bytes": (models_dir / f"{b}.joblib").stat().st_size}
@@ -313,10 +373,12 @@ def _load_models(models_dir: str) -> list[dict]:
 
 
 def predict_drugs(genes: list[str], models_dir: Path = MODELS) -> list[dict]:
-    """P(sensitive) from every shipped drug model for a cell line with these hotspot genes, highest first.
+    """Rank every shipped drug model for a cell line with these hotspot genes (rank 1 = highest P(sensitive)).
 
-    A model abstains (is left out) when no listed gene is mutated in any of its training lines; an empty list
-    means every model abstained and the app must show no prediction. Cell lines, not patients.
+    `p_sensitive` is not calibrated: show the rank, never a percentage. `weak` = the model's held-out ROC-AUC 95%
+    CI reaches 0.5 (show it greyed). A model abstains (is left out) when no listed gene is mutated in any of its
+    training lines; an empty list means every model abstained and the app must show no prediction. The nearest
+    cell lines and their measured sensitivities are the main evidence. Cell lines, not patients.
     """
     query = {g.strip().upper() for g in genes}
     out = []
@@ -327,9 +389,11 @@ def predict_drugs(genes: list[str], models_dir: Path = MODELS) -> list[dict]:
         out.append({
             "compound": m["compound"], "name": m["name"], "target": m["target"], "smiles": m["smiles"],
             "p_sensitive": float(m["model"].predict_proba(x)[0, 1]), "model": m["kind"],
-            "roc_auc": m["roc_auc"], "roc_auc_ci95": m["roc_auc_ci95"], "underpowered": m["underpowered"],
+            "roc_auc": m["roc_auc"], "roc_auc_ci95": m["roc_auc_ci95"], "n_sensitive_test": m["n_sensitive_test"],
+            "weak": weak(m), "underpowered": m["underpowered"],
         })
-    return sorted(out, key=lambda r: (-r["p_sensitive"], r["name"]))
+    out.sort(key=lambda r: (-r["p_sensitive"], r["name"]))
+    return [{"rank": i, **r} for i, r in enumerate(out, 1)]
 
 
 def main() -> None:
@@ -337,8 +401,10 @@ def main() -> None:
     ap.add_argument("--drugs", nargs="+", help="Broad IDs (BRD-K...); default: the selected drug set")
     res = train_all(ap.parse_args().drugs)
     s = res["summary"]
-    print(f"shipped={res['shipped_model']} (rf won ROC-AUC on {res['rf_wins']} of {res['powered_drugs']}); "
-          f"median ROC-AUC {f3(s['median_roc_auc'])}; beat 1-NN {s['beat_nn1']} of {s['powered']}; "
+    m = s["median_roc_auc"]
+    print(f"{s['drugs']} drugs; switch rule: rf won ROC-AUC on {res['rf_wins']} of {res['powered_drugs']} "
+          f"(rule says {res['switch_rule_model']}); shipped={res['shipped_model']} by amendment; median ROC-AUC "
+          f"logreg {f3(m['logreg'])} rf {f3(m['rf'])} 1-NN {f3(m['nn1'])}; weak {s['weak'][res['shipped_model']]}; "
           f"underpowered {s['underpowered']}; models {s['model_bytes']:,} bytes")
 
 
