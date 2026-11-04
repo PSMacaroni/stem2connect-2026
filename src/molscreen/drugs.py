@@ -55,6 +55,15 @@ EARLIER_RUNS = [
         "beat_nn1": {"logreg": 55, "rf": 54}, "weak": {"logreg": 65, "rf": 73}, "model_bytes": 675367,
     },
 ]
+# Reporting text for results/loop2_models.md (Prakhar, 2026-11-04: keep all selective picks and disclose them).
+KNOWN_LIMITS = (
+    "Some selective picks come from PRISM's target annotations, not from any oncology judgement: antibiotics "
+    "(norfloxacin, sparfloxacin and trovafloxacin under TOP2A), the fungicide thiram (JAK2), anthelmintics "
+    "(fenbendazole and parbendazole under TUBB) and natural products (oridonin under BCL2, nobiletin under MAP2K1, "
+    "parthenolide under HDAC1). They are kept, and the app shows them like any other drug; the nearest cell lines "
+    "and their measured sensitivities remain the main evidence. Vemurafenib is absent because PRISM lists it with "
+    "two targets (BRAF, RAF1), so it is not selective, and it is 4th by screened lines for BRAF, after the 3 kept."
+)
 KINDS = ("majority", "nn1", "logreg", "rf")
 NAMES = {"majority": "majority", "nn1": "1-NN", "logreg": "logistic regression", "rf": "random forest"}
 
@@ -300,6 +309,8 @@ def write_md(res: dict, path: Path) -> None:
          "responds to most of these drugs; the models are a weak signal next to the measured responses of the nearest "
          "cell lines, not a prediction for a person."),
         "",
+        "## Known limits", "",
+        KNOWN_LIMITS, "",
         "## What changed between runs", "",
         ("First run = commit 5b7d361 (the 60 oncology-list matches with the most lines; random forest shipped by "
          "the switch rule). FIX round 1 = commit 71dc695 (up to 3 per oncology gene, first-listed gene; logistic "

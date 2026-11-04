@@ -232,6 +232,10 @@ ROC-AUC with its 95% CI: bootstrap over the test lines (1000 resamples, seed 0).
 
 Over the 198 drugs that are not underpowered: median held-out ROC-AUC 0.546 (logistic), 0.545 (random forest), 0.516 (1-NN). Logistic regression beats 1-NN on 119 drugs; the random forest beats 1-NN on 114. 171 of 202 shipped models are weak (CI reaches 0.5) and 73 are below 0.5; the highest is 0.860 (selumetinib). Hotspot mutations alone explain little of how a cell line responds to most of these drugs; the models are a weak signal next to the measured responses of the nearest cell lines, not a prediction for a person.
 
+## Known limits
+
+Some selective picks come from PRISM's target annotations, not from any oncology judgement: antibiotics (norfloxacin, sparfloxacin and trovafloxacin under TOP2A), the fungicide thiram (JAK2), anthelmintics (fenbendazole and parbendazole under TUBB) and natural products (oridonin under BCL2, nobiletin under MAP2K1, parthenolide under HDAC1). They are kept, and the app shows them like any other drug; the nearest cell lines and their measured sensitivities remain the main evidence. Vemurafenib is absent because PRISM lists it with two targets (BRAF, RAF1), so it is not selective, and it is 4th by screened lines for BRAF, after the 3 kept.
+
 ## What changed between runs
 
 First run = commit 5b7d361 (the 60 oncology-list matches with the most lines; random forest shipped by the switch rule). FIX round 1 = commit 71dc695 (up to 3 per oncology gene, first-listed gene; logistic regression ships by amendment). FIX round 2 = this run (3 per gene with the fewest-so-far assignment, plus selective drugs). Same split, seed and model parameters. Medians and beat-1-NN are over drugs that are not underpowered; weak counts all drugs.
