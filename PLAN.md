@@ -9,8 +9,9 @@ Track: **Scientific Research** ("tools for analysis"). Solo entry.
 Four loops, in ship order. Loops 1 and 2 are never cut.
 1. **Molecules → activity.** Paste SMILES, pick a cancer target (EGFR, BRAF, HER2/ERBB2, CDK4, CDK6, ALK, ABL1,
    PARP1, BCL2), get a ranked activity prediction plus the nearest known actives from ChEMBL shown as evidence.
-2. **Mutations → drugs.** Enter mutated genes; see the most similar GDSC cell lines with their measured drug
-   sensitivities, plus trained sensitivity models for the 20 to 30 best-sampled drugs. Cell-line data, never patients.
+2. **Mutations → drugs.** Enter mutated genes; see the most similar cancer cell lines with their measured drug
+   sensitivities, plus trained sensitivity models for the 20 to 30 best-sampled drugs. Cell-line data (Broad DepMap
+   mutations + PRISM repurposing screens, CC BY 4.0 pending the check in `docs/data-registry.md`), never patients.
 3. **Molecules → safety flags.** Tox21 assays per molecule, with confidence and an abstain when the molecule is
    unlike the training set.
 4. **Analog enumeration.** RDKit transforms on a known active, scored by loops 1 and 3, top few shown.
@@ -43,12 +44,16 @@ Stretch: a graph neural network trained on Colab.
 **Wording.** "Research and learning tool, not medical advice." Never "discovers drugs", never "predicts a patient's
 response". GDSC rows are cell lines.
 
-**Data and licences.** ChEMBL (activities), Tox21 via MoleculeNet (safety), GDSC + Cell Model Passports (drug
-sensitivity and cell-line mutations), an open chemistry encoder from Hugging Face. Each licence is checked and
-written into `docs/data-registry.md` before any download, and credited in the README.
+**Data and licences.** ChEMBL_37 (activities, CC BY-SA 3.0: derived data files carry the same licence), Tox21 via
+MoleculeNet (safety; licence unstated, so the raw file is never committed), Broad DepMap + PRISM (drug sensitivity
+and cell-line mutations; replaces Sanger GDSC / Cell Model Passports, whose policy is non-transferable), an open
+chemistry encoder from Hugging Face (ChemBERTa-100M MIT or MoLFormer Apache-2.0; not ChemBERTa-77M, which has no
+licence). Each licence is checked and written into `docs/data-registry.md` before any download, and credited in the
+README. Raw data never goes in git; pull scripts do.
 
-**Build.** Streamlit app, hosted on Hugging Face Spaces (Streamlit SDK); Streamlit Community Cloud is the fallback.
-Models bundled small enough to ship with the app. Repo private until the last week, then public.
+**Build.** Streamlit app hosted on **Streamlit Community Cloud** (Hugging Face Spaces no longer runs code for free,
+checked 2026-11-04). Memory ceiling about 2.7 GB, so models stay small and are bundled with the app. The app sleeps
+after 12 idle hours: wake it before judging. Repo private until the last week, then public.
 
 **Way of working.** Manager session (Fable) plans and reviews; Opus subagents build, one task each, on branches
 `area/topic`. PASS only when tests and lint pass, the "done" checks hold, and the vault is updated.
@@ -56,7 +61,7 @@ Models bundled small enough to ship with the app. Repo private until the last we
 ## Weeks
 - **Nov 4 to 10:** licence and data registry; data pulls; activity models with the evaluation protocol; app with the
   activity tab; README with AI disclosure; GitHub repo created (private).
-- **Nov 11 to 17:** mutations loop; safety flags; ChemBERTa comparison; hosting on Spaces; first video take.
+- **Nov 11 to 17:** mutations loop; safety flags; ChemBERTa comparison; hosting on Streamlit Community Cloud; first video take.
 - **Nov 18 to 20:** analogs if time; numbers pass; fresh-clone test; final video; repo public; submit Nov 20
   with a day spare.
 
@@ -78,14 +83,18 @@ Never cut: loops 1 and 2, the evaluation protocol, the README disclosures, the v
 | 2026-11-04 | Analog enumeration, not a generative model | Simple and explainable | Training a generator |
 | 2026-11-04 | Streamlit on Hugging Face Spaces, Community Cloud fallback | More memory and disk; named on the Resources page; Streamlit known | Gradio; local only |
 | 2026-11-04 | $0 spend cap | Everything fits free tiers | $10, $25 |
+| 2026-11-04 | Host on Streamlit Community Cloud, not Hugging Face Spaces | Spaces now needs a paid plan for Gradio and Docker Spaces; Community Cloud is free and known | Gradio on a free ZeroGPU Space; paying for HF PRO |
+| 2026-11-04 | Loop 2 uses Broad DepMap + PRISM instead of Sanger GDSC + Cell Model Passports (pending the licence check) | Sanger's policy is non-transferable and bans use in third-party websites; DepMap public releases are believed CC BY 4.0 | Emailing Sanger for permission; keeping GDSC local-only |
 
 ## Done
 - 2026-11-03: scaffold (README skeleton, rules, templates).
-- 2026-11-04: plan agreed.
+- 2026-11-04: plan agreed. Python scaffold (`molscreen`, chem helpers, scaffold split, tests, CI) merged.
+  Data registry with licences merged (`docs/data-registry.md`).
 
 ## Next
-- Week-1 tasks: data registry with licences; repo scaffold (package, tests, ruff); ChEMBL pulls for the 9 targets;
-  evaluation protocol; activity models; activity tab.
+- In progress: loop-1 ChEMBL pulls, evaluation protocol, activity models; Broad DepMap / PRISM licence check.
+- Then: the Streamlit app with the activity tab; README disclosures; private GitHub repo.
 
 ## Problems
-(none yet)
+- Tox21 has no stated licence (probably US-government public domain): raw file never committed, cited only.
+- CDK6 has the fewest ChEMBL rows (1,026); check the unique-molecule count before promising a CDK6 model.
