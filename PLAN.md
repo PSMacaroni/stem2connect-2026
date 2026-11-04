@@ -97,6 +97,8 @@ Never cut: loops 1 and 2, the evaluation protocol, the README disclosures, the v
 | 2026-11-04 | Loop 2 shows the nearest cell lines and their measured sensitivities first; model ranks second, greyed when the ROC-AUC CI includes 0.5; probabilities never shown as percentages | 60 hotspot-only per-drug models are near chance (median held-out ROC-AUC 0.56; 52 of 60 CIs include 0.5; 16 below 0.5) | Add damaging mutations and lineage as features (lineage is the split key); drop the models |
 | 2026-11-04 | Loop 2 drug set: up to 3 most-screened drugs per oncology target gene, no overall cap | The top-60-by-line-count cap dropped the BRAF inhibitors, where hotspot mutations should matter most | Keep the 60 |
 | 2026-11-04 | Loop 2 ships logistic regression, overriding the pre-registered switch rule by a dated amendment | The random forest won 32 of 60 (a tie-sized margin) and weighs 73 MB; logistic regression is a few hundred KB and within 0.01 median ROC-AUC | Bundle the random forest |
+| 2026-11-04 | Loop 2 drug set also includes every selective (single-target) compound for an oncology gene with 300+ lines; multi-target compounds go to the gene with the fewest compounds so far | 3 per gene by screening count still left out dabrafenib and vemurafenib; "first listed gene" put paclitaxel under BCL2 | 5 per gene; leave the gap |
+| 2026-11-04 | Main is pushed to the private repo after each PASS without asking; the public flip is a separate ask | Keeps CI honest; private and reversible | Ask before every push |
 | 2026-11-04 | Private GitHub repo PSMacaroni/stem2connect-2026 created and main pushed | CI on GitHub Actions; public flip in the last week | Stay local |
 | 2026-11-04 | Host on Streamlit Community Cloud, not Hugging Face Spaces | Spaces now needs a paid plan for Gradio and Docker Spaces; Community Cloud is free and known | Gradio on a free ZeroGPU Space; paying for HF PRO |
 | 2026-11-04 | Loop 2 uses the Broad Figshare snapshots (DepMap 24Q4 + PRISM 20Q2, CC BY 4.0) instead of Sanger GDSC + Cell Model Passports | Sanger's policy is non-transferable and bans use in third-party websites; the Figshare records carry CC BY 4.0 (checked on the Figshare API); current portal releases have restrictive terms and a captcha | Emailing Sanger for permission; keeping GDSC local-only; the 26Q3 portal release |
@@ -110,8 +112,9 @@ Never cut: loops 1 and 2, the evaluation protocol, the README disclosures, the v
 - Done 2026-11-04: Broad DepMap / PRISM licence check (registry section 3b).
 - Done 2026-11-04: loop-2 data layer (DepMap 24Q4 + PRISM 20Q2 pull, derived tables, nearest-cell-line lookup, protocol first). Private GitHub repo created and pushed.
 - Done 2026-11-04: loop 1 data and models PASS after two review rounds (wild-type only, salts stripped, RF shipped, ROC-AUC 0.845 to 0.971 with CIs, split variance disclosed). Results: `results/activity_models.md`.
-- In progress: the Streamlit app with the activity tab (branch app/activity-tab); loop-2 ranking amendment and per-drug models (branch models/loop2-drugs).
-- Then: README disclosures; hosting on Streamlit Community Cloud; loop 3 (Tox21).
+- Done 2026-11-04: the Streamlit app with the activity tab (loop 1) merged; headless health ok, example molecules and nearest actives render.
+- In progress: loop-2 per-drug models, round 2 (selective drugs); loop 3 (Tox21 safety flags) data and models.
+- Then: loop-2 and loop-3 app tabs; README disclosures; hosting on Streamlit Community Cloud; first video take.
 
 ## Problems
 - Tox21 has no stated licence (probably US-government public domain): raw file never committed, cited only.
