@@ -138,20 +138,21 @@ deposited on Figshare are, and they are enough for loop 2.**
   2026-11-04 (records in the table below). CC BY 4.0 Section 2(a)(1) grants "a worldwide, royalty-free,
   non-sublicensable, non-exclusive, irrevocable license" to "reproduce and Share the Licensed Material, in whole or
   in part; and produce, reproduce, and Share Adapted Material"
-  (https://creativecommons.org/licenses/by/4.0/legalcode.en). Attribution is the condition that matters here.
-- **Why both exist (DepMap staff on the forum).** Phil Montgomery (`pmontgom`, DepMap developer), 2026-09-25,
-  https://forum.depmap.org/t/ccle-depmap-license-clarification/4686 : "We used to deposit data into figshare under
-  a CC4.0 license, but stopped doing when DepMap switched to terms of use which were not compatible with the CC4.0
-  license." And 2026-07-28, https://forum.depmap.org/t/provide-an-open-endpoint-for-latest-version-retrieval/4652 :
-  "Yes, older data has been released on those platforms. However, for newly generated data, the DepMap data terms
-  and conditions have changed." Earlier (2024-02-02,
-  https://forum.depmap.org/t/re-distribution-of-the-ccle-data-licensing/3063) he wrote that for the Figshare files
-  "yes, you can put the data from those files on another website" "as long as the data is attributed to the DepMap
-  project." The 2026-09-25 post also says a Zenodo mirror of newer files claiming CC BY 4.0 "is not valid": use
-  only Broad's own Figshare records.
+  (https://creativecommons.org/licenses/by/4.0/legalcode). Attribution is the condition that matters here. **The
+  permission to put these files (or tables derived from them) in a public repo and show them in a public app comes
+  from this licence text, not from any Broad statement.**
+- **Why both exist (DepMap staff on the forum; no formal Broad statement beyond forum posts).** These posts only
+  support "older Figshare deposits were released under CC BY 4.0; only newer data has the new terms". Phil
+  Montgomery (`pmontgom`), 2026-09-25, https://forum.depmap.org/t/ccle-depmap-license-clarification/4686 : "We used
+  to deposit data into figshare under a CC4.0 license, but stopped doing when DepMap switched to terms of use which
+  were not compatible with the CC4.0 license." Phil Montgomery (`pmontgom`), 2026-07-28,
+  https://forum.depmap.org/t/provide-an-open-endpoint-for-latest-version-retrieval/4652 : "Yes, older data has been
+  released on those platforms. However, for newly generated data, the DepMap data terms and conditions have
+  changed." In the 2026-09-25 post he also says a Zenodo mirror of newer files claiming a CC4.0 license "is not
+  valid": use only Broad's own Figshare records.
 - **Sanger GDSC on the DepMap portal.** The portal also hosts "Sanger GDSC1 and GDSC2" (Release 8.1, Oct 2019,
-  reprocessed) and "Sanger Drug Combinations 2022" (forum list of portal datasets, 2024-10-24,
-  https://forum.depmap.org/t/depmap-portal-datasets/3695). The portal's per-file licence for these could not be read
+  reprocessed) and "Sanger Drug Combinations 2022" (forum list of portal datasets, Samantha Stokes
+  (`Samantha_Stokes`), 2024-10-24, https://forum.depmap.org/t/depmap-portal-datasets/3695). The portal's per-file licence for these could not be read
   (captcha, see 4.), so it is **not verified**; the source data is under the Sanger DepMap Data Usage Policy
   (sections 3 and 4), so the portal copy is no way around Blocker 2. `PortalCompounds.csv` (DepMap 24Q4) maps
   compounds to `GDSC1:`/`GDSC2:` IDs, which confirms GDSC data is mixed into the portal.
@@ -159,7 +160,8 @@ deposited on Figshare are, and they are enough for loop 2.**
 **2. Releases.** The newest release is **DepMap Public 26Q3**, announced 2026-10-05
 (https://forum.depmap.org/t/announcing-the-26q3-release/4692). Since 2026 there are two releases a year (26Q1 and
 26Q3; https://forum.depmap.org/t/depmap-26q2-release/4569, 2026-01-29). 25Q2 and later exist only on the portal,
-under the new terms (https://forum.depmap.org/t/availability-of-depmap-25q2-on-figshare/4424, 2025-08-18: "the plan
+under the new terms (Phil Montgomery (`pmontgom`), 2025-08-18,
+https://forum.depmap.org/t/availability-of-depmap-25q2-on-figshare/4424 : "the plan
 moving forward is to release DepMap data directly on the DepMap portal without hosting it on figshare").
 **The newest CC BY 4.0 release is DepMap 24Q4 Public on Figshare+** (no 25Qx record was found on Figshare).
 
@@ -204,7 +206,7 @@ DepMap 24Q4 files (sizes from the Figshare API):
 **4. Download mechanics.**
 - **depmap.org sits behind a Cloudflare Turnstile check.** On 2026-11-04 every `https://depmap.org/portal/...` URL
   tried (terms, data page, `/portal/api/download/files`, and even `/portal/api/no-captcha/download/files`, which
-  staff announced as open on 2026-07-28) returned a 4.8 KB "DepMap — Verification" page to `curl`, with the note
+  Phil Montgomery announced as live on 2026-07-28 in thread 4652) returned a 4.8 KB "DepMap — Verification" page to `curl`, with the note
   "please don't scrape the portal". So the portal cannot be scripted and its per-file licence dialog was not read.
   The check was not bypassed.
 - **Figshare works without an account.** `https://ndownloader.figshare.com/files/<file_id>` answers HTTP 302 to a
@@ -230,7 +232,7 @@ DepMap 24Q4 files (sizes from the Figshare API):
 
 | Source | OK for a public GitHub repo? | OK to display in a public app? | Why |
 |---|---|---|---|
-| Figshare snapshots: DepMap 24Q4 Public + PRISM Repurposing 20Q2 (or 19Q4) + Repurposing Public 24Q2 | **Yes**, with attribution. Commit only small derived tables (e.g. the hotspot matrix cut to loop-2 genes, the AUC table); fetch the large raw files with a script. | **Yes**, with attribution | CC BY 4.0 on each record, and CC BY 4.0 is irrevocable; Broad staff say the old deposits keep their terms and may be put on another website if attributed. Models trained on them may be published. |
+| Figshare snapshots: DepMap 24Q4 Public + PRISM Repurposing 20Q2 (or 19Q4) + Repurposing Public 24Q2 | **Yes**, with attribution. Commit only small derived tables (e.g. the hotspot matrix cut to loop-2 genes, the AUC table); fetch the large raw files with a script. | **Yes**, with attribution | Each record carries CC BY 4.0, whose licence text (https://creativecommons.org/licenses/by/4.0/legalcode, Section 2(a)(1)) grants an irrevocable right to reproduce and share the material and adapted material, so redistribution, public display and publishing models trained on it are allowed with attribution. DepMap staff forum posts (2026-07-28, 2026-09-25) only confirm that older Figshare deposits were released under CC BY 4.0 and that only newer data has the new terms; no formal Broad statement beyond forum posts. |
 | Current portal releases (25Q2, 26Q1, 26Q3) | **No** | **Unclear, avoid** | Portal terms: ML use only internal or "shared for non-profit research purposes"; rehosting binds every visitor to the terms. Also captcha-gated, so no reproducible download script. |
 | GDSC via the DepMap portal | **No** (same as section 3) | **Unclear** | Sanger DepMap Data Usage Policy; the portal's licence text was not verified. |
 
