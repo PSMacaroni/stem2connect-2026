@@ -102,6 +102,7 @@ Never cut: loops 1 and 2, the evaluation protocol, the README disclosures, the v
 | 2026-11-04 | Main is pushed to the private repo after each PASS without asking; the public flip is a separate ask | Keeps CI honest; private and reversible | Ask before every push |
 | 2026-11-04 | Trained models ship as a GitHub release asset that the app downloads once at startup and caches; the pre-registered random forests stay | Loop 1 is 51 MB and loop 3 is 129 MB, too big for git; Streamlit Community Cloud builds from the repo | Smaller forests (a re-evaluation); logistic regression for loop 3 (lost on 12 of 12 by 0.01 to 0.11) |
 | 2026-11-04 | The safety tab shows each assay's score against the assay's active rate, with the assay's ROC-AUC and CI; no hard flag | Balanced accuracy at 0.5 is 0.52 to 0.70 and below 1-NN on 8 of 12 assays, while ROC-AUC beats 1-NN on 12 of 12 | A flag at a train-set threshold; the 0.5 flag |
+| 2026-11-04 | Loop 2 keeps all 202 drugs from the 3-per-gene plus selective rules, with the odd single-target picks (antibiotics under TOP2A, thiram under JAK2, anthelmintics under TUBB) named in Known limits | They are real PRISM screens on cancer cell lines; the app leads with the lookup; no fourth round | A moa blocklist; selective drugs only for the 9 loop-1 targets |
 | 2026-11-04 | Private GitHub repo PSMacaroni/stem2connect-2026 created and main pushed | CI on GitHub Actions; public flip in the last week | Stay local |
 | 2026-11-04 | Host on Streamlit Community Cloud, not Hugging Face Spaces | Spaces now needs a paid plan for Gradio and Docker Spaces; Community Cloud is free and known | Gradio on a free ZeroGPU Space; paying for HF PRO |
 | 2026-11-04 | Loop 2 uses the Broad Figshare snapshots (DepMap 24Q4 + PRISM 20Q2, CC BY 4.0) instead of Sanger GDSC + Cell Model Passports | Sanger's policy is non-transferable and bans use in third-party websites; the Figshare records carry CC BY 4.0 (checked on the Figshare API); current portal releases have restrictive terms and a captcha | Emailing Sanger for permission; keeping GDSC local-only; the 26Q3 portal release |
@@ -117,7 +118,7 @@ Never cut: loops 1 and 2, the evaluation protocol, the README disclosures, the v
 - Done 2026-11-04: loop 1 data and models PASS after two review rounds (wild-type only, salts stripped, RF shipped, ROC-AUC 0.845 to 0.971 with CIs, split variance disclosed). Results: `results/activity_models.md`.
 - Done 2026-11-04: the Streamlit app with the activity tab (loop 1) merged; headless health ok, example molecules and nearest actives render.
 - Done 2026-11-04: loop 3 (Tox21) data and models PASS on substance: random forest beats 1-NN on 12 of 12 assays (ROC-AUC 0.66 to 0.83), 7,709 parent molecules, shared scaffold split; contract amendment to score-vs-prevalence in progress.
-- In progress: loop-2 per-drug models, round 2 verification (202 drugs).
+- In progress: loop-2 per-drug models round 3 (disclosure only, 202 drugs); loop-3 contract fix; the models release bundle and startup download.
 - Then: loop-2 and loop-3 app tabs; README disclosures; hosting on Streamlit Community Cloud; first video take.
 
 ## Problems
