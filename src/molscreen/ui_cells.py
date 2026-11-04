@@ -48,7 +48,8 @@ def compounds(line: dict) -> None:
     st.dataframe(pd.DataFrame([{
         "name": r["name"], "AUC": round(r["auc"], 3), "target": r["target"] if isinstance(r["target"], str) else "",
         "structure": mol_png(r["smiles"]), "SMILES": r["smiles"],
-    } for r in rows]), hide_index=True, column_config={"structure": st.column_config.ImageColumn(width="small")})
+    } for r in rows]), hide_index=True, row_height=60, height=60 * len(rows) + 38,
+        column_config={"structure": st.column_config.ImageColumn(width="small")})
 
 
 def model_ranks(genes: list[str]) -> None:

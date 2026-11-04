@@ -27,14 +27,15 @@ def assays() -> dict:
 def table(r: dict) -> None:
     what = assays()
     df = pd.DataFrame([{
-        "assay": t, "what it measures": what[t]["what"], "score": round(a["p_active"], 3),
-        "assay active rate": round(a["prevalence"], 3), "ratio": round(a["ratio"], 2),
+        "assay": t, "score": a["p_active"], "assay active rate": a["prevalence"], "ratio": a["ratio"],
         "above rate": "▲" if a["above_prevalence"] else "",
         "assay ROC-AUC (95% CI)": "{:.3f} ({:.3f} to {:.3f})".format(a["roc_auc"], *a["roc_auc_ci95"]),
+        "what it measures": what[t]["what"],
     } for t, a in r["assays"].items()])
     st.dataframe(df.style.apply(
-        lambda row: ["background-color: rgba(255, 170, 0, 0.18)" if row["above rate"] else ""] * len(row), axis=1),
-        hide_index=True)
+        lambda row: ["background-color: rgba(255, 170, 0, 0.18)" if row["above rate"] else ""] * len(row), axis=1,
+    ).format({"score": "{:.3f}", "assay active rate": "{:.3f}", "ratio": "{:.2f}"}),
+        hide_index=True, height=35 * (len(df) + 1) + 3)
     train = load_bundle(MODEL_PATH)["train"].set_index("smiles")
     if r["smiles"] in train.index:
         calls = train.loc[r["smiles"], TASKS]
