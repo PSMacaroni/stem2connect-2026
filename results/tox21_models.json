@@ -1,0 +1,870 @@
+{
+  "tasks": {
+    "NR-AR": {
+      "n_train": 5745,
+      "n_test": 1401,
+      "train_actives": 254,
+      "test_actives": 54,
+      "test_active_frac": 0.03854389721627409,
+      "n_test_abstain": 448,
+      "majority": {
+        "roc_auc": 0.5,
+        "pr_auc": 0.03854389721627409,
+        "pr_auc_inactive": 0.961456102783726,
+        "balanced_acc": 0.5
+      },
+      "nn1": {
+        "roc_auc": 0.6595727130248288,
+        "pr_auc": 0.10749767644120795,
+        "pr_auc_inactive": 0.9734384325560896,
+        "balanced_acc": 0.6595727130248288
+      },
+      "lr": {
+        "roc_auc": 0.6995380681349501,
+        "pr_auc": 0.2749231727152042,
+        "pr_auc_inactive": 0.9788988222114385,
+        "balanced_acc": 0.6710385218180318,
+        "roc_auc_kept": 0.7264806656877141,
+        "roc_auc_ci95": [
+          0.6170780520328558,
+          0.7835715598184023
+        ]
+      },
+      "rf": {
+        "roc_auc": 0.7305878632901648,
+        "pr_auc": 0.4456098188141433,
+        "pr_auc_inactive": 0.9793046481564474,
+        "balanced_acc": 0.689247710962633,
+        "roc_auc_kept": 0.7641825746451296,
+        "roc_auc_ci95": [
+          0.6303589766188115,
+          0.8197645858613011
+        ]
+      }
+    },
+    "NR-AR-LBD": {
+      "n_train": 5428,
+      "n_test": 1226,
+      "train_actives": 197,
+      "test_actives": 40,
+      "test_active_frac": 0.03262642740619902,
+      "n_test_abstain": 381,
+      "majority": {
+        "roc_auc": 0.5,
+        "pr_auc": 0.03262642740619902,
+        "pr_auc_inactive": 0.967373572593801,
+        "balanced_acc": 0.5
+      },
+      "nn1": {
+        "roc_auc": 0.7411467116357504,
+        "pr_auc": 0.26021565272748975,
+        "pr_auc_inactive": 0.9828435057058059,
+        "balanced_acc": 0.7411467116357504
+      },
+      "lr": {
+        "roc_auc": 0.7758431703204048,
+        "pr_auc": 0.3523788243000686,
+        "pr_auc_inactive": 0.9833910688911283,
+        "balanced_acc": 0.7293423271500843,
+        "roc_auc_kept": 0.8426630840423945,
+        "roc_auc_ci95": [
+          0.6795316470943583,
+          0.8689371447684219
+        ]
+      },
+      "rf": {
+        "roc_auc": 0.8295531197301855,
+        "pr_auc": 0.46446113392306154,
+        "pr_auc_inactive": 0.9909830578350615,
+        "balanced_acc": 0.6957841483979764,
+        "roc_auc_kept": 0.8790117928048963,
+        "roc_auc_ci95": [
+          0.7386658535930316,
+          0.898918191964444
+        ]
+      }
+    },
+    "NR-AhR": {
+      "n_train": 5238,
+      "n_test": 1209,
+      "train_actives": 591,
+      "test_actives": 175,
+      "test_active_frac": 0.1447477253928867,
+      "n_test_abstain": 384,
+      "majority": {
+        "roc_auc": 0.5,
+        "pr_auc": 0.1447477253928867,
+        "pr_auc_inactive": 0.8552522746071133,
+        "balanced_acc": 0.5
+      },
+      "nn1": {
+        "roc_auc": 0.6483476098369716,
+        "pr_auc": 0.25060631300884617,
+        "pr_auc_inactive": 0.8938050994002286,
+        "balanced_acc": 0.6483476098369716
+      },
+      "lr": {
+        "roc_auc": 0.7736004421110804,
+        "pr_auc": 0.36855596962011994,
+        "pr_auc_inactive": 0.947417066252298,
+        "balanced_acc": 0.6957723127935893,
+        "roc_auc_kept": 0.7936046511627907,
+        "roc_auc_ci95": [
+          0.7366981784217943,
+          0.8070622130270164
+        ]
+      },
+      "rf": {
+        "roc_auc": 0.8275103619784471,
+        "pr_auc": 0.5319611839681866,
+        "pr_auc_inactive": 0.9588302515437488,
+        "balanced_acc": 0.6882177397071014,
+        "roc_auc_kept": 0.85049227635376,
+        "roc_auc_ci95": [
+          0.7906607442322005,
+          0.8600758140656187
+        ]
+      }
+    },
+    "NR-Aromatase": {
+      "n_train": 4703,
+      "n_test": 1016,
+      "train_actives": 197,
+      "test_actives": 91,
+      "test_active_frac": 0.08956692913385826,
+      "n_test_abstain": 321,
+      "majority": {
+        "roc_auc": 0.5,
+        "pr_auc": 0.08956692913385826,
+        "pr_auc_inactive": 0.9104330708661418,
+        "balanced_acc": 0.5
+      },
+      "nn1": {
+        "roc_auc": 0.6134897534897535,
+        "pr_auc": 0.17507712895304534,
+        "pr_auc_inactive": 0.929341111532192,
+        "balanced_acc": 0.6134897534897535
+      },
+      "lr": {
+        "roc_auc": 0.700944460944461,
+        "pr_auc": 0.21097235780966023,
+        "pr_auc_inactive": 0.953753222085712,
+        "balanced_acc": 0.5858330858330858,
+        "roc_auc_kept": 0.7373175314351786,
+        "roc_auc_ci95": [
+          0.6449493523122488,
+          0.7558473255023508
+        ]
+      },
+      "rf": {
+        "roc_auc": 0.7154083754083754,
+        "pr_auc": 0.34478534182539333,
+        "pr_auc_inactive": 0.9517929724543718,
+        "balanced_acc": 0.5736798336798337,
+        "roc_auc_kept": 0.736076986076986,
+        "roc_auc_ci95": [
+          0.6531196537364616,
+          0.7765728036631636
+        ]
+      }
+    },
+    "NR-ER": {
+      "n_train": 5017,
+      "n_test": 1095,
+      "train_actives": 652,
+      "test_actives": 138,
+      "test_active_frac": 0.12602739726027398,
+      "n_test_abstain": 325,
+      "majority": {
+        "roc_auc": 0.5,
+        "pr_auc": 0.12602739726027398,
+        "pr_auc_inactive": 0.873972602739726,
+        "balanced_acc": 0.5
+      },
+      "nn1": {
+        "roc_auc": 0.5880128117759302,
+        "pr_auc": 0.16857932153130664,
+        "pr_auc_inactive": 0.8938545354076409,
+        "balanced_acc": 0.5880128117759302
+      },
+      "lr": {
+        "roc_auc": 0.6324034952220858,
+        "pr_auc": 0.24403419750616923,
+        "pr_auc_inactive": 0.9093196424054524,
+        "balanced_acc": 0.587467629821453,
+        "roc_auc_kept": 0.6424078339462022,
+        "roc_auc_ci95": [
+          0.581921060195775,
+          0.6822901841489108
+        ]
+      },
+      "rf": {
+        "roc_auc": 0.6637211697181713,
+        "pr_auc": 0.30847399628582395,
+        "pr_auc_inactive": 0.9222291927064921,
+        "balanced_acc": 0.5986665758030076,
+        "roc_auc_kept": 0.6887299470642906,
+        "roc_auc_ci95": [
+          0.6072994608291056,
+          0.7122270681098876
+        ]
+      }
+    },
+    "NR-ER-LBD": {
+      "n_train": 5557,
+      "n_test": 1297,
+      "train_actives": 296,
+      "test_actives": 50,
+      "test_active_frac": 0.03855050115651504,
+      "n_test_abstain": 412,
+      "majority": {
+        "roc_auc": 0.5,
+        "pr_auc": 0.03855050115651504,
+        "pr_auc_inactive": 0.961449498843485,
+        "balanced_acc": 0.5
+      },
+      "nn1": {
+        "roc_auc": 0.6331595829991981,
+        "pr_auc": 0.10593271923061315,
+        "pr_auc_inactive": 0.9714264492199141,
+        "balanced_acc": 0.6331595829991981
+      },
+      "lr": {
+        "roc_auc": 0.6658861267040899,
+        "pr_auc": 0.17040941755241895,
+        "pr_auc_inactive": 0.9794186339150548,
+        "balanced_acc": 0.6011307137129109,
+        "roc_auc_kept": 0.6762878270055304,
+        "roc_auc_ci95": [
+          0.5848021910909768,
+          0.7386758016299217
+        ]
+      },
+      "rf": {
+        "roc_auc": 0.7013873295910185,
+        "pr_auc": 0.3240463719055797,
+        "pr_auc_inactive": 0.9754043540552408,
+        "balanced_acc": 0.6159903769045709,
+        "roc_auc_kept": 0.7030696576151122,
+        "roc_auc_ci95": [
+          0.6099562568806297,
+          0.7826694139194139
+        ]
+      }
+    },
+    "NR-PPAR-gamma": {
+      "n_train": 5231,
+      "n_test": 1124,
+      "train_actives": 133,
+      "test_actives": 53,
+      "test_active_frac": 0.04715302491103203,
+      "n_test_abstain": 342,
+      "majority": {
+        "roc_auc": 0.5,
+        "pr_auc": 0.04715302491103203,
+        "pr_auc_inactive": 0.952846975088968,
+        "balanced_acc": 0.5
+      },
+      "nn1": {
+        "roc_auc": 0.5788365660729701,
+        "pr_auc": 0.10861417505478474,
+        "pr_auc_inactive": 0.9599848893405968,
+        "balanced_acc": 0.5788365660729701
+      },
+      "lr": {
+        "roc_auc": 0.6641474199742791,
+        "pr_auc": 0.1757434331746146,
+        "pr_auc_inactive": 0.9740750556815607,
+        "balanced_acc": 0.5987350915208851,
+        "roc_auc_kept": 0.7527168076972639,
+        "roc_auc_ci95": [
+          0.5865914840787053,
+          0.7420357600375225
+        ]
+      },
+      "rf": {
+        "roc_auc": 0.7762186635660554,
+        "pr_auc": 0.2637257280851027,
+        "pr_auc_inactive": 0.9841345156313955,
+        "balanced_acc": 0.5174673643042123,
+        "roc_auc_kept": 0.8030582878742323,
+        "roc_auc_ci95": [
+          0.7147090200457384,
+          0.838726559022518
+        ]
+      }
+    },
+    "SR-ARE": {
+      "n_train": 4808,
+      "n_test": 940,
+      "train_actives": 703,
+      "test_actives": 223,
+      "test_active_frac": 0.2372340425531915,
+      "n_test_abstain": 280,
+      "majority": {
+        "roc_auc": 0.5,
+        "pr_auc": 0.2372340425531915,
+        "pr_auc_inactive": 0.7627659574468085,
+        "balanced_acc": 0.5
+      },
+      "nn1": {
+        "roc_auc": 0.5851673952880401,
+        "pr_auc": 0.2959411563075336,
+        "pr_auc_inactive": 0.7950431284338755,
+        "balanced_acc": 0.58516739528804
+      },
+      "lr": {
+        "roc_auc": 0.6663570807612686,
+        "pr_auc": 0.39303433577867775,
+        "pr_auc_inactive": 0.8381357271711407,
+        "balanced_acc": 0.6253416389915629,
+        "roc_auc_kept": 0.6972065375051802,
+        "roc_auc_ci95": [
+          0.6249997873343206,
+          0.7117202979855581
+        ]
+      },
+      "rf": {
+        "roc_auc": 0.6952142397007961,
+        "pr_auc": 0.4603863233574596,
+        "pr_auc_inactive": 0.8634050699270023,
+        "balanced_acc": 0.5973663308128663,
+        "roc_auc_kept": 0.7205112929962701,
+        "roc_auc_ci95": [
+          0.6550187050794544,
+          0.7322280542431425
+        ]
+      }
+    },
+    "SR-ATAD5": {
+      "n_train": 5654,
+      "n_test": 1310,
+      "train_actives": 197,
+      "test_actives": 66,
+      "test_active_frac": 0.050381679389312976,
+      "n_test_abstain": 416,
+      "majority": {
+        "roc_auc": 0.5,
+        "pr_auc": 0.050381679389312976,
+        "pr_auc_inactive": 0.9496183206106871,
+        "balanced_acc": 0.5
+      },
+      "nn1": {
+        "roc_auc": 0.5784492838351359,
+        "pr_auc": 0.09196133176250343,
+        "pr_auc_inactive": 0.9571862279295003,
+        "balanced_acc": 0.5784492838351359
+      },
+      "lr": {
+        "roc_auc": 0.7209271168274383,
+        "pr_auc": 0.1441191479777951,
+        "pr_auc_inactive": 0.9750018482962394,
+        "balanced_acc": 0.630091103965702,
+        "roc_auc_kept": 0.7181499818862456,
+        "roc_auc_ci95": [
+          0.6540130599974248,
+          0.7875987367584482
+        ]
+      },
+      "rf": {
+        "roc_auc": 0.7568815161258892,
+        "pr_auc": 0.18676971065043946,
+        "pr_auc_inactive": 0.9806509148483928,
+        "balanced_acc": 0.5346633537951866,
+        "roc_auc_kept": 0.7845187779253713,
+        "roc_auc_ci95": [
+          0.6907240415722586,
+          0.8166953273635554
+        ]
+      }
+    },
+    "SR-HSE": {
+      "n_train": 5244,
+      "n_test": 1132,
+      "train_actives": 273,
+      "test_actives": 94,
+      "test_active_frac": 0.08303886925795052,
+      "n_test_abstain": 352,
+      "majority": {
+        "roc_auc": 0.5,
+        "pr_auc": 0.08303886925795052,
+        "pr_auc_inactive": 0.9169611307420494,
+        "balanced_acc": 0.5
+      },
+      "nn1": {
+        "roc_auc": 0.5663202558110934,
+        "pr_auc": 0.11842103464537868,
+        "pr_auc_inactive": 0.9271777544976665,
+        "balanced_acc": 0.5663202558110934
+      },
+      "lr": {
+        "roc_auc": 0.6365299471159759,
+        "pr_auc": 0.17563739079359136,
+        "pr_auc_inactive": 0.9473209056962834,
+        "balanced_acc": 0.5267597261509449,
+        "roc_auc_kept": 0.6550487693438487,
+        "roc_auc_ci95": [
+          0.5756666613531215,
+          0.6891354580868339
+        ]
+      },
+      "rf": {
+        "roc_auc": 0.6734462755708606,
+        "pr_auc": 0.2539869213451633,
+        "pr_auc_inactive": 0.9461902717294166,
+        "balanced_acc": 0.537736235805354,
+        "roc_auc_kept": 0.7110689525020362,
+        "roc_auc_ci95": [
+          0.6138863259465386,
+          0.733025294282917
+        ]
+      }
+    },
+    "SR-MMP": {
+      "n_train": 4726,
+      "n_test": 1006,
+      "train_actives": 711,
+      "test_actives": 200,
+      "test_active_frac": 0.1988071570576541,
+      "n_test_abstain": 312,
+      "majority": {
+        "roc_auc": 0.5,
+        "pr_auc": 0.1988071570576541,
+        "pr_auc_inactive": 0.8011928429423459,
+        "balanced_acc": 0.5
+      },
+      "nn1": {
+        "roc_auc": 0.644075682382134,
+        "pr_auc": 0.3182199904024131,
+        "pr_auc_inactive": 0.8501625333865566,
+        "balanced_acc": 0.644075682382134
+      },
+      "lr": {
+        "roc_auc": 0.7364671215880894,
+        "pr_auc": 0.41334102507712644,
+        "pr_auc_inactive": 0.909255729537575,
+        "balanced_acc": 0.6518362282878412,
+        "roc_auc_kept": 0.7732126454378444,
+        "roc_auc_ci95": [
+          0.6975354434910818,
+          0.7731916215425252
+        ]
+      },
+      "rf": {
+        "roc_auc": 0.7967369727047146,
+        "pr_auc": 0.5264640674713736,
+        "pr_auc_inactive": 0.9280192274638842,
+        "balanced_acc": 0.6420471464019851,
+        "roc_auc_kept": 0.8139161053276179,
+        "roc_auc_ci95": [
+          0.7582324602194398,
+          0.8341980836903149
+        ]
+      }
+    },
+    "SR-p53": {
+      "n_train": 5424,
+      "n_test": 1251,
+      "train_actives": 284,
+      "test_actives": 137,
+      "test_active_frac": 0.10951239008792965,
+      "n_test_abstain": 386,
+      "majority": {
+        "roc_auc": 0.5,
+        "pr_auc": 0.10951239008792965,
+        "pr_auc_inactive": 0.8904876099120703,
+        "balanced_acc": 0.5
+      },
+      "nn1": {
+        "roc_auc": 0.5960240600715512,
+        "pr_auc": 0.19502062583509835,
+        "pr_auc_inactive": 0.9096297653572939,
+        "balanced_acc": 0.5960240600715512
+      },
+      "lr": {
+        "roc_auc": 0.6477479720609627,
+        "pr_auc": 0.24246967473572584,
+        "pr_auc_inactive": 0.927332051205972,
+        "balanced_acc": 0.5993067659122777,
+        "roc_auc_kept": 0.6639088528608836,
+        "roc_auc_ci95": [
+          0.5981997583312311,
+          0.6996574050159403
+        ]
+      },
+      "rf": {
+        "roc_auc": 0.7467041895451388,
+        "pr_auc": 0.3374492347522445,
+        "pr_auc_inactive": 0.9536687475783281,
+        "balanced_acc": 0.5370041541626807,
+        "roc_auc_kept": 0.779799710290267,
+        "roc_auc_ci95": [
+          0.7013598210674931,
+          0.7915136562426386
+        ]
+      }
+    }
+  },
+  "protocol": "docs/evaluation-loop3.md",
+  "source": {
+    "url": "https://deepchemdata.s3-us-west-1.amazonaws.com/datasets/tox21.csv.gz",
+    "date": "2026-11-04",
+    "bytes": 122925,
+    "sha256": "45d09792492ce049039dd24aa27b07fc79ce20c573187d4d90bcd178c0c0d360",
+    "licence": "none stated (US-government programme data, probably public domain, not verified)",
+    "cite": [
+      "doi:10.1039/C7SC02664A",
+      "doi:10.3389/fenvs.2015.00085"
+    ]
+  },
+  "dataset": {
+    "rows": 7831,
+    "rows_unparseable": 8,
+    "rows_salt_stripped": 244,
+    "molecules": 7709,
+    "rows_collapsed": 114,
+    "conflicting_cells": 47,
+    "tasks": {
+      "NR-AR": {
+        "tested": 7146,
+        "actives": 308,
+        "active_frac": 0.04310103554436048
+      },
+      "NR-AR-LBD": {
+        "tested": 6654,
+        "actives": 237,
+        "active_frac": 0.035617673579801626
+      },
+      "NR-AhR": {
+        "tested": 6447,
+        "actives": 766,
+        "active_frac": 0.11881495269117419
+      },
+      "NR-Aromatase": {
+        "tested": 5719,
+        "actives": 288,
+        "active_frac": 0.05035845427522294
+      },
+      "NR-ER": {
+        "tested": 6112,
+        "actives": 790,
+        "active_frac": 0.12925392670157068
+      },
+      "NR-ER-LBD": {
+        "tested": 6854,
+        "actives": 346,
+        "active_frac": 0.05048147067405894
+      },
+      "NR-PPAR-gamma": {
+        "tested": 6355,
+        "actives": 186,
+        "active_frac": 0.02926829268292683
+      },
+      "SR-ARE": {
+        "tested": 5748,
+        "actives": 926,
+        "active_frac": 0.16109951287404314
+      },
+      "SR-ATAD5": {
+        "tested": 6964,
+        "actives": 263,
+        "active_frac": 0.037765651924181506
+      },
+      "SR-HSE": {
+        "tested": 6376,
+        "actives": 367,
+        "active_frac": 0.057559598494353825
+      },
+      "SR-MMP": {
+        "tested": 5732,
+        "actives": 911,
+        "active_frac": 0.15893230983949755
+      },
+      "SR-p53": {
+        "tested": 6675,
+        "actives": 421,
+        "active_frac": 0.06307116104868914
+      }
+    }
+  },
+  "split": {
+    "n_train": 6167,
+    "n_test": 1542,
+    "abstain_cutoff": 0.3333333432674408,
+    "n_test_abstain": 484
+  },
+  "lr_params": {
+    "C": 1.0,
+    "class_weight": "balanced",
+    "max_iter": 2000
+  },
+  "rf_params": {
+    "n_estimators": 500,
+    "class_weight": "balanced",
+    "random_state": 0,
+    "n_jobs": -1
+  },
+  "n_boot": 1000,
+  "underpowered_actives": 20,
+  "shipped_model": "rf",
+  "lr_roc_auc_wins": 0,
+  "assays": {
+    "NR-AR": {
+      "aid": 743040,
+      "what": "switches on the androgen receptor (full-length, MDA breast cancer cell line)"
+    },
+    "NR-AR-LBD": {
+      "aid": 743053,
+      "what": "switches on the androgen receptor ligand-binding domain (HEK293 reporter cells)"
+    },
+    "NR-AhR": {
+      "aid": 743122,
+      "what": "switches on the aryl hydrocarbon receptor (responds to dioxin-like chemicals)"
+    },
+    "NR-Aromatase": {
+      "aid": 743139,
+      "what": "blocks aromatase, the enzyme that turns androgens into estrogens (MCF-7 aro ERE cells)"
+    },
+    "NR-ER": {
+      "aid": 743079,
+      "what": "switches on estrogen receptor alpha (full-length, BG1 ovarian cell line)"
+    },
+    "NR-ER-LBD": {
+      "aid": 743077,
+      "what": "switches on the estrogen receptor alpha ligand-binding domain (HEK293 reporter cells)"
+    },
+    "NR-PPAR-gamma": {
+      "aid": 743140,
+      "what": "switches on PPAR-gamma, a receptor that controls fat and sugar metabolism"
+    },
+    "SR-ARE": {
+      "aid": 743219,
+      "what": "switches on the antioxidant response element (an oxidative-stress signal)"
+    },
+    "SR-ATAD5": {
+      "aid": 720516,
+      "what": "raises ATAD5, a sign of DNA damage (genotoxicity; human embryonic kidney cells)"
+    },
+    "SR-HSE": {
+      "aid": 743228,
+      "what": "switches on the heat shock response (a protein-damage stress signal)"
+    },
+    "SR-MMP": {
+      "aid": 720637,
+      "what": "disrupts the mitochondrial membrane potential (mitochondria losing their charge)"
+    },
+    "SR-p53": {
+      "aid": 720552,
+      "what": "switches on p53 signalling (the cell's DNA-damage alarm)"
+    }
+  },
+  "model_file": {
+    "path": "models/tox21.joblib",
+    "kind": "rf",
+    "bytes": 129165820
+  },
+  "split_variance": {
+    "seeds": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "kind": "rf",
+    "tasks": {
+      "NR-AR": {
+        "rf": [
+          0.7305878632901648,
+          0.7404456999372253,
+          0.7190775681341719,
+          0.7256129985228951,
+          0.7130660113074925
+        ],
+        "nn1": [
+          0.6595727130248288,
+          0.6874199623352166,
+          0.6849545772187281,
+          0.6823042836041359,
+          0.6638058371109866
+        ]
+      },
+      "NR-AR-LBD": {
+        "rf": [
+          0.8295531197301855,
+          0.8133447902989109,
+          0.8442990116506052,
+          0.8047152194211017,
+          0.8278713598172771
+        ],
+        "nn1": [
+          0.7411467116357504,
+          0.7528674596431605,
+          0.7590256231121705,
+          0.7230859010270775,
+          0.7561689371074313
+        ]
+      },
+      "NR-AhR": {
+        "rf": [
+          0.8275103619784471,
+          0.8117629469531642,
+          0.821919385796545,
+          0.8293215863778424,
+          0.8216845693038628
+        ],
+        "nn1": [
+          0.6483476098369716,
+          0.6306551116333725,
+          0.6258431587606252,
+          0.6366876818622698,
+          0.6316102045032018
+        ]
+      },
+      "NR-Aromatase": {
+        "rf": [
+          0.7154083754083754,
+          0.7063164698278396,
+          0.6643517109571865,
+          0.6696909571909572,
+          0.6795406973978403
+        ],
+        "nn1": [
+          0.6134897534897535,
+          0.6120923673541336,
+          0.5939413490450047,
+          0.605988455988456,
+          0.5996919746919747
+        ]
+      },
+      "NR-ER": {
+        "rf": [
+          0.6637211697181713,
+          0.6423763466226311,
+          0.6517661271196491,
+          0.636804888827931,
+          0.6402594455580348
+        ],
+        "nn1": [
+          0.5880128117759302,
+          0.5929582448690729,
+          0.5895255247242974,
+          0.575755497645499,
+          0.5744147346923338
+        ]
+      },
+      "NR-ER-LBD": {
+        "rf": [
+          0.7013873295910185,
+          0.7144174865831843,
+          0.7180265951891949,
+          0.7274692107019354,
+          0.741685929775423
+        ],
+        "nn1": [
+          0.6331595829991981,
+          0.678844290399523,
+          0.6663678769102237,
+          0.6467117636352605,
+          0.6397489327956535
+        ]
+      },
+      "NR-PPAR-gamma": {
+        "rf": [
+          0.7762186635660554,
+          0.8011232925952552,
+          0.7842267826350596,
+          0.7615935262994087,
+          0.7782833206947605
+        ],
+        "nn1": [
+          0.5788365660729701,
+          0.5896117900790797,
+          0.5649290356811248,
+          0.5578120136943666,
+          0.5902123280251327
+        ]
+      },
+      "SR-ARE": {
+        "rf": [
+          0.6952142397007961,
+          0.7051279709721411,
+          0.7084954426726578,
+          0.6960177153778302,
+          0.6847775896567646
+        ],
+        "nn1": [
+          0.5851673952880401,
+          0.6057008571985193,
+          0.5971468756278883,
+          0.5898755268058414,
+          0.5946783130675697
+        ]
+      },
+      "SR-ATAD5": {
+        "rf": [
+          0.7568815161258892,
+          0.7681957263242376,
+          0.7534700682382135,
+          0.7513071510005112,
+          0.7469014925373134
+        ],
+        "nn1": [
+          0.5784492838351359,
+          0.5879188402889245,
+          0.5888130686517784,
+          0.5839721665290718,
+          0.569289552238806
+        ]
+      },
+      "SR-HSE": {
+        "rf": [
+          0.6734462755708606,
+          0.6725407709209756,
+          0.7042984564092571,
+          0.6849493517862353,
+          0.6759011231730814
+        ],
+        "nn1": [
+          0.5663202558110934,
+          0.562208089039054,
+          0.5686930354398043,
+          0.5692192254783441,
+          0.5744395883265191
+        ]
+      },
+      "SR-MMP": {
+        "rf": [
+          0.7967369727047146,
+          0.7944411601368662,
+          0.8069869445994806,
+          0.7874805862939236,
+          0.7971601054834857
+        ],
+        "nn1": [
+          0.644075682382134,
+          0.6476146969778398,
+          0.6447044334975369,
+          0.6559041933605125,
+          0.6600611378498871
+        ]
+      },
+      "SR-p53": {
+        "rf": [
+          0.7467041895451388,
+          0.7437586206896551,
+          0.7475887709467104,
+          0.7564067910053932,
+          0.7332968200661174
+        ],
+        "nn1": [
+          0.5960240600715512,
+          0.585,
+          0.5929872299154049,
+          0.585225444388668,
+          0.5877761452484651
+        ]
+      }
+    }
+  }
+}
