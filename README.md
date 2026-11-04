@@ -8,6 +8,14 @@ Primary track: [Education / Healthcare / Sustainability / Scientific Research / 
 
 ## What it does
 
+A learning tool for students: paste a molecule (as SMILES), pick one of 9 cancer-related protein targets, and the
+app estimates whether the molecule is likely to be active on that target, using a model trained on public ChEMBL
+lab measurements. Next to each answer it shows the 3 most similar molecules the model learned from, with their
+structures and measured activity, so you can see the evidence. The models use wild-type protein measurements only,
+and when a molecule is unlike anything in the training data the app abstains and says so instead of guessing. The
+data comes from lab assays on proteins and cell lines, not patients: this is a research and learning tool, not
+medical advice, and it does not discover drugs.
+
 ## The problem it addresses
 
 ## How to run it
@@ -28,6 +36,8 @@ everything in WSL. On Linux or macOS, skip step 1 and run the rest in a normal t
    `uv run pytest -q`
    It worked if the last line says `passed` and nothing `failed`.
 6. Optional: check the code style with `uv run ruff check .` (it should say `All checks passed!`).
+7. Start the app: `uv run streamlit run app.py`, then open http://localhost:8501 in your browser. It needs the
+   trained models in `models/` (made by `uv run python -m molscreen.train`).
 
 ## AI tools and services used
 **Inside the project:**
