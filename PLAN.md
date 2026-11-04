@@ -56,7 +56,8 @@ chemistry encoder from Hugging Face (ChemBERTa-100M MIT or MoLFormer Apache-2.0;
 licence). Each licence is checked and written into `docs/data-registry.md` before any download, and credited in the
 README. Raw data never goes in git; pull scripts do.
 
-**Build.** Streamlit app hosted on **Streamlit Community Cloud** (Hugging Face Spaces no longer runs code for free,
+**Build.** Models (loop 1 forests 51 MB, loop 3 forest 129 MB, loop 2 logistic 1.5 MB) ship as a GitHub release asset
+that the app downloads once at startup and caches (decided 2026-11-04). Streamlit app hosted on **Streamlit Community Cloud** (Hugging Face Spaces no longer runs code for free,
 checked 2026-11-04). Memory ceiling about 2.7 GB, so models stay small and are bundled with the app. The app sleeps
 after 12 idle hours: wake it before judging. Repo private until the last week, then public.
 
@@ -99,6 +100,8 @@ Never cut: loops 1 and 2, the evaluation protocol, the README disclosures, the v
 | 2026-11-04 | Loop 2 ships logistic regression, overriding the pre-registered switch rule by a dated amendment | The random forest won 32 of 60 (a tie-sized margin) and weighs 73 MB; logistic regression is a few hundred KB and within 0.01 median ROC-AUC | Bundle the random forest |
 | 2026-11-04 | Loop 2 drug set also includes every selective (single-target) compound for an oncology gene with 300+ lines; multi-target compounds go to the gene with the fewest compounds so far | 3 per gene by screening count still left out dabrafenib and vemurafenib; "first listed gene" put paclitaxel under BCL2 | 5 per gene; leave the gap |
 | 2026-11-04 | Main is pushed to the private repo after each PASS without asking; the public flip is a separate ask | Keeps CI honest; private and reversible | Ask before every push |
+| 2026-11-04 | Trained models ship as a GitHub release asset that the app downloads once at startup and caches; the pre-registered random forests stay | Loop 1 is 51 MB and loop 3 is 129 MB, too big for git; Streamlit Community Cloud builds from the repo | Smaller forests (a re-evaluation); logistic regression for loop 3 (lost on 12 of 12 by 0.01 to 0.11) |
+| 2026-11-04 | The safety tab shows each assay's score against the assay's active rate, with the assay's ROC-AUC and CI; no hard flag | Balanced accuracy at 0.5 is 0.52 to 0.70 and below 1-NN on 8 of 12 assays, while ROC-AUC beats 1-NN on 12 of 12 | A flag at a train-set threshold; the 0.5 flag |
 | 2026-11-04 | Private GitHub repo PSMacaroni/stem2connect-2026 created and main pushed | CI on GitHub Actions; public flip in the last week | Stay local |
 | 2026-11-04 | Host on Streamlit Community Cloud, not Hugging Face Spaces | Spaces now needs a paid plan for Gradio and Docker Spaces; Community Cloud is free and known | Gradio on a free ZeroGPU Space; paying for HF PRO |
 | 2026-11-04 | Loop 2 uses the Broad Figshare snapshots (DepMap 24Q4 + PRISM 20Q2, CC BY 4.0) instead of Sanger GDSC + Cell Model Passports | Sanger's policy is non-transferable and bans use in third-party websites; the Figshare records carry CC BY 4.0 (checked on the Figshare API); current portal releases have restrictive terms and a captcha | Emailing Sanger for permission; keeping GDSC local-only; the 26Q3 portal release |
@@ -113,7 +116,8 @@ Never cut: loops 1 and 2, the evaluation protocol, the README disclosures, the v
 - Done 2026-11-04: loop-2 data layer (DepMap 24Q4 + PRISM 20Q2 pull, derived tables, nearest-cell-line lookup, protocol first). Private GitHub repo created and pushed.
 - Done 2026-11-04: loop 1 data and models PASS after two review rounds (wild-type only, salts stripped, RF shipped, ROC-AUC 0.845 to 0.971 with CIs, split variance disclosed). Results: `results/activity_models.md`.
 - Done 2026-11-04: the Streamlit app with the activity tab (loop 1) merged; headless health ok, example molecules and nearest actives render.
-- In progress: loop-2 per-drug models, round 2 (selective drugs); loop 3 (Tox21 safety flags) data and models.
+- Done 2026-11-04: loop 3 (Tox21) data and models PASS on substance: random forest beats 1-NN on 12 of 12 assays (ROC-AUC 0.66 to 0.83), 7,709 parent molecules, shared scaffold split; contract amendment to score-vs-prevalence in progress.
+- In progress: loop-2 per-drug models, round 2 verification (202 drugs).
 - Then: loop-2 and loop-3 app tabs; README disclosures; hosting on Streamlit Community Cloud; first video take.
 
 ## Problems
