@@ -36,14 +36,59 @@ Name, lineage, primary disease (never `Age`, `Sex` or `PatientRace`; they are dr
 never written), shared mutated genes, and its 10 most sensitive compounds (lowest `auc`) with name, SMILES and
 target genes.
 
-## Per-drug models (later task; rules fixed now)
-- Drugs with at least 300 screened cell lines that are also in the hotspot matrix.
-- Label: sensitive when `auc` is below the 10th percentile of that drug's `auc` (threshold from training lines only).
-- Split: leave-lineage-out by `OncotreeLineage` (same greedy rule as `molscreen.chem.scaffold_split`, lineage as
-  the group), so no lineage is in both train and test and a model cannot memorise a lineage.
-- Baselines as in `docs/evaluation.md`: majority class (ROC-AUC 0.5) and 1-nearest-neighbour by hotspot Jaccard.
-- Metrics: ROC-AUC with a bootstrap 95% CI (headline), PR-AUC of the sensitive class next to its prevalence,
-  balanced accuracy; test size and number of sensitive lines always shown. Too few sensitive lines: say so.
+## Per-drug models (final rules and fixed parameters, written 2026-11-04 before any model was trained)
+Code: `src/molscreen/drugs.py`. These are sensitivity models for **cell lines, not patients**. A model on 542
+hotspot genes explains little of drug response; we expect many drugs near ROC-AUC 0.5 and will say so.
+
+**Drug set** (Prakhar's decision, 2026-11-04). Candidates: compounds whose PRISM `target` field names at least one
+gene symbol (every `target` token in the 20Q2 file is a symbol) and that have at least 300 screened cell lines
+which are also in the hotspot matrix. That is far more than 60 (the 300-line rule alone passes 1,457 of 1,494),
+so keep only candidates that match the oncology target list below, then the 60 with the most such lines (ties by
+compound ID). A compound matches when a `target` token is in the list, or a listed symbol appears as a whole word
+in `moa` (for example "EGFR inhibitor"). The final list (name, Broad ID, target) is written to
+`results/loop2_models.md`.
+
+Oncology target list: EGFR, BRAF, ERBB2, CDK4, CDK6, ALK, ABL1, PARP1, BCL2 (the loop-1 targets), MAP2K1,
+MAP2K2 (MEK1/2), MTOR, PIK3CA, KIT, FLT3, BTK, JAK1, JAK2, AURKA, AURKB, PLK1, TOP1, TOP2A, TUBB, HDAC1, PSMB5,
+MDM2, BCL2L1, KDR (VEGFR2), MET, RET, FGFR1.
+
+**Features.** The cell line's 0/1 hotspot vector (all 542 genes of the matrix, `hotspot_binary.csv`), nothing else.
+
+**Label.** Sensitive (1) when the line's `auc` for the drug is strictly below the 10th percentile
+(`numpy.percentile`, linear) of that drug's `auc` over its **training lines only**; else 0. The same threshold
+labels the test lines.
+
+**Split.** Leave-lineage-out. The cell lines are those in PRISM after QC, in the hotspot matrix and with an
+`OncotreeLineage` in `Model.csv`. Group them by `OncotreeLineage` and apply the greedy rule of
+`molscreen.chem.scaffold_split` (both now call `molscreen.split.group_split(groups, test_frac=0.2, seed=0)`):
+groups go to train largest first while they fit under 80% of the lines; groups that do not fit go to test; the
+seed only breaks ties between equal-size groups. **One split shared by every drug**: a drug's train (test) lines
+are the split's train (test) lines that were screened on that drug, so results are comparable across drugs.
+
+**Baselines.** Majority class (constant score, ROC-AUC 0.5). 1-nearest-neighbour by hotspot Jaccard among the
+drug's training lines: predicted label = the neighbour's label, score = 1 - the neighbour's `auc` (ties between
+equally similar neighbours: the first by `ModelID`).
+
+**Models** (scikit-learn, parameters fixed now, no tuning, no inner split):
+- Logistic regression: L2, `C=1.0`, `class_weight="balanced"`, `max_iter=1000` (other arguments default).
+- Random forest: 300 trees, `class_weight="balanced"`, `random_state=0` (other arguments default).
+
+**Which model ships (switch rule, pre-registered, applied once across drugs).** Logistic regression ships for
+every drug unless the random forest has the higher held-out ROC-AUC on more than half of the drugs that are not
+underpowered. The shipped model is the one fit on the training lines, so its held-out numbers are its own.
+
+**Metrics per drug, held-out lines.** ROC-AUC with a bootstrap 95% CI (1000 resamples of the test lines, seed 0;
+one-class resamples skipped) for every model and baseline; PR-AUC of the sensitive class next to its test
+prevalence (the PR-AUC of a random ranking); balanced accuracy at 0.5 (1-NN: its predicted label); test size and
+number of sensitive test lines. A drug with **fewer than 5 sensitive test lines is "underpowered"**: reported,
+not hidden, and left out of the switch-rule count.
+
+**Abstain.** A query gene set that shares no gene with any of a model's training lines (no listed gene is mutated
+in any of them) gets no prediction from that model; when that holds for every model the app says the query is
+outside what the models have seen and shows no prediction.
+
+**Wording.** "Cell lines, not patients." "A research and learning tool, not medical advice." Say that hotspot
+genes explain little of drug response and that many drugs are near 0.5. Never "predicts a patient's response".
 
 ## Reporting
 Counts and the worked example go to `results/loop2_data.md`, built from one run of `molscreen.depmap`.
@@ -58,3 +103,8 @@ Counts and the worked example go to `results/loop2_data.md`, built from one run 
   listed genes and no other hotspot outranked a line with all 3 plus other hotspots. For KRAS/TP53/STK11, 43
   screened lines tied at Jaccard 0.667 and the top 10 was decided by the name sort. Rejected: plain Jaccard;
   weighting genes by rarity.
+- 2026-11-04, after the data report, before any model was trained, decided by Prakhar: per-drug models only for
+  compounds whose `target` names a gene, matched against an oncology target list and capped at 60 (was: every
+  drug with at least 300 lines in the hotspot matrix). Why: 1,457 of 1,494 compounds pass the 300-line rule, so it
+  selects nothing. The section above now also fixes the features, label rule, shared split, models, parameters,
+  switch rule, underpowered flag and abstain rule. Rejected: the 30 most variable drugs; all 1,457.
