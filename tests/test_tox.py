@@ -64,11 +64,19 @@ def test_predict_tox_abstains_on_methane_and_reports_bad_smiles(tmp_path):
     assert bad["error"] == "invalid SMILES" and bad["assays"] == {} and bad["abstain"] is None
     assert salt["smiles"] == known and salt["max_tanimoto"] == 1.0 and salt["abstain"] is False
     assert set(salt["assays"]) == {"NR-AR", "SR-p53"}
-    assert all(0.0 <= a["p_active"] <= 1.0 and a["flag"] == (a["p_active"] >= 0.5) for a in salt["assays"].values())
+    ar = salt["assays"]["NR-AR"]
+    assert set(ar) == {"p_active", "prevalence", "ratio", "above_prevalence", "roc_auc", "roc_auc_ci95"}
+    assert ar["prevalence"] == res["NR-AR"]["train_actives"] / res["NR-AR"]["n_train"]
+    assert ar["roc_auc"] == res["NR-AR"]["lr"]["roc_auc"] and ar["roc_auc_ci95"] == res["NR-AR"]["lr"]["roc_auc_ci95"]
+    for a in salt["assays"].values():
+        assert 0.0 <= a["p_active"] <= 1.0 and 0.0 < a["prevalence"] < 1.0
+        assert a["ratio"] == pytest.approx(a["p_active"] / a["prevalence"])
+        assert a["above_prevalence"] == (a["p_active"] > a["prevalence"])
 
 
 @pytest.mark.skipif(not MODEL_PATH.exists(), reason="needs models/tox21.joblib from `python -m molscreen.tox`")
 def test_real_model_gives_12_probabilities_for_aspirin():
     (r,) = predict_tox(["CC(=O)Oc1ccccc1C(=O)O"])
     assert r["error"] is None and set(r["assays"]) == set(TASKS)
-    assert all(0.0 <= a["p_active"] <= 1.0 for a in r["assays"].values())
+    assert all(0.0 <= a["p_active"] <= 1.0 and 0.0 < a["prevalence"] < 1.0 for a in r["assays"].values())
+    assert all(a["roc_auc"] > 0.5 and len(a["roc_auc_ci95"]) == 2 for a in r["assays"].values())

@@ -173,8 +173,8 @@ Changing the split alone moves the random forest's ROC-AUC by up to 0.0511 (NR-A
 - **Licence not stated.** Neither MoleculeNet/DeepChem nor the NCATS challenge page states a licence for the data. Tox21 is a US-government programme, so it is probably public domain (inferred, not verified). The raw file is never committed; `scripts/pull_tox21.py` downloads it.
 - **Salts stripped, charges kept.** 244 of 7831 rows were mixtures or salts reduced to their largest fragment; a counter-ion's own activity is lost, and charged forms are not neutralised.
 - **Any active call wins on collapse.** 47 (parent, assay) cells had both an active and an inactive row; they count as active.
-- **Probabilities are not risks.** Both models use balanced class weights, so a probability above 0.5 does not mean a 50% chance of being active; the flag at 0.5 is a ranking cut, not a calibrated one.
-- **The flag at 0.5 is weaker than the ranking.** The random forest's balanced accuracy at 0.5 is 0.517 to 0.696 across assays (per-metric list above). Its ranking (ROC-AUC) is the stronger signal: read a probability as a rank among molecules, not as a yes or no.
+- **Probabilities are not risks.** Both models use balanced class weights, so a probability is not a calibrated chance of being active.
+- **A 0.5 cut is weaker than the ranking, so the app shows no hard flag.** The random forest's balanced accuracy at 0.5 is 0.517 to 0.696 across assays (per-metric list above), while its ROC-AUC beats 1-NN on every assay. App contract (`molscreen.tox.predict_tox`, amendment 2026-11-04 in `docs/evaluation-loop3.md`): per assay the probability next to the assay's train-set active fraction (n train actives / n train in the JSON), their ratio, whether it is above that fraction, and the held-out ROC-AUC with its 95% CI from the tables above.
 - **Abstain is common**: 484 of 1542 held-out parents are below the cut-off, because a scaffold split makes held-out molecules unlike train by design.
 - **The assays are lab tests on cells and proteins**, at the concentrations screened; they say nothing direct about dose, exposure or harm in people.
 

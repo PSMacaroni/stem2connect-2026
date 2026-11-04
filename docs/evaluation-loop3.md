@@ -57,3 +57,9 @@ min / median / max. Nothing is saved or chosen from it; seed 0 stays the reporte
 ## Wording
 "A flag means the molecule resembles compounds that were active in that assay; it is not a toxicity verdict." The
 assays are cell-based and biochemical lab tests, not people. Research and learning tool, not medical advice.
+
+## Amendment 2026-11-04: app contract, after the first results (decided by Prakhar)
+Changes no data rule, model, metric or switch rule. Reason: at 0.5 the random forest's balanced accuracy is 0.517
+to 0.696 and below 1-NN on 8 of 12 assays, while its ROC-AUC beats 1-NN on 12 of 12. So the app shows no hard flag:
+per assay `predict_tox` returns `p_active`, `prevalence` (train-set active fraction), `ratio` = p_active /
+prevalence, `above_prevalence`, and the shipped model's held-out `roc_auc` with `roc_auc_ci95`.

@@ -155,9 +155,12 @@ def load_bundle(path: Path = MODEL_PATH) -> dict:
 
 
 def predict_tox(smiles_list: list[str], path: Path = MODEL_PATH) -> list[dict]:
-    """App contract. One dict per input: parent SMILES or `error`, max Tanimoto to train, abstain flag, and per assay
-    the probability of active and `flag` (probability >= 0.5). Probabilities are given even when `abstain` is True;
-    the caller decides what to show. A bad SMILES never stops the batch."""
+    """App contract (score vs prevalence, no hard flag; docs/evaluation-loop3.md amendment 2026-11-04).
+    One dict per input: parent SMILES or `error`, max Tanimoto to train, abstain flag, and per assay: `p_active`,
+    `prevalence` (the assay's train-set active fraction), `ratio` = p_active / prevalence, `above_prevalence`
+    (p_active > prevalence), and the shipped model's held-out `roc_auc` and `roc_auc_ci95`. Scores are given even when
+    `abstain` is True; the caller decides what to show. A bad SMILES never stops the batch. `path` lets the app load
+    the bundle from any folder (for example a download cache)."""
     b = load_bundle(path)
     out, fps, where = [], [], []
     for s in smiles_list:
@@ -174,8 +177,14 @@ def predict_tox(smiles_list: list[str], path: Path = MODEL_PATH) -> list[dict]:
     if fps:
         X = np.stack(fps)
         for task, m in b["models"].items():
+            r = b["metrics"][task]
+            prev = r["train_actives"] / r["n_train"]
             for i, p in zip(where, m.predict_proba(X)[:, 1]):
-                out[i]["assays"][task] = {"p_active": float(p), "flag": bool(p >= 0.5)}
+                out[i]["assays"][task] = {
+                    "p_active": float(p), "prevalence": prev, "ratio": float(p) / prev,
+                    "above_prevalence": bool(p > prev), "roc_auc": r[b["kind"]]["roc_auc"],
+                    "roc_auc_ci95": r[b["kind"]]["roc_auc_ci95"],
+                }
     return out
 
 
@@ -300,11 +309,14 @@ def write_md(res: dict) -> None:
          "neutralised."),
         (f"- **Any active call wins on collapse.** {ds['conflicting_cells']} (parent, assay) cells had both an active "
          "and an inactive row; they count as active."),
-        ("- **Probabilities are not risks.** Both models use balanced class weights, so a probability above 0.5 "
-         "does not mean a 50% chance of being active; the flag at 0.5 is a ranking cut, not a calibrated one."),
-        (f"- **The flag at 0.5 is weaker than the ranking.** The {sname}'s balanced accuracy at 0.5 is "
-         f"{min(bal):.3f} to {max(bal):.3f} across assays (per-metric list above). Its ranking (ROC-AUC) is the "
-         "stronger signal: read a probability as a rank among molecules, not as a yes or no."),
+        ("- **Probabilities are not risks.** Both models use balanced class weights, so a probability is not a "
+         "calibrated chance of being active."),
+        (f"- **A 0.5 cut is weaker than the ranking, so the app shows no hard flag.** The {sname}'s balanced "
+         f"accuracy at 0.5 is {min(bal):.3f} to {max(bal):.3f} across assays (per-metric list above), while its "
+         "ROC-AUC beats 1-NN on every assay. App contract (`molscreen.tox.predict_tox`, amendment 2026-11-04 in "
+         "`docs/evaluation-loop3.md`): per assay the probability next to the assay's train-set active fraction "
+         "(n train actives / n train in the JSON), their ratio, whether it is above that fraction, and the held-out "
+         "ROC-AUC with its 95% CI from the tables above."),
         (f"- **Abstain is common**: {sp['n_test_abstain']} of {sp['n_test']} held-out parents are below the cut-off, "
          "because a scaffold split makes held-out molecules unlike train by design."),
         ("- **The assays are lab tests on cells and proteins**, at the concentrations screened; they say nothing "
