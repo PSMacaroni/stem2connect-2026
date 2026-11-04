@@ -46,3 +46,8 @@ target genes.
 
 ## Reporting
 Counts and the worked example go to `results/loop2_data.md`, built from one run of `molscreen.depmap`.
+
+## Changes
+- 2026-11-04, after the download, before the lookup was first run: nearest cell lines are searched only among
+  lines that have at least one PRISM `auc` after QC. Why: only 726 of the 1,929 hotspot-matrix lines are in PRISM,
+  so most neighbours would otherwise have no drug evidence to show.
