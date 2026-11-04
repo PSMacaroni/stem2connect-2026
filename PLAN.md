@@ -10,8 +10,10 @@ Four loops, in ship order. Loops 1 and 2 are never cut.
 1. **Molecules → activity.** Paste SMILES, pick a cancer target (EGFR, BRAF, HER2/ERBB2, CDK4, CDK6, ALK, ABL1,
    PARP1, BCL2), get a ranked activity prediction plus the nearest known actives from ChEMBL shown as evidence.
 2. **Mutations → drugs.** Enter mutated genes; see the most similar cancer cell lines with their measured drug
-   sensitivities, plus trained sensitivity models for the 20 to 30 best-sampled drugs. Cell-line data (Broad DepMap
-   mutations + PRISM repurposing screens, CC BY 4.0 pending the check in `docs/data-registry.md`), never patients.
+   sensitivities, plus trained sensitivity models for the 20 to 30 best-sampled drugs. Cell-line data, never patients: the Broad
+   **Figshare snapshots** DepMap 24Q4 Public (mutations, `Model.csv` without the donor age/sex/race columns) and PRISM
+   Repurposing 20Q2 (dose-response: `auc`, `ic50`, `smiles`), joined on `ModelID`; all CC BY 4.0 (verified 2026-11-04).
+   The current DepMap portal releases (25Q2 onward) are NOT used: new terms restrict ML use and the portal is captcha-gated.
 3. **Molecules → safety flags.** Tox21 assays per molecule, with confidence and an abstain when the molecule is
    unlike the training set.
 4. **Analog enumeration.** RDKit transforms on a known active, scored by loops 1 and 3, top few shown.
@@ -45,8 +47,8 @@ Stretch: a graph neural network trained on Colab.
 response". GDSC rows are cell lines.
 
 **Data and licences.** ChEMBL_37 (activities, CC BY-SA 3.0: derived data files carry the same licence), Tox21 via
-MoleculeNet (safety; licence unstated, so the raw file is never committed), Broad DepMap + PRISM (drug sensitivity
-and cell-line mutations; replaces Sanger GDSC / Cell Model Passports, whose policy is non-transferable), an open
+MoleculeNet (safety; licence unstated, so the raw file is never committed), Broad DepMap 24Q4 + PRISM 20Q2 Figshare snapshots (drug
+sensitivity and cell-line mutations, CC BY 4.0; replaces Sanger GDSC / Cell Model Passports, whose policy is non-transferable), an open
 chemistry encoder from Hugging Face (ChemBERTa-100M MIT or MoLFormer Apache-2.0; not ChemBERTa-77M, which has no
 licence). Each licence is checked and written into `docs/data-registry.md` before any download, and credited in the
 README. Raw data never goes in git; pull scripts do.
@@ -84,7 +86,7 @@ Never cut: loops 1 and 2, the evaluation protocol, the README disclosures, the v
 | 2026-11-04 | Streamlit on Hugging Face Spaces, Community Cloud fallback | More memory and disk; named on the Resources page; Streamlit known | Gradio; local only |
 | 2026-11-04 | $0 spend cap | Everything fits free tiers | $10, $25 |
 | 2026-11-04 | Host on Streamlit Community Cloud, not Hugging Face Spaces | Spaces now needs a paid plan for Gradio and Docker Spaces; Community Cloud is free and known | Gradio on a free ZeroGPU Space; paying for HF PRO |
-| 2026-11-04 | Loop 2 uses Broad DepMap + PRISM instead of Sanger GDSC + Cell Model Passports (pending the licence check) | Sanger's policy is non-transferable and bans use in third-party websites; DepMap public releases are believed CC BY 4.0 | Emailing Sanger for permission; keeping GDSC local-only |
+| 2026-11-04 | Loop 2 uses the Broad Figshare snapshots (DepMap 24Q4 + PRISM 20Q2, CC BY 4.0) instead of Sanger GDSC + Cell Model Passports | Sanger's policy is non-transferable and bans use in third-party websites; the Figshare records carry CC BY 4.0 (checked on the Figshare API); current portal releases have restrictive terms and a captcha | Emailing Sanger for permission; keeping GDSC local-only; the 26Q3 portal release |
 
 ## Done
 - 2026-11-03: scaffold (README skeleton, rules, templates).
@@ -92,7 +94,8 @@ Never cut: loops 1 and 2, the evaluation protocol, the README disclosures, the v
   Data registry with licences merged (`docs/data-registry.md`).
 
 ## Next
-- In progress: loop-1 ChEMBL pulls, evaluation protocol, activity models; Broad DepMap / PRISM licence check.
+- In progress: loop-1 ChEMBL pulls, evaluation protocol, activity models.
+- Done 2026-11-04: Broad DepMap / PRISM licence check (registry section 3b).
 - Then: the Streamlit app with the activity tab; README disclosures; private GitHub repo.
 
 ## Problems
