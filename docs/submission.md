@@ -1,10 +1,8 @@
 # Devpost submission text
 
-Template for the Devpost form. Fill in near the end, and check every claim against what the project does.
-Do a numbers pass: every figure traces to a source file or a run.
-
-Draft written 2026-11-04. Before pasting: update "What it does" when the cell-lines and safety tabs land, add the
-links, and re-run the numbers pass against the results files (a re-run changes them).
+<!-- Draft written 2026-11-04. Before pasting: update "What it does" when the cell-lines and safety tabs land, add the
+links, and re-run the numbers pass against the results files (a re-run changes them). Every figure traces to a
+source file or a run (Numbers appendix). -->
 
 ## Project name
 Molecule Screening Workbench
@@ -56,8 +54,6 @@ Held-out results (numbers from the results files in the repository):
   12 (`results/tox21_models.md`).
 
 ## How it uses AI
-What AI does inside the project, and what AI coding assistants contributed (disclosed). Say what we changed or tested.
-
 **Inside the project.** The app runs machine-learning models trained here on public lab data; no large language
 model or external AI API is called by the app.
 - Activity: one random forest per target on Morgan fingerprints (radius 2, 2048 bits), with RDKit and scikit-learn.
@@ -103,7 +99,7 @@ before every merge. Commits carry Co-Authored-By trailers. Of the 46 non-merge c
 - A medicinal chemist's review of the examples, the wording and the abstain behaviour.
 
 ## Built with
-Languages, libraries, datasets, APIs, each credited. Devpost's tag box splits on spaces: one word per tag.
+<!-- Devpost's tag box splits on spaces: one word per tag. -->
 
 python rdkit scikit-learn lightgbm streamlit pandas numpy joblib uv pytest ruff chembl depmap prism tox21
 moleculenet streamlit-community-cloud github claude-code

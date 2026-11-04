@@ -3,9 +3,6 @@
 Entry for the [STEM2Connect AI Hackathon 2026](https://stem2connect-online-hackathon.devpost.com/).
 Primary track: Scientific Research
 
-> Template. Fill each section in before submitting. Devpost requires this README to say what the project does,
-> how to run it, and which AI tools or services it uses. The submission deadline is Nov 21, 2026, 11:59 PM EST.
-
 ## What it does
 
 A learning tool for students: paste a molecule (as SMILES), pick one of 9 cancer-related protein targets, and the
