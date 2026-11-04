@@ -4,414 +4,621 @@
       "target_chembl_id": "CHEMBL203",
       "dataset": {
         "rows_pulled": 20384,
-        "rows_kept": 19814,
-        "molecules": 11023,
-        "actives": 8307,
-        "active_frac": 0.753606096344008,
-        "scaffolds": 3964
+        "rows_mutant_dropped": 4708,
+        "rows_kept": 15106,
+        "chembl_ids": 9823,
+        "molecules": 9778,
+        "ids_collapsed": 45,
+        "actives": 7061,
+        "active_frac": 0.7221313151973818,
+        "scaffolds": 3527,
+        "rows_by_type": {
+          "IC50": 14616,
+          "Ki": 341,
+          "EC50": 149
+        },
+        "rows_functional": 850,
+        "molecules_stereo_siblings": 408
       },
-      "n_train": 8818,
-      "n_test": 2205,
-      "test_active_frac": 0.7215419501133787,
+      "n_train": 7822,
+      "n_test": 1956,
+      "test_active_frac": 0.6947852760736196,
+      "test_inactives": 597,
       "majority": {
         "roc_auc": 0.5,
-        "pr_auc": 0.7215419501133787,
+        "pr_auc": 0.6947852760736196,
+        "pr_auc_inactive": 0.3052147239263804,
         "balanced_acc": 0.5
       },
       "nn1": {
-        "roc_auc": 0.8200786385961751,
-        "pr_auc": 0.906396992865834,
-        "balanced_acc": 0.7198482096974635
+        "roc_auc": 0.81752212127599,
+        "pr_auc": 0.8876697884140319,
+        "pr_auc_inactive": 0.6583693584213323,
+        "balanced_acc": 0.7411838441656405
       },
       "abstain": {
-        "cutoff": 0.6666666865348816,
-        "n_test_abstain": 729,
-        "n_test_kept": 1476
+        "cutoff": 0.6538811326026917,
+        "n_test_abstain": 673,
+        "n_test_kept": 1283
       },
       "rf": {
-        "roc_auc": 0.8766176600052822,
-        "pr_auc": 0.9429200141227727,
-        "balanced_acc": 0.7278451468664331,
-        "roc_auc_kept": 0.906924913404082
+        "roc_auc": 0.878866370113999,
+        "pr_auc": 0.9405990742924988,
+        "pr_auc_inactive": 0.7568110840772626,
+        "balanced_acc": 0.7565199063751429,
+        "roc_auc_kept": 0.9138993832434453,
+        "roc_auc_ci95": [
+          0.8633783165248332,
+          0.8941188548504974
+        ]
       },
       "lgbm": {
-        "roc_auc": 0.8502509023681661,
-        "pr_auc": 0.9280823195872551,
-        "balanced_acc": 0.7331324203530855,
-        "roc_auc_kept": 0.895977257358928
+        "roc_auc": 0.8484315124802329,
+        "pr_auc": 0.9201939116868623,
+        "pr_auc_inactive": 0.7103085525338959,
+        "balanced_acc": 0.7538187626876103,
+        "roc_auc_kept": 0.8953816681796337,
+        "roc_auc_ci95": [
+          0.8284956415475795,
+          0.8673149881290991
+        ]
       },
       "model_file": {
         "path": "models/EGFR.joblib",
         "kind": "rf",
-        "bytes": 20373881
+        "bytes": 19146734
       }
     },
     "BRAF": {
       "target_chembl_id": "CHEMBL5145",
       "dataset": {
         "rows_pulled": 9268,
-        "rows_kept": 9260,
-        "molecules": 5381,
-        "actives": 4628,
-        "active_frac": 0.8600631852815461,
-        "scaffolds": 1881
+        "rows_mutant_dropped": 3960,
+        "rows_kept": 5300,
+        "chembl_ids": 2992,
+        "molecules": 2991,
+        "ids_collapsed": 1,
+        "actives": 2571,
+        "active_frac": 0.8595787362086259,
+        "scaffolds": 1053,
+        "rows_by_type": {
+          "IC50": 5218,
+          "Ki": 17,
+          "EC50": 65
+        },
+        "rows_functional": 49,
+        "molecules_stereo_siblings": 115
       },
-      "n_train": 4304,
-      "n_test": 1077,
-      "test_active_frac": 0.8217270194986073,
+      "n_train": 2392,
+      "n_test": 599,
+      "test_active_frac": 0.8414023372287145,
+      "test_inactives": 95,
       "majority": {
         "roc_auc": 0.5,
-        "pr_auc": 0.8217270194986073,
+        "pr_auc": 0.8414023372287145,
+        "pr_auc_inactive": 0.15859766277128548,
         "balanced_acc": 0.5
       },
       "nn1": {
-        "roc_auc": 0.7906279425612053,
-        "pr_auc": 0.9299580923160179,
-        "balanced_acc": 0.7061264124293785
+        "roc_auc": 0.7871136173767754,
+        "pr_auc": 0.940275303414301,
+        "pr_auc_inactive": 0.5164758110610683,
+        "balanced_acc": 0.7018170426065162
       },
       "abstain": {
-        "cutoff": 0.7241379022598267,
-        "n_test_abstain": 464,
-        "n_test_kept": 613
+        "cutoff": 0.719298243522644,
+        "n_test_abstain": 276,
+        "n_test_kept": 323
       },
       "rf": {
-        "roc_auc": 0.870300729755179,
-        "pr_auc": 0.9645996908145286,
-        "balanced_acc": 0.6810646186440678,
-        "roc_auc_kept": 0.897397135712662
+        "roc_auc": 0.858782372598162,
+        "pr_auc": 0.9662204365757556,
+        "pr_auc_inactive": 0.6370017081461818,
+        "balanced_acc": 0.6835213032581454,
+        "roc_auc_kept": 0.9051958433253398,
+        "roc_auc_ci95": [
+          0.8196676286325,
+          0.8977613257801644
+        ]
       },
       "lgbm": {
-        "roc_auc": 0.8764065442561205,
-        "pr_auc": 0.9674077291108616,
-        "balanced_acc": 0.7027100988700565,
-        "roc_auc_kept": 0.9043873607638099
+        "roc_auc": 0.8566416040100251,
+        "pr_auc": 0.966223606777184,
+        "pr_auc_inactive": 0.648600660838785,
+        "balanced_acc": 0.7044903926482874,
+        "roc_auc_kept": 0.9108713029576339,
+        "roc_auc_ci95": [
+          0.8186863336435254,
+          0.8931528334091233
+        ]
       },
       "model_file": {
         "path": "models/BRAF.joblib",
         "kind": "rf",
-        "bytes": 7490996
+        "bytes": 3896564
       }
     },
     "ERBB2": {
       "target_chembl_id": "CHEMBL1824",
       "dataset": {
         "rows_pulled": 3481,
-        "rows_kept": 3458,
-        "molecules": 2560,
-        "actives": 1870,
-        "active_frac": 0.73046875,
-        "scaffolds": 1042
+        "rows_mutant_dropped": 13,
+        "rows_kept": 3445,
+        "chembl_ids": 2560,
+        "molecules": 2553,
+        "ids_collapsed": 7,
+        "actives": 1865,
+        "active_frac": 0.7305131218174696,
+        "scaffolds": 1039,
+        "rows_by_type": {
+          "IC50": 3339,
+          "Ki": 71,
+          "EC50": 35
+        },
+        "rows_functional": 316,
+        "molecules_stereo_siblings": 178
       },
-      "n_train": 2048,
-      "n_test": 512,
-      "test_active_frac": 0.7421875,
+      "n_train": 2042,
+      "n_test": 511,
+      "test_active_frac": 0.7534246575342466,
+      "test_inactives": 126,
       "majority": {
         "roc_auc": 0.5,
-        "pr_auc": 0.7421875,
+        "pr_auc": 0.7534246575342466,
+        "pr_auc_inactive": 0.2465753424657534,
         "balanced_acc": 0.5
       },
       "nn1": {
-        "roc_auc": 0.7910586124401915,
-        "pr_auc": 0.8871737509587837,
-        "balanced_acc": 0.7278309409888357
+        "roc_auc": 0.7937847866419296,
+        "pr_auc": 0.9102941825013624,
+        "pr_auc_inactive": 0.612777145199102,
+        "balanced_acc": 0.7348484848484849
       },
       "abstain": {
         "cutoff": 0.644444465637207,
-        "n_test_abstain": 144,
-        "n_test_kept": 368
+        "n_test_abstain": 147,
+        "n_test_kept": 364
       },
       "rf": {
-        "roc_auc": 0.8804525518341306,
-        "pr_auc": 0.9498418328442001,
-        "balanced_acc": 0.7185805422647529,
-        "roc_auc_kept": 0.879427577482606
+        "roc_auc": 0.8452690166975881,
+        "pr_auc": 0.9302818951436442,
+        "pr_auc_inactive": 0.7124016628210521,
+        "balanced_acc": 0.7294372294372294,
+        "roc_auc_kept": 0.8264515108368928,
+        "roc_auc_ci95": [
+          0.8006501588731517,
+          0.8813851378916449
+        ]
       },
       "lgbm": {
-        "roc_auc": 0.8695873205741627,
-        "pr_auc": 0.9463728098882436,
-        "balanced_acc": 0.7441387559808612,
-        "roc_auc_kept": 0.8664083913135148
+        "roc_auc": 0.8235827664399094,
+        "pr_auc": 0.9186907844265613,
+        "pr_auc_inactive": 0.6627660448322702,
+        "balanced_acc": 0.731096681096681,
+        "roc_auc_kept": 0.8027210884353742,
+        "roc_auc_ci95": [
+          0.7733575156906881,
+          0.8645481740341071
+        ]
       },
       "model_file": {
         "path": "models/ERBB2.joblib",
         "kind": "rf",
-        "bytes": 5062851
+        "bytes": 4968641
       }
     },
     "CDK4": {
       "target_chembl_id": "CHEMBL331",
       "dataset": {
         "rows_pulled": 1675,
+        "rows_mutant_dropped": 0,
         "rows_kept": 1669,
-        "molecules": 1404,
-        "actives": 1238,
-        "active_frac": 0.8817663817663818,
-        "scaffolds": 520
+        "chembl_ids": 1404,
+        "molecules": 1401,
+        "ids_collapsed": 3,
+        "actives": 1235,
+        "active_frac": 0.8815132048536759,
+        "scaffolds": 520,
+        "rows_by_type": {
+          "IC50": 1590,
+          "Ki": 79,
+          "EC50": 0
+        },
+        "rows_functional": 29,
+        "molecules_stereo_siblings": 235
       },
-      "n_train": 1123,
+      "n_train": 1120,
       "n_test": 281,
       "test_active_frac": 0.8718861209964412,
+      "test_inactives": 36,
       "majority": {
         "roc_auc": 0.5,
         "pr_auc": 0.8718861209964412,
+        "pr_auc_inactive": 0.12811387900355872,
         "balanced_acc": 0.5
       },
       "nn1": {
-        "roc_auc": 0.8284013605442176,
-        "pr_auc": 0.965909054240323,
-        "balanced_acc": 0.6160430839002268
+        "roc_auc": 0.8545918367346939,
+        "pr_auc": 0.9701918982644733,
+        "pr_auc_inactive": 0.5281994489539068,
+        "balanced_acc": 0.6834467120181406
       },
       "abstain": {
-        "cutoff": 0.7050144672393799,
-        "n_test_abstain": 96,
-        "n_test_kept": 185
+        "cutoff": 0.7049180269241333,
+        "n_test_abstain": 97,
+        "n_test_kept": 184
       },
       "rf": {
-        "roc_auc": 0.8861678004535148,
-        "pr_auc": 0.9798799090629828,
-        "balanced_acc": 0.5653628117913833,
-        "roc_auc_kept": 0.890655105973025
+        "roc_auc": 0.8921768707482993,
+        "pr_auc": 0.9800261833016817,
+        "pr_auc_inactive": 0.638620385990743,
+        "balanced_acc": 0.6605442176870748,
+        "roc_auc_kept": 0.9238658777120315,
+        "roc_auc_ci95": [
+          0.8308279878958625,
+          0.9415244886339784
+        ]
       },
       "lgbm": {
-        "roc_auc": 0.8789115646258504,
-        "pr_auc": 0.9768931626694467,
-        "balanced_acc": 0.6760770975056689,
-        "roc_auc_kept": 0.8675337186897881
+        "roc_auc": 0.8842403628117913,
+        "pr_auc": 0.9762215981599422,
+        "pr_auc_inactive": 0.579830949969187,
+        "balanced_acc": 0.7095804988662131,
+        "roc_auc_kept": 0.908086785009862,
+        "roc_auc_ci95": [
+          0.8164952619312464,
+          0.9348008271790884
+        ]
       },
       "model_file": {
         "path": "models/CDK4.joblib",
         "kind": "rf",
-        "bytes": 1721756
+        "bytes": 1718441
       }
     },
     "CDK6": {
       "target_chembl_id": "CHEMBL2508",
       "dataset": {
         "rows_pulled": 1026,
+        "rows_mutant_dropped": 0,
         "rows_kept": 1026,
+        "chembl_ids": 821,
         "molecules": 821,
+        "ids_collapsed": 0,
         "actives": 795,
         "active_frac": 0.9683313032886723,
-        "scaffolds": 337
+        "scaffolds": 337,
+        "rows_by_type": {
+          "IC50": 1023,
+          "Ki": 3,
+          "EC50": 0
+        },
+        "rows_functional": 19,
+        "molecules_stereo_siblings": 69
       },
       "n_train": 656,
       "n_test": 165,
-      "test_active_frac": 0.9636363636363636,
+      "test_active_frac": 0.9515151515151515,
+      "test_inactives": 8,
       "majority": {
         "roc_auc": 0.5,
-        "pr_auc": 0.9636363636363636,
+        "pr_auc": 0.9515151515151515,
+        "pr_auc_inactive": 0.048484848484848485,
         "balanced_acc": 0.5
       },
       "nn1": {
-        "roc_auc": 0.7840670859538784,
-        "pr_auc": 0.9806177372406031,
-        "balanced_acc": 0.5707547169811321
+        "roc_auc": 0.8180732484076434,
+        "pr_auc": 0.9811091356440034,
+        "pr_auc_inactive": 0.5379906737155877,
+        "balanced_acc": 0.625
       },
       "abstain": {
-        "cutoff": 0.7086650133132935,
-        "n_test_abstain": 49,
-        "n_test_kept": 116
+        "cutoff": 0.7123287916183472,
+        "n_test_abstain": 53,
+        "n_test_kept": 112
       },
       "rf": {
-        "roc_auc": 0.9014675052410902,
-        "pr_auc": 0.9958246974870726,
-        "balanced_acc": 0.5833333333333334,
-        "roc_auc_kept": 0.9013157894736843
+        "roc_auc": 0.8937101910828026,
+        "pr_auc": 0.9936176606152949,
+        "pr_auc_inactive": 0.4106227106227106,
+        "balanced_acc": 0.5,
+        "roc_auc_kept": 0.8272727272727273,
+        "roc_auc_ci95": [
+          0.7843549875606132,
+          0.980092088641617
+        ]
       },
       "lgbm": {
-        "roc_auc": 0.7704402515723271,
-        "pr_auc": 0.9719316135261098,
-        "balanced_acc": 0.6540880503144654,
-        "roc_auc_kept": 0.4649122807017544
+        "roc_auc": 0.7985668789808917,
+        "pr_auc": 0.9663531499664895,
+        "pr_auc_inactive": 0.3975641007671535,
+        "balanced_acc": 0.625,
+        "roc_auc_kept": 0.4318181818181818,
+        "roc_auc_ci95": [
+          0.5417583857442348,
+          0.9633832816157657
+        ]
       },
       "model_file": {
         "path": "models/CDK6.joblib",
         "kind": "rf",
-        "bytes": 420449
+        "bytes": 401360
       }
     },
     "ALK": {
       "target_chembl_id": "CHEMBL4247",
       "dataset": {
         "rows_pulled": 4201,
-        "rows_kept": 4201,
-        "molecules": 2476,
-        "actives": 1950,
-        "active_frac": 0.7875605815831987,
-        "scaffolds": 1143
+        "rows_mutant_dropped": 923,
+        "rows_kept": 3278,
+        "chembl_ids": 2429,
+        "molecules": 2428,
+        "ids_collapsed": 1,
+        "actives": 1902,
+        "active_frac": 0.7833607907742999,
+        "scaffolds": 1121,
+        "rows_by_type": {
+          "IC50": 2932,
+          "Ki": 340,
+          "EC50": 6
+        },
+        "rows_functional": 275,
+        "molecules_stereo_siblings": 98
       },
-      "n_train": 1980,
-      "n_test": 496,
-      "test_active_frac": 0.6975806451612904,
+      "n_train": 1942,
+      "n_test": 486,
+      "test_active_frac": 0.6831275720164609,
+      "test_inactives": 154,
       "majority": {
         "roc_auc": 0.5,
-        "pr_auc": 0.6975806451612904,
+        "pr_auc": 0.6831275720164609,
+        "pr_auc_inactive": 0.3168724279835391,
         "balanced_acc": 0.5
       },
       "nn1": {
-        "roc_auc": 0.8565028901734105,
-        "pr_auc": 0.9134857485072708,
-        "balanced_acc": 0.7690944123314065
+        "roc_auc": 0.8518619934282585,
+        "pr_auc": 0.8941277943918968,
+        "pr_auc_inactive": 0.7525919237045708,
+        "balanced_acc": 0.7705562509779378
       },
       "abstain": {
-        "cutoff": 0.5392826199531555,
-        "n_test_abstain": 114,
-        "n_test_kept": 382
+        "cutoff": 0.5271042585372925,
+        "n_test_abstain": 111,
+        "n_test_kept": 375
       },
       "rf": {
-        "roc_auc": 0.9076011560693642,
-        "pr_auc": 0.9557216847276131,
-        "balanced_acc": 0.7619845857418113,
-        "roc_auc_kept": 0.9281359052038195
+        "roc_auc": 0.9141761852605226,
+        "pr_auc": 0.9610871019432428,
+        "pr_auc_inactive": 0.8141858048789958,
+        "balanced_acc": 0.7493350023470505,
+        "roc_auc_kept": 0.9370806741940763,
+        "roc_auc_ci95": [
+          0.8879927256433916,
+          0.9384294622024592
+        ]
       },
       "lgbm": {
-        "roc_auc": 0.8914836223506744,
-        "pr_auc": 0.9465114006695148,
-        "balanced_acc": 0.7979768786127168,
-        "roc_auc_kept": 0.9118763661464125
+        "roc_auc": 0.9055507745266781,
+        "pr_auc": 0.9521886272113294,
+        "pr_auc_inactive": 0.8136608926483865,
+        "balanced_acc": 0.7695196369895165,
+        "roc_auc_kept": 0.9196530846015382,
+        "roc_auc_ci95": [
+          0.8764982217740105,
+          0.9325221122435602
+        ]
       },
       "model_file": {
         "path": "models/ALK.joblib",
         "kind": "rf",
-        "bytes": 4540148
+        "bytes": 4481267
       }
     },
     "ABL1": {
       "target_chembl_id": "CHEMBL1862",
       "dataset": {
         "rows_pulled": 5350,
-        "rows_kept": 5337,
-        "molecules": 3038,
-        "actives": 2430,
-        "active_frac": 0.7998683344305464,
-        "scaffolds": 1255
+        "rows_mutant_dropped": 722,
+        "rows_kept": 4615,
+        "chembl_ids": 2935,
+        "molecules": 2912,
+        "ids_collapsed": 23,
+        "actives": 2316,
+        "active_frac": 0.7953296703296703,
+        "scaffolds": 1207,
+        "rows_by_type": {
+          "IC50": 3501,
+          "Ki": 1068,
+          "EC50": 46
+        },
+        "rows_functional": 239,
+        "molecules_stereo_siblings": 231
       },
-      "n_train": 2430,
-      "n_test": 608,
-      "test_active_frac": 0.6957236842105263,
+      "n_train": 2329,
+      "n_test": 583,
+      "test_active_frac": 0.7066895368782161,
+      "test_inactives": 171,
       "majority": {
         "roc_auc": 0.5,
-        "pr_auc": 0.6957236842105263,
+        "pr_auc": 0.7066895368782161,
+        "pr_auc_inactive": 0.2933104631217839,
         "balanced_acc": 0.5
       },
       "nn1": {
-        "roc_auc": 0.8362980001277873,
-        "pr_auc": 0.9134349642658846,
-        "balanced_acc": 0.7339722701424829
+        "roc_auc": 0.859386532674729,
+        "pr_auc": 0.9340343400329054,
+        "pr_auc_inactive": 0.6893954027390609,
+        "balanced_acc": 0.7519091012320445
       },
       "abstain": {
-        "cutoff": 0.5799075365066528,
-        "n_test_abstain": 218,
-        "n_test_kept": 390
+        "cutoff": 0.5526211857795715,
+        "n_test_abstain": 189,
+        "n_test_kept": 394
       },
       "rf": {
-        "roc_auc": 0.855370263880902,
-        "pr_auc": 0.9327860576830127,
-        "balanced_acc": 0.6940962238834579,
-        "roc_auc_kept": 0.9068103448275864
+        "roc_auc": 0.8792440243002327,
+        "pr_auc": 0.9490515009112258,
+        "pr_auc_inactive": 0.7409134129429606,
+        "balanced_acc": 0.7035783228297281,
+        "roc_auc_kept": 0.934603769655316,
+        "roc_auc_ci95": [
+          0.852745009943655,
+          0.9059968761841755
+        ]
       },
       "lgbm": {
-        "roc_auc": 0.836681362213277,
-        "pr_auc": 0.9279325477825766,
-        "balanced_acc": 0.6927608459523353,
-        "roc_auc_kept": 0.9090172413793103
+        "roc_auc": 0.8702378924657923,
+        "pr_auc": 0.945782408229087,
+        "pr_auc_inactive": 0.7064347673708382,
+        "balanced_acc": 0.7548898540850508,
+        "roc_auc_kept": 0.9292929292929293,
+        "roc_auc_ci95": [
+          0.841469249543749,
+          0.8980008710076822
+        ]
       },
       "model_file": {
         "path": "models/ABL1.joblib",
         "kind": "rf",
-        "bytes": 5148585
+        "bytes": 4984229
       }
     },
     "PARP1": {
       "target_chembl_id": "CHEMBL3105",
       "dataset": {
         "rows_pulled": 5787,
+        "rows_mutant_dropped": 0,
         "rows_kept": 5782,
-        "molecules": 4510,
-        "actives": 3833,
-        "active_frac": 0.8498891352549889,
-        "scaffolds": 2013
+        "chembl_ids": 4510,
+        "molecules": 4504,
+        "ids_collapsed": 6,
+        "actives": 3827,
+        "active_frac": 0.8496891651865008,
+        "scaffolds": 2012,
+        "rows_by_type": {
+          "IC50": 4184,
+          "Ki": 1200,
+          "EC50": 398
+        },
+        "rows_functional": 5,
+        "molecules_stereo_siblings": 195
       },
-      "n_train": 3608,
-      "n_test": 902,
-      "test_active_frac": 0.8370288248337029,
+      "n_train": 3603,
+      "n_test": 901,
+      "test_active_frac": 0.8257491675915649,
+      "test_inactives": 157,
       "majority": {
         "roc_auc": 0.5,
-        "pr_auc": 0.8370288248337029,
+        "pr_auc": 0.8257491675915649,
+        "pr_auc_inactive": 0.17425083240843509,
         "balanced_acc": 0.5
       },
       "nn1": {
-        "roc_auc": 0.872018741271343,
-        "pr_auc": 0.9586226611878049,
-        "balanced_acc": 0.7122674235257016
+        "roc_auc": 0.8420399287720017,
+        "pr_auc": 0.9536154942311881,
+        "pr_auc_inactive": 0.5991954527626785,
+        "balanced_acc": 0.698064344907883
       },
       "abstain": {
-        "cutoff": 0.6206896305084229,
-        "n_test_abstain": 171,
-        "n_test_kept": 731
+        "cutoff": 0.6153846383094788,
+        "n_test_abstain": 178,
+        "n_test_kept": 723
       },
       "rf": {
-        "roc_auc": 0.9000045051133035,
-        "pr_auc": 0.9734331899833337,
-        "balanced_acc": 0.6812046672973825,
-        "roc_auc_kept": 0.907367744699079
+        "roc_auc": 0.8966380727347443,
+        "pr_auc": 0.9737257036173478,
+        "pr_auc_inactive": 0.6975197589053903,
+        "balanced_acc": 0.6570440380795836,
+        "roc_auc_kept": 0.9032747777054868,
+        "roc_auc_ci95": [
+          0.8690264949865814,
+          0.9222376014340984
+        ]
       },
       "lgbm": {
-        "roc_auc": 0.8975537234761455,
-        "pr_auc": 0.9689728660303838,
-        "balanced_acc": 0.7371311438482677,
-        "roc_auc_kept": 0.9138287998857714
+        "roc_auc": 0.891856722142319,
+        "pr_auc": 0.9688512343752197,
+        "pr_auc_inactive": 0.6943439125524817,
+        "balanced_acc": 0.696750222587494,
+        "roc_auc_kept": 0.9088411768958288,
+        "roc_auc_ci95": [
+          0.8629321753709563,
+          0.9194490563086676
+        ]
       },
       "model_file": {
         "path": "models/PARP1.joblib",
         "kind": "rf",
-        "bytes": 7222388
+        "bytes": 7089130
       }
     },
     "BCL2": {
       "target_chembl_id": "CHEMBL4860",
       "dataset": {
         "rows_pulled": 5873,
-        "rows_kept": 5855,
+        "rows_mutant_dropped": 44,
+        "rows_kept": 5811,
+        "chembl_ids": 3142,
         "molecules": 3142,
+        "ids_collapsed": 0,
         "actives": 2701,
         "active_frac": 0.8596435391470401,
-        "scaffolds": 1470
+        "scaffolds": 1470,
+        "rows_by_type": {
+          "IC50": 2796,
+          "Ki": 2931,
+          "EC50": 84
+        },
+        "rows_functional": 72,
+        "molecules_stereo_siblings": 280
       },
       "n_train": 2513,
       "n_test": 629,
-      "test_active_frac": 0.8394276629570747,
+      "test_active_frac": 0.8298887122416534,
+      "test_inactives": 107,
       "majority": {
         "roc_auc": 0.5,
-        "pr_auc": 0.8394276629570747,
+        "pr_auc": 0.8298887122416534,
+        "pr_auc_inactive": 0.17011128775834658,
         "balanced_acc": 0.5
       },
       "nn1": {
-        "roc_auc": 0.9481510651065106,
-        "pr_auc": 0.9877053530558721,
-        "balanced_acc": 0.8721497149714972
+        "roc_auc": 0.9498334944677194,
+        "pr_auc": 0.9873676979458001,
+        "pr_auc_inactive": 0.8346461234531346,
+        "balanced_acc": 0.8556325419844595
       },
       "abstain": {
-        "cutoff": 0.7378571629524231,
-        "n_test_abstain": 97,
-        "n_test_kept": 532
+        "cutoff": 0.7385664582252502,
+        "n_test_abstain": 102,
+        "n_test_kept": 527
       },
       "rf": {
-        "roc_auc": 0.9618586858685869,
-        "pr_auc": 0.991498799842746,
-        "balanced_acc": 0.8471815931593158,
-        "roc_auc_kept": 0.9542004825619654
+        "roc_auc": 0.971318079278118,
+        "pr_auc": 0.9939082283570823,
+        "pr_auc_inactive": 0.8853779104358727,
+        "balanced_acc": 0.847360976832456,
+        "roc_auc_kept": 0.9705835522649471,
+        "roc_auc_ci95": [
+          0.9574606228083931,
+          0.9824916681242883
+        ]
       },
       "lgbm": {
-        "roc_auc": 0.9634338433843384,
-        "pr_auc": 0.9927014150826324,
-        "balanced_acc": 0.8622487248724873,
-        "roc_auc_kept": 0.9669225707391971
+        "roc_auc": 0.9646578579868944,
+        "pr_auc": 0.992385941732115,
+        "pr_auc_inactive": 0.8710927678985133,
+        "balanced_acc": 0.8557489168188491,
+        "roc_auc_kept": 0.9642942440888465,
+        "roc_auc_ci95": [
+          0.9482627236910959,
+          0.9771868357699915
+        ]
       },
       "model_file": {
         "path": "models/BCL2.joblib",
         "kind": "rf",
-        "bytes": 4259492
+        "bytes": 4150777
       }
     }
   },
@@ -437,5 +644,57 @@
     "n_jobs": -1
   },
   "shipped_model": "rf",
-  "rf_pr_auc_wins": 7
+  "rf_pr_auc_wins": 8,
+  "n_boot": 1000,
+  "underpowered_inactives": 50,
+  "first_run": {
+    "commit": "4c71e50",
+    "molecules_rf_roc_auc_lgbm_roc_auc": {
+      "EGFR": [
+        11023,
+        0.8766,
+        0.8503
+      ],
+      "BRAF": [
+        5381,
+        0.8703,
+        0.8764
+      ],
+      "ERBB2": [
+        2560,
+        0.8805,
+        0.8696
+      ],
+      "CDK4": [
+        1404,
+        0.8862,
+        0.8789
+      ],
+      "CDK6": [
+        821,
+        0.9015,
+        0.7704
+      ],
+      "ALK": [
+        2476,
+        0.9076,
+        0.8915
+      ],
+      "ABL1": [
+        3038,
+        0.8554,
+        0.8367
+      ],
+      "PARP1": [
+        4510,
+        0.9,
+        0.8976
+      ],
+      "BCL2": [
+        3142,
+        0.9619,
+        0.9634
+      ]
+    }
+  }
 }
