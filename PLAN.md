@@ -94,6 +94,9 @@ Never cut: loops 1 and 2, the evaluation protocol, the README disclosures, the v
 | 2026-11-04 | Headline metric is ROC-AUC with a bootstrap 95% CI next to the 1-NN baseline; then inactive-class PR-AUC vs random; balanced accuracy shown even where RF loses; active-class PR-AUC last | Actives are 70 to 97% of molecules, so active-class PR-AUC is inflated by construction | Inactive-class PR-AUC as the headline |
 | 2026-11-04 | Nearest cell lines rank by number of shared mutated genes first, then Jaccard | Plain Jaccard put lines carrying only the listed genes first (43 ties at 0.667 for KRAS/TP53/STK11) | Plain Jaccard; rarity-weighted genes |
 | 2026-11-04 | Per-drug models only for compounds whose PRISM target names a gene, oncology drugs first (about 30 to 60) | 1,457 of 1,494 compounds pass the 300-line rule, so "best-sampled" selects nothing | Most variable 30; all 1,457 |
+| 2026-11-04 | Loop 2 shows the nearest cell lines and their measured sensitivities first; model ranks second, greyed when the ROC-AUC CI includes 0.5; probabilities never shown as percentages | 60 hotspot-only per-drug models are near chance (median held-out ROC-AUC 0.56; 52 of 60 CIs include 0.5; 16 below 0.5) | Add damaging mutations and lineage as features (lineage is the split key); drop the models |
+| 2026-11-04 | Loop 2 drug set: up to 3 most-screened drugs per oncology target gene, no overall cap | The top-60-by-line-count cap dropped the BRAF inhibitors, where hotspot mutations should matter most | Keep the 60 |
+| 2026-11-04 | Loop 2 ships logistic regression, overriding the pre-registered switch rule by a dated amendment | The random forest won 32 of 60 (a tie-sized margin) and weighs 73 MB; logistic regression is a few hundred KB and within 0.01 median ROC-AUC | Bundle the random forest |
 | 2026-11-04 | Private GitHub repo PSMacaroni/stem2connect-2026 created and main pushed | CI on GitHub Actions; public flip in the last week | Stay local |
 | 2026-11-04 | Host on Streamlit Community Cloud, not Hugging Face Spaces | Spaces now needs a paid plan for Gradio and Docker Spaces; Community Cloud is free and known | Gradio on a free ZeroGPU Space; paying for HF PRO |
 | 2026-11-04 | Loop 2 uses the Broad Figshare snapshots (DepMap 24Q4 + PRISM 20Q2, CC BY 4.0) instead of Sanger GDSC + Cell Model Passports | Sanger's policy is non-transferable and bans use in third-party websites; the Figshare records carry CC BY 4.0 (checked on the Figshare API); current portal releases have restrictive terms and a captcha | Emailing Sanger for permission; keeping GDSC local-only; the 26Q3 portal release |
@@ -113,6 +116,8 @@ Never cut: loops 1 and 2, the evaluation protocol, the README disclosures, the v
 ## Problems
 - Tox21 has no stated licence (probably US-government public domain): raw file never committed, cited only.
 - CDK6 has 6 inactives in its test set, CDK4 36: both marked underpowered.
+- Loop 2 per-drug models on hotspot mutations alone explain little (median ROC-AUC 0.56 at 5b7d361 on the branch); the write-up reports this as a negative result and the app leads with the lookup.
+- Leave-lineage-out test set never asks about Skin (BRAF melanoma) or blood lineages: they all sit in train.
 - Loop 2 derived tables are 31 MB (sensitivity.csv 28.9 MB): too big to commit as is for the hosted app; trim or compress before hosting.
 - Only 117 of 1,494 PRISM compounds carry a ChEMBL ID, so linking loop 2 drugs to loop 1 targets needs the SMILES, not the ID.
 - Changing the scaffold-split seed alone moves ROC-AUC by up to about 0.046 (ERBB2, CDK6), more than the RF lead over 1-NN on ABL1 and BCL2 and more than any RF-vs-LightGBM gap; bootstrap CIs cover one test set only. Reported as a disclosure over 5 seeds; nothing is chosen from it.
