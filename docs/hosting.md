@@ -15,7 +15,9 @@ SHA-256. (`v1` had the 212 models only.)
    SHA-256 that `bundle_models.py` printed for the zip you published:
    `MOLSCREEN_MODELS_SHA256 = "c1407c0bca4bd3aca1323422cbd7c9a8830be47424c7195e42666189eeea7402"`
    (no other secrets exist; the download is anonymous).
-5. Click **Deploy**. The first build installs `requirements.txt` (a few minutes) and then downloads the 188 MB
+5. Click **Deploy**. The first build apt-installs `packages.txt` (libxrender1 and libxext6, which RDKit's drawing
+   module needs; without them the app dies at import with `libXrender.so.1: cannot open shared object file`), then the
+   Python packages from `uv.lock` (a few minutes), and then downloads the 188 MB
    bundle (one more minute). Watch the log on the right: it should print `models: zip SHA-256 matches` and
    `models: 217 files verified`.
 
@@ -23,7 +25,8 @@ SHA-256. (`v1` had the 212 models only.)
 1. Open the app URL in a private browser window (signed out).
 2. Pick a target in the sidebar, click **Example**, and see three molecules with probabilities and the drawn
    nearest actives. The "Cell lines" and "Safety flags" tabs do the same with their Example buttons.
-3. If the page shows "Could not get the trained models and data tables", open **Manage app** > logs: the URL or
+3. The first deploy on 2026-11-05 failed with the libXrender error above before `packages.txt` existed; a push to
+   `main` redeploys automatically. If the page shows "Could not get the trained models and data tables", open **Manage app** > logs: the URL or
    the SHA-256 in the secret is wrong, or the release is missing.
 
 ## Keep it alive
