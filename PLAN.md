@@ -133,6 +133,14 @@ Never cut: loops 1 and 2, the evaluation protocol, the README disclosures, the v
   hosted app: Activity (3 predictions, structures of nearest actives with ChEMBL IDs and Tanimoto), Cell lines (KRAS/TP53/STK11
   gives NCI-H1573 first on 3 shared genes above higher-Jaccard lines, then the PRISM responses), Safety flags (12 assays with
   score, active rate, ratio and ROC-AUC CI), Analogs shows "Coming". Anonymous fetch with cookies returns 200.
+- Done 2026-11-05: **fresh-clone test passed** (commit 5c06d12). Cloned the public repo into a clean directory and
+  followed README "How to run it" literally: `uv sync` fine, `pytest -q` 36 passed 11 skipped, `ruff` clean,
+  the download printed `217 files verified` (212 models + 4 tables, 16 s), the app started and the Activity
+  Example gave 3 predictions; a second test run gave 46 passed 1 skipped. Four README faults found and fixed:
+  no step told the reader to clone the repo; `scripts/pull_depmap.py` alone does not build the derived tables
+  (`python -m molscreen.depmap` does); `molscreen.train` needs `scripts/pull_chembl.py` first; and the note that
+  the app needs models from `molscreen.train` was wrong, since the app downloads them itself. Also documented
+  Streamlit's first-run email prompt.
 - Waiting on Prakhar: Devpost registration; Discord.
 - Then: first video take; fresh-clone test; analogs if time.
 - Then: loop-2 and loop-3 app tabs; README disclosures; hosting on Streamlit Community Cloud; first video take.
