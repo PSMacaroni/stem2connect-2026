@@ -58,26 +58,35 @@ everything in WSL. On Linux or macOS, skip step 1 and run the rest in a normal t
 2. Install uv (it installs Python and the libraries for you). Run this once:
    `curl -LsSf https://astral.sh/uv/install.sh | sh`
    Then close the terminal and open a new one, so the `uv` command is found.
-3. Go to the project folder, for example:
-   `cd /mnt/c/Users/<you>/Documents/stem2connect-2026`
+3. Get the code and go into it:
+   `git clone https://github.com/PSMacaroni/stem2connect-2026`
+   `cd stem2connect-2026`
+   (If you already have the folder, just go to it: `cd /mnt/c/Users/<you>/Documents/stem2connect-2026`.)
 4. Install Python 3.12 and every library the project needs:
    `uv sync`
    The first time takes a few minutes (on a Windows drive, about 3).
 5. Run the tests:
    `uv run pytest -q`
-   It worked if the last line says `passed` and nothing `failed`.
+   It worked if the last line says `passed` and nothing `failed`. In a fresh clone 11 of the 47 tests say
+   `skipped`: they need the trained models and the data tables, which arrive in step 7. Run it again after that
+   step and 46 pass; the last one stays skipped because it needs the raw ChEMBL download, which the models bundle
+   does not carry.
 6. Optional: check the code style with `uv run ruff check .` (it should say `All checks passed!`).
-7. Get the trained models and the cell-line tables (they are not in git). Either download them (a 188 MB zip
-   from the GitHub release, with all 212 models and the 4 DepMap tables the Cell lines tab reads):
+7. Get the trained models and the cell-line tables (they are not in git). Download them, a 188 MB zip from the
+   GitHub release holding all 212 models and the 4 DepMap tables the Cell lines tab reads:
    `uv run python -c "from molscreen.assets import ensure_models; ensure_models()"`
-   or train the loop-1 models yourself (slow, about 15 minutes): `uv run python -m molscreen.train`, and pull the
-   tables with `python scripts/pull_depmap.py`.
-   It worked if `models/` holds `.joblib` files and `data/depmap/derived/` four `.csv` files; the download also
-   prints `files verified`.
+   It worked if the last line says `217 files verified`, `models/` holds `.joblib` files and
+   `data/depmap/derived/` holds four `.csv` files.
+   Building them yourself instead takes hours and four steps, one per part of the app: the activity models need
+   `uv run python scripts/pull_chembl.py` and then `uv run python -m molscreen.train` (about 15 minutes); the cell
+   line tables need `uv run python scripts/pull_depmap.py` and then `uv run python -m molscreen.depmap` (the pull
+   script only downloads the raw files; the second command builds the four tables); the drug models come from
+   `uv run python -m molscreen.drugs` and the Tox21 models from `uv run python -m molscreen.tox`.
    For the owner: `uv run python scripts/bundle_models.py` makes `dist/models-v2.zip`; publish it with
    `gh release create v2 dist/models-v2.zip`, then update `TAG` in `src/molscreen/assets.py` if you used another tag.
-8. Start the app: `uv run streamlit run app.py`, then open http://localhost:8501 in your browser. It needs the
-   trained models in `models/` (made by `uv run python -m molscreen.train`).
+8. Start the app: `uv run streamlit run app.py`, then open http://localhost:8501 in your browser. The first time,
+   Streamlit asks for an email address: leave it blank and press Enter. If you skipped step 7 the app downloads the
+   models itself on the first page load.
 
 ## AI tools and services used
 **Inside the project:** classic machine learning, trained here on public lab data. No large language model or
