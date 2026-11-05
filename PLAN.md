@@ -59,7 +59,7 @@ README. Raw data never goes in git; pull scripts do.
 **Build.** Models (loop 1 forests 51 MB, loop 3 forest 129 MB, loop 2 logistic 1.5 MB) ship as a GitHub release asset
 that the app downloads once at startup and caches (decided 2026-11-04). Streamlit app hosted on **Streamlit Community Cloud** (Hugging Face Spaces no longer runs code for free,
 checked 2026-11-04). Memory ceiling about 2.7 GB, so models stay small and are bundled with the app. The app sleeps
-after 12 idle hours: wake it before judging. Repo **public since 2026-11-04** (flipped early so hosting can be tested; release v1 holds the models).
+after 12 idle hours: wake it before judging. Repo **public since 2026-11-04** (flipped early so hosting can be tested; release v2 holds the models and the DepMap tables, v1 the models only).
 
 **Way of working.** Manager session (Fable) plans and reviews; Opus subagents build, one task each, on branches
 `area/topic`. PASS only when tests and lint pass, the "done" checks hold, and the vault is updated.
@@ -126,7 +126,8 @@ Never cut: loops 1 and 2, the evaluation protocol, the README disclosures, the v
 - Done 2026-11-04: models release bundle and startup download merged; release v1 published (212 files, 178,693,014 bytes); README disclosures, credits and results table and the Devpost draft merged (three review rounds); repo made public; anonymous download verified with the hash check.
 - Done 2026-11-04: loop-2 (Cell lines) and loop-3 (Safety flags) tabs merged; all four loops' evidence shown as decided; 46 tests.
 - Done 2026-11-04: bundle v2 (212 models + 4 DepMap tables + PULL_INFO, 217 files, 188,245,280 bytes, SHA-256 c1407c0b...7402) merged; README and Devpost describe the live tabs.
-- Waiting on Prakhar: publish release v2 (`gh release create v2 dist/models-v2.zip`, blocked for the manager as a new public surface), then deploy on Streamlit Community Cloud (`docs/hosting.md`).
+- Done 2026-11-04: release v2 published by Prakhar (`gh release create v2`, 188,245,280 bytes, target main); the manager verified an anonymous download through `ensure_models` with the SHA-256 secret set: 217 files verified.
+- Waiting on Prakhar: deploy on Streamlit Community Cloud (`docs/hosting.md`, secret line with the v2 hash); Devpost registration; Discord.
 - Then: first video take; fresh-clone test; analogs if time.
 - Then: loop-2 and loop-3 app tabs; README disclosures; hosting on Streamlit Community Cloud; first video take.
 
