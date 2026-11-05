@@ -141,6 +141,11 @@ Never cut: loops 1 and 2, the evaluation protocol, the README disclosures, the v
   (`python -m molscreen.depmap` does); `molscreen.train` needs `scripts/pull_chembl.py` first; and the note that
   the app needs models from `molscreen.train` was wrong, since the app downloads them itself. Also documented
   Streamlit's first-run email prompt.
+- Done 2026-11-05: an independent run of the same test (a second session) matched every count and found two more
+  faults of the same class, fixed in b2381a7: `molscreen.tox` needs `scripts/pull_tox21.py` first, and
+  `molscreen.drugs` reads the derived DepMap tables, so it runs after `molscreen.depmap`, not beside it.
+  Evidence for the two step-8 claims: the hosted app's repo carries no models yet serves predictions, which only
+  the startup download explains; the email prompt was seen in this machine's own run log.
 - Waiting on Prakhar: Devpost registration; Discord.
 - Then: first video take; fresh-clone test; analogs if time.
 - Then: loop-2 and loop-3 app tabs; README disclosures; hosting on Streamlit Community Cloud; first video take.
