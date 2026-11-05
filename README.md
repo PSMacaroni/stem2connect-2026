@@ -77,11 +77,11 @@ everything in WSL. On Linux or macOS, skip step 1 and run the rest in a normal t
    `uv run python -c "from molscreen.assets import ensure_models; ensure_models()"`
    It worked if the last line says `217 files verified`, `models/` holds `.joblib` files and
    `data/depmap/derived/` holds four `.csv` files.
-   Building them yourself instead takes hours and four steps, one per part of the app: the activity models need
-   `uv run python scripts/pull_chembl.py` and then `uv run python -m molscreen.train` (about 15 minutes); the cell
-   line tables need `uv run python scripts/pull_depmap.py` and then `uv run python -m molscreen.depmap` (the pull
-   script only downloads the raw files; the second command builds the four tables); the drug models come from
-   `uv run python -m molscreen.drugs` and the Tox21 models from `uv run python -m molscreen.tox`.
+   Building them yourself instead takes hours. Each tab needs its data downloaded first, then built from it:
+   - Activity: `uv run python scripts/pull_chembl.py`, then `uv run python -m molscreen.train` (about 15 minutes).
+   - Cell lines: `uv run python scripts/pull_depmap.py` (raw files only), then `uv run python -m molscreen.depmap`
+     to build the four tables, then `uv run python -m molscreen.drugs` for the drug models, which read those tables.
+   - Safety flags: `uv run python scripts/pull_tox21.py`, then `uv run python -m molscreen.tox`.
    For the owner: `uv run python scripts/bundle_models.py` makes `dist/models-v2.zip`; publish it with
    `gh release create v2 dist/models-v2.zip`, then update `TAG` in `src/molscreen/assets.py` if you used another tag.
 8. Start the app: `uv run streamlit run app.py`, then open http://localhost:8501 in your browser. The first time,
