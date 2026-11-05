@@ -104,6 +104,7 @@ Never cut: loops 1 and 2, the evaluation protocol, the README disclosures, the v
 | 2026-11-04 | The safety tab shows each assay's score against the assay's active rate, with the assay's ROC-AUC and CI; no hard flag | Balanced accuracy at 0.5 is 0.52 to 0.70 and below 1-NN on 8 of 12 assays, while ROC-AUC beats 1-NN on 12 of 12 | A flag at a train-set threshold; the 0.5 flag |
 | 2026-11-04 | Loop 2 keeps all 202 drugs from the 3-per-gene plus selective rules, with the odd single-target picks (antibiotics under TOP2A, thiram under JAK2, anthelmintics under TUBB) named in Known limits | They are real PRISM screens on cancer cell lines; the app leads with the lookup; no fourth round | A moa blocklist; selective drugs only for the 9 loop-1 targets |
 | 2026-11-04 | Name: Molecule Screening Workbench | Plain and clear | OncoScreen; HitBench |
+| 2026-11-05 | Ship a `packages.txt` with libxrender1 and libxext6 | Streamlit Cloud's image has no libXrender, so `from rdkit.Chem import Draw` kills the app at import | Dropping the drawn structures; a Docker-based host |
 | 2026-11-04 | Release v1 with the full models bundle on the private repo | The app needs it at startup; hosting cannot be tested without it | Keep the zip local |
 | 2026-11-04 | Co-author trailers: the manager's early briefs made Opus subagents sign commits with the manager's Fable line; disclosed in the README, history not rewritten | Honesty about who wrote what; a rewrite would hide the mistake and break the pushed history | Rewriting history |
 | 2026-11-04 | Repo flipped public the same day, after the README disclosures merged | The app's startup download is anonymous; hosting cannot be tested on a private repo; a week of buffer | Public after the tabs merge; last week as first planned |
@@ -127,7 +128,12 @@ Never cut: loops 1 and 2, the evaluation protocol, the README disclosures, the v
 - Done 2026-11-04: loop-2 (Cell lines) and loop-3 (Safety flags) tabs merged; all four loops' evidence shown as decided; 46 tests.
 - Done 2026-11-04: bundle v2 (212 models + 4 DepMap tables + PULL_INFO, 217 files, 188,245,280 bytes, SHA-256 c1407c0b...7402) merged; README and Devpost describe the live tabs.
 - Done 2026-11-04: release v2 published by Prakhar (`gh release create v2`, 188,245,280 bytes, target main); the manager verified an anonymous download through `ensure_models` with the SHA-256 secret set: 217 files verified.
-- Waiting on Prakhar: deploy on Streamlit Community Cloud (`docs/hosting.md`, secret line with the v2 hash); Devpost registration; Discord.
+- Done 2026-11-05: **app live** at https://stem2connect-2026-cjfcmxcaxddeqtfvyvjzbw.streamlit.app/ . Deploy crashed first on `libXrender.so.1` (RDKit drawing needs a system
+  library the Streamlit image lacks); fixed with a two-line `packages.txt`. All three built tabs checked in the browser on the
+  hosted app: Activity (3 predictions, structures of nearest actives with ChEMBL IDs and Tanimoto), Cell lines (KRAS/TP53/STK11
+  gives NCI-H1573 first on 3 shared genes above higher-Jaccard lines, then the PRISM responses), Safety flags (12 assays with
+  score, active rate, ratio and ROC-AUC CI), Analogs shows "Coming". Anonymous fetch with cookies returns 200.
+- Waiting on Prakhar: Devpost registration; Discord.
 - Then: first video take; fresh-clone test; analogs if time.
 - Then: loop-2 and loop-3 app tabs; README disclosures; hosting on Streamlit Community Cloud; first video take.
 

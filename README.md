@@ -3,6 +3,9 @@
 Entry for the [STEM2Connect AI Hackathon 2026](https://stem2connect-online-hackathon.devpost.com/).
 Primary track: Scientific Research
 
+**Live app:** https://stem2connect-2026-cjfcmxcaxddeqtfvyvjzbw.streamlit.app/
+Free hosting, so it sleeps after 12 idle hours; the first visit then takes about a minute to wake.
+
 ## What it does
 
 A learning tool for students: paste a molecule (as SMILES), pick one of 9 cancer-related protein targets, and the
@@ -176,8 +179,11 @@ a copy of it is also in the owner's repository for another challenge (Enveda CAS
   under a non-commercial, non-transferable policy, so we switched to Broad's CC BY 4.0 Figshare snapshots; the
   smallest ChemBERTa-2 weights carry no licence at all; Tox21 states none (`docs/data-registry.md`).
 - **Free hosting changes.** Hugging Face Spaces now needs a paid plan for Gradio and Docker Spaces, and Streamlit
-  needs a Docker Space there, so the app will be hosted on Streamlit Community Cloud instead
+  needs a Docker Space there, so the app is hosted on Streamlit Community Cloud instead
   (`docs/data-registry.md`, read 2026-11-04).
+- **A cloud image is not your machine.** The first deploy crashed at import: RDKit's drawing module needs the system
+  library libXrender, which the Streamlit Cloud image does not ship. A two-line `packages.txt` (`libxrender1`,
+  `libxext6`) fixed it. Nothing in the Python lock file could have caught this, because it is not a Python package.
 
 ## What's next
 - **Analog enumeration (loop 4):** small RDKit edits to a known active, each scored by the activity and safety

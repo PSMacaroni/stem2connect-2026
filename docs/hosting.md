@@ -1,5 +1,10 @@
 # Hosting on Streamlit Community Cloud (steps for the owner)
 
+**Live since 2026-11-05:** https://stem2connect-2026-cjfcmxcaxddeqtfvyvjzbw.streamlit.app/
+The dashboard shows it as "can be accessed by anyone with the URL". Checking it with `curl` and no cookie jar
+returns a 303 to a login URL: that is Streamlit's session handshake, not a privacy setting. With `curl -L -c jar -b jar`
+an anonymous client gets 200 and the app HTML.
+
 The app downloads its models and the cell-line tables from the GitHub release `v2` at startup
 (`src/molscreen/assets.py`), so the repo must be public (it is, since 2026-11-04) and the release must exist.
 `v2` holds 217 files (212 models, the 4 derived DepMap tables in `data/depmap/derived/`, and

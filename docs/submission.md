@@ -106,9 +106,9 @@ python rdkit scikit-learn lightgbm streamlit pandas numpy joblib uv pytest ruff 
 moleculenet streamlit-community-cloud github claude-code
 
 ## Links
-- Repository (must be public): https://github.com/PSMacaroni/stem2connect-2026 (private today; make it public before submitting)
+- Repository (public since 2026-11-04): https://github.com/PSMacaroni/stem2connect-2026
 - Demo video (YouTube or Vimeo, public or unlisted, 6 minutes or less): [video URL]
-- Live demo, if any: [Streamlit Community Cloud URL]
+- Live demo: https://stem2connect-2026-cjfcmxcaxddeqtfvyvjzbw.streamlit.app/ (Streamlit Community Cloud; sleeps after 12 idle hours, wakes in about a minute)
 
 ## Team members (all added on Devpost)
 Prakhar Suryansh (solo)
