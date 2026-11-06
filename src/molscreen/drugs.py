@@ -303,9 +303,11 @@ def write_md(res: dict, path: Path) -> None:
         "## What this says", "",
         (f"Over the {st['powered']} drugs that are not underpowered: median held-out ROC-AUC {f3(med['logreg'])} "
          f"(logistic), {f3(med['rf'])} (random forest), {f3(med['nn1'])} (1-NN). Logistic regression beats 1-NN on "
-         f"{st['beat_nn1']['logreg']} drugs; the random forest beats 1-NN on {st['beat_nn1']['rf']}. {st['weak'][k]} of "
-         f"{st['drugs']} shipped models are weak (CI reaches 0.5) and {st['below_half']} are below 0.5; the highest "
-         f"is {f3(st['max_roc_auc'])} ({st['max_drug']}). Hotspot mutations alone explain little of how a cell line "
+         f"{st['beat_nn1']['logreg']} drugs; the random forest beats 1-NN on {st['beat_nn1']['rf']}. "
+         f"{st['below_half']} of those {st['powered']} are below 0.5, and the highest is {f3(st['max_roc_auc'])} "
+         f"({st['max_drug']}). Counting every drug instead, including the underpowered ones, {st['weak'][k]} of "
+         f"{st['drugs']} shipped models are weak, meaning the 95% CI lower bound is at or below 0.5 so the model is "
+         f"not shown to beat chance. Hotspot mutations alone explain little of how a cell line "
          "responds to most of these drugs; the models are a weak signal next to the measured responses of the nearest "
          "cell lines, not a prediction for a person."),
         "",

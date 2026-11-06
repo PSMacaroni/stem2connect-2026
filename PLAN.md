@@ -161,11 +161,33 @@ Never cut: loops 1 and 2, the evaluation protocol, the README disclosures, the v
   same sweep caught two places still saying the workbench answers three questions (README, `docs/submission.md`),
   and the AI disclosure counts going stale again, so those counts are now pinned to a commit with the recount
   command beside them. Docs only: ruff clean, and the full suite in this checkout gives **57 passed** (the suite
-  has 57; `tests/test_data.py::test_real_cdk6_dataset` is skipped wherever `data/chembl/CDK6.csv` is absent, so a
-  worktree or fresh clone reports 56 passed 1 skipped, which is where the earlier "56 tests" figure came from).
+  has 57; `tests/test_data.py::test_real_cdk6_dataset` is skipped wherever `data/chembl/CDK6.csv` is absent, which
+  is where the earlier "56 tests" figure came from). Corrected the next day: a *fresh clone* skips 14, not 1, since
+  13 more tests need the models and the DepMap tables. Measured figures are in `docs/submission.md`.
+- Done 2026-11-05: **final numbers pass**, run early rather than in the last week. Every figure in `README.md`,
+  `docs/submission.md` and `docs/video.md` traced to a source. Five faults found and fixed, two of them by an
+  independent audit that the manager then re-verified from the code itself:
+  1. The README said the suite has 47 tests with 11 skipped in a fresh clone. It has 57. Measured in a clean
+     worktree by following the README: **43 passed, 14 skipped** with no models, then **56 passed, 1 skipped**
+     after `ensure_models()` (`217 files verified`, 50 s), which is what step 5 now says.
+  2. The video said the Cell lines tab shows responses to "two hundred and two drugs in the PRISM screen". The tab
+     shows ten rows (`top_compounds(model_id, n=10)`), drawn from every PRISM compound measured on that line, 1,389
+     for NCI-H1573, of which 196 are among the 202 modelled drugs. 202 is loop 2's model count, not what the screen
+     shows, so the script broke its own "say it only if the screen shows it" rule.
+  3. "171 of 202 weak (95% CI reaches 0.5)" invites the reading "CI contains 0.5", which counts 166. The project's
+     definition is "CI lower bound at or below 0.5", which counts 171. Reworded everywhere.
+  4. "171 of 202 weak, 73 below 0.5" mixed denominators: `weak` is over all 202, `below_half` over the 198 that are
+     not underpowered (76 over all 202). Fixed in the generator template in `src/molscreen/drugs.py` and
+     `results/loop2_models.md` regenerated from the stored JSON, so nothing was retrained to change one sentence.
+  5. The Devpost text gave the loop-2 medians with no scope; the 1-NN median is 0.516 over the 198 and 0.517 over
+     all 202, so the figure was right for one group only.
+  Also sourced three figures the audit could not trace: Python 3.12 (`.python-version`), the wake time (timed once,
+  now dated in the README) and the 145-words-a-minute pace the script's budget assumes, now stated.
+  The pass is now a script: `uv run python scripts/check_numbers.py` recomputes 38 figures and asserts each one
+  still appears in the documents that claim it. 38 of 38 match.
 - Waiting on Prakhar: record the demo video (`docs/video.md`); Devpost registration; Discord.
-- Then: a final numbers pass over the README, the write-up and the video script, each figure against its source
-  file; wake the app on 2026-11-22 (judging) and 2026-11-24 (Demo Day).
+- Then: re-run `scripts/check_numbers.py` after the video is recorded and before submitting; wake the app on
+  2026-11-22 (judging) and 2026-11-24 (Demo Day).
 
 ## Problems
 - Tox21 has no stated licence (probably US-government public domain): raw file never committed, cited only.

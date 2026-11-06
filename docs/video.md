@@ -5,9 +5,13 @@ The same video also serves the Presentation criterion: problem, solution, next s
 
 Record a first take early. Record the shots after the last UI change, not before.
 
-Budget: the narration below is 797 words, which is 5 minutes 30 at a normal speaking pace, and the shot list adds
-up to 5:35. That leaves 25 seconds under the 6:00 limit for the app to respond on screen. Do not speed up to fit.
-If a take runs long, cut the sentence marked **(cut first)** in shot 1, then the last sentence of shot 8.
+Budget: the narration below is 792 words, counted from this file. At 145 words a minute, an unhurried speaking
+pace, that is 5 minutes 28 of speech; the shot list allows 5:35, the difference being pauses while the app
+responds. That leaves 25 seconds under the 6:00 limit. Do not speed up to fit. If a take runs long, cut the
+sentence marked **(cut first)** in shot 1, then the last sentence of shot 8.
+
+Time yourself on shot 1 before recording the rest. If 85 words takes you much more than 35 seconds, you speak
+slower than 145 a minute and the whole script needs a cut, not a rush.
 
 ## Before you record
 1. Open the live app: https://stem2connect-2026-cjfcmxcaxddeqtfvyvjzbw.streamlit.app/
@@ -65,9 +69,13 @@ number that is not on screen is a claim the viewer cannot check.
 ### 5. Cell lines (ends 2:50) — Cell lines tab, Example, pick NCI-H1573, scroll the drug table
 
 > Second question. Three mutated genes: KRAS, TP53 and STK11. It finds the screened cell lines sharing the most of
-> those hotspot mutations. This lung line shares all three. Pick it, and you see how that line actually responded
-> to two hundred and two drugs in the PRISM screen, most sensitive first, with structures. These are measurements,
-> not predictions. It is a lookup, and the app says so.
+> those hotspot mutations. This lung line shares all three. Pick it, and you see the ten compounds that line was
+> most sensitive to in the PRISM screen, with structures. These are measurements, not predictions. It is a lookup,
+> and the app says so.
+
+Do not say "two hundred and two drugs" here. 202 is the number of per-drug models in loop 2, and this table is not
+showing them: `top_compounds` returns the ten most sensitive of every PRISM compound measured on that line, which
+for this one is 1,389 compounds. Saying 202 would be a figure the screen never displays.
 
 ### 6. Safety flags (ends 3:15) — Safety flags tab, Example, open the first expander
 
@@ -132,9 +140,10 @@ Say these only if the screen shows them in the same shot.
 | Said | Source |
 |---|---|
 | CDK6 held-out ROC-AUC 0.894, 95% CI 0.784 to 0.980 | `results/activity_models.md`, shown in the sidebar |
-| caffeine: max similarity 0.15, cut-off 0.71 | the app's own warning line, checked 2026-11-05 |
-| 202 drugs in the PRISM screen | `results/loop2_models.md` |
-| drug models: median ROC-AUC 0.546, 171 of 202 weak | `results/loop2_models.md` |
+| caffeine: max similarity 0.15, cut-off 0.71 | recomputed 2026-11-05: `predict("CDK6", [caffeine])` gives `max_tanimoto` 0.152778 and `abstain_cutoff` 0.712329, which is what the app's warning line shows |
+| the ten compounds that line was most sensitive to | `src/molscreen/depmap.py`, `top_compounds(model_id, n=10)`, rendered by `src/molscreen/ui_cells.py` as "10 most sensitive PRISM compounds measured on ..." |
+| drug models: median said as "zero point five five" | `results/loop2_models.json`: 0.5464 over the 198 drugs that are not underpowered, 0.5461 over all 202. Both round to 0.55, so the spoken figure holds whichever group the viewer has in mind |
+| drug models: 171 of 202 weak | `results/loop2_models.md`. Weak = the shipped model's 95% CI lower bound is at or below 0.5 |
 | 12 Tox21 assays | `results/tox21_models.md` |
 | analogs: ten scored, spread 0.000 | the Analogs tab's own warning, computed at render time, seen 2026-11-05 |
 | the 0.044 these models move between splits | `results/activity_models.md`, "Split variance (disclosure)": the CDK6 random forest over scaffold-split seeds 0 to 4 |

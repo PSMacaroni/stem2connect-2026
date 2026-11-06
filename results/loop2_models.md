@@ -230,7 +230,7 @@ ROC-AUC with its 95% CI: bootstrap over the test lines (1000 resamples, seed 0).
 
 ## What this says
 
-Over the 198 drugs that are not underpowered: median held-out ROC-AUC 0.546 (logistic), 0.545 (random forest), 0.516 (1-NN). Logistic regression beats 1-NN on 119 drugs; the random forest beats 1-NN on 114. 171 of 202 shipped models are weak (CI reaches 0.5) and 73 are below 0.5; the highest is 0.860 (selumetinib). Hotspot mutations alone explain little of how a cell line responds to most of these drugs; the models are a weak signal next to the measured responses of the nearest cell lines, not a prediction for a person.
+Over the 198 drugs that are not underpowered: median held-out ROC-AUC 0.546 (logistic), 0.545 (random forest), 0.516 (1-NN). Logistic regression beats 1-NN on 119 drugs; the random forest beats 1-NN on 114. 73 of those 198 are below 0.5, and the highest is 0.860 (selumetinib). Counting every drug instead, including the underpowered ones, 171 of 202 shipped models are weak, meaning the 95% CI lower bound is at or below 0.5 so the model is not shown to beat chance. Hotspot mutations alone explain little of how a cell line responds to most of these drugs; the models are a weak signal next to the measured responses of the nearest cell lines, not a prediction for a person.
 
 ## Known limits
 

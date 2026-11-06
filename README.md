@@ -4,7 +4,8 @@ Entry for the [STEM2Connect AI Hackathon 2026](https://stem2connect-online-hacka
 Primary track: Scientific Research
 
 **Live app:** https://stem2connect-2026-cjfcmxcaxddeqtfvyvjzbw.streamlit.app/
-Free hosting, so it sleeps after 12 idle hours; the first visit then takes about a minute to wake.
+Free hosting, so it sleeps after 12 idle hours; the first visit then takes about a minute to wake (timed once,
+2026-11-05, on the "Yes, get this app back up!" screen).
 
 ## What it does
 
@@ -16,7 +17,8 @@ and when a molecule is unlike anything in the training data the app abstains and
 The Cell lines tab takes a list of mutated genes, finds the PRISM-screened cancer cell lines that share the most of
 those hotspot-mutated genes, and shows the measured PRISM drug responses of the line you pick as the main evidence:
 a lookup on cell lines, not a prediction for a patient. Per-drug model ranks come second and are greyed out when
-weak (their held-out 95% CI reaches 0.5). The Safety flags tab scores a molecule in each of 12 Tox21 lab assays and
+weak (the lower end of their held-out 95% CI is at or below 0.5, so they are not shown to beat chance). The Safety
+flags tab scores a molecule in each of 12 Tox21 lab assays and
 shows each score next to that assay's active rate and its held-out ROC-AUC, with no toxicity verdict; like the
 Activity tab, it abstains on molecules unlike its training data. The Analogs tab takes one molecule, applies a
 fixed list of nine small RDKit edits to it one at a time, and shows the edited copies with their activity and
@@ -34,7 +36,7 @@ own.
 | Loop | What is predicted | Held-out test | Result on the held-out test | Source |
 |---|---|---|---|---|
 | 1. Molecules to activity | Whether a molecule is active (1 µM cut-off, `docs/evaluation.md`) on each of 9 cancer protein targets, wild-type assays only | Scaffold split (seed 0): test molecules share no core structure with training | Random forest ROC-AUC 0.845 (ERBB2) to 0.971 (BCL2); 1-nearest-neighbour baseline 0.787 (BRAF) to 0.950 (BCL2). Above the baseline on 9 of 9 targets; below it on balanced accuracy at 0.5 on 8 of 9. | `results/activity_models.md` |
-| 2. Mutations to drug response | Whether a cancer cell line is among the most sensitive to each of 202 drugs (`auc` below the drug's 10th percentile), from its hotspot mutations alone | Leave-lineage-out: 146 test cell lines in 10 lineages never seen in training | **Negative result.** Median ROC-AUC 0.546 (logistic regression) vs 0.516 (1-nearest-neighbour) over the 198 drugs that are not underpowered; 171 of 202 shipped models are weak (95% CI reaches 0.5). The app leads with the nearest cell lines' measured responses. | `results/loop2_models.md` |
+| 2. Mutations to drug response | Whether a cancer cell line is among the most sensitive to each of 202 drugs (`auc` below the drug's 10th percentile), from its hotspot mutations alone | Leave-lineage-out: 146 test cell lines in 10 lineages never seen in training | **Negative result.** Median ROC-AUC 0.546 (logistic regression) vs 0.516 (1-nearest-neighbour) over the 198 drugs that are not underpowered; 171 of 202 shipped models are weak (95% CI lower bound at or below 0.5, the definition in `results/loop2_models.md`). The app leads with the nearest cell lines' measured responses. | `results/loop2_models.md` |
 | 3. Molecules to safety flags | Whether a molecule resembles compounds that were active in each of 12 Tox21 lab assays (not a toxicity verdict) | Scaffold split (seed 0) shared by all 12 assays | Random forest ROC-AUC 0.664 (NR-ER) to 0.830 (NR-AR-LBD). Above 1-nearest-neighbour on 12 of 12 assays; below it on balanced accuracy at 0.5 on 8 of 12. | `results/tox21_models.md` |
 
 ROC-AUC 0.5 is a coin flip and 1.0 is a perfect ranking. Confidence intervals, every baseline, the abstain counts
@@ -72,9 +74,9 @@ everything in WSL. On Linux or macOS, skip step 1 and run the rest in a normal t
    The first time takes a few minutes (on a Windows drive, about 3).
 5. Run the tests:
    `uv run pytest -q`
-   It worked if the last line says `passed` and nothing `failed`. In a fresh clone 11 of the 47 tests say
+   It worked if the last line says `passed` and nothing `failed`. In a fresh clone 14 of the 57 tests say
    `skipped`: they need the trained models and the data tables, which arrive in step 7. Run it again after that
-   step and 46 pass; the last one stays skipped because it needs the raw ChEMBL download, which the models bundle
+   step and 56 pass; the last one stays skipped because it needs the raw ChEMBL download, which the models bundle
    does not carry.
 6. Optional: check the code style with `uv run ruff check .` (it should say `All checks passed!`).
 7. Get the trained models and the cell-line tables (they are not in git). Download them, a 188 MB zip from the
@@ -187,7 +189,8 @@ a copy of it is also in the owner's repository for another challenge (Enveda CAS
   assays (`results/activity_models.md`, `results/tox21_models.md`). So the safety tab shows each score next to
   the assay's active rate rather than a yes/no flag.
 - **Negative results are results.** Per-drug models on hotspot mutations alone are near chance: median ROC-AUC
-  0.546, 171 of 202 weak, 73 below 0.5 (`results/loop2_models.md`). The app leads with the measured responses of
+  0.546 and 73 below 0.5 over the 198 drugs that are not underpowered; 171 of 202 weak counting every drug
+  (`results/loop2_models.md`). The app leads with the measured responses of
   the nearest cell lines and greys out weak models.
 - **Check the licence before downloading.** The first choice for loop 2 (Sanger GDSC and Cell Model Passports) is
   under a non-commercial, non-transferable policy, so we switched to Broad's CC BY 4.0 Figshare snapshots; the
