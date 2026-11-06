@@ -154,9 +154,16 @@ Never cut: loops 1 and 2, the evaluation protocol, the README disclosures, the v
   parent 1.000, the 10 shown analogs all 1.000, spread 0.000), so the tab now measures the spread and says the
   order is not a ranking when it falls under 0.044, the most these forests move across split seeds 0 to 4; and the
   Tox21 count was shown even when the Tox21 models abstained, which it no longer is. All four loops now have a tab.
+- Done 2026-11-05: **video script covers the Analogs tab** (7308fed, 9bf3d0d). The script had said the tab was not
+  built and closed by promising it. It now has a 0:40 shot on it, and it tells the recorder to read the warning the
+  app prints rather than recite numbers, because the spread is computed at render time. Paid for the shot by
+  trimming five others: 797 narration words (counted from the file) and 5:35 of shots, 25 s under the limit. The
+  same sweep caught two places still saying the workbench answers three questions (README, `docs/submission.md`),
+  and the AI disclosure counts going stale again, so those counts are now pinned to a commit with the recount
+  command beside them.
 - Waiting on Prakhar: record the demo video (`docs/video.md`); Devpost registration; Discord.
-- Then: first video take; fresh-clone test; analogs if time.
-- Then: loop-2 and loop-3 app tabs; README disclosures; hosting on Streamlit Community Cloud; first video take.
+- Then: a final numbers pass over the README, the write-up and the video script, each figure against its source
+  file; wake the app on 2026-11-22 (judging) and 2026-11-24 (Demo Day).
 
 ## Problems
 - Tox21 has no stated licence (probably US-government public domain): raw file never committed, cited only.
