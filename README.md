@@ -47,11 +47,12 @@ compound trips a lab toxicity assay usually takes commercial screening software 
 students and small labs often cannot afford. The data to do this is public (ChEMBL, DepMap and PRISM, Tox21), but
 using it honestly is hard: the files are large, the licences differ, and a model tested on molecules close to its
 training data looks better than it is. Most free tools show one confident score and hide how uncertain it is, or
-how far the question is from anything the model has seen. This workbench is built around three questions, each
+how far the question is from anything the model has seen. This workbench is built around four questions. Three are
 answered with held-out numbers and the evidence behind the answer: is this molecule likely to be active on a given
 cancer target; for a set of mutated genes, which cancer cell lines carry them and how did those lines respond to
-drugs; and does this molecule resemble compounds that were active in the Tox21 safety assays? When a molecule is
-unlike the training data, it says so instead of guessing.
+drugs; and does this molecule resemble compounds that were active in the Tox21 safety assays? The fourth asks what
+single edits to a molecule do to its score, and measures the spread of its own answers before presenting them as a
+ranking. When a molecule is unlike the training data, it says so instead of guessing.
 
 ## How to run it
 

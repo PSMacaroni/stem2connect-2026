@@ -20,10 +20,12 @@ students and small labs often cannot afford. The data is public (ChEMBL, DepMap 
 honestly is hard: the files are large, the licences differ, and a model tested on molecules close to its training
 data looks better than it is. Most free tools show one confident score and hide how uncertain it is.
 
-The workbench is built around three questions:
+The workbench is built around four questions:
 1. Is this molecule likely to be active on a given cancer target?
 2. For a set of mutated genes, which cancer cell lines carry them, and how did those lines respond to drugs?
 3. Does this molecule resemble compounds that were active in the Tox21 safety assays?
+4. What do single edits to a molecule do to its score? The tab answers this by measuring the spread of its own
+   scores and saying when that spread is too small to read as a ranking.
 
 It is a research and learning tool, not medical advice. All data comes from lab assays on proteins and cancer cell
 lines, never from patients, and it does not discover drugs.
