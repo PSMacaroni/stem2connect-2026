@@ -104,6 +104,7 @@ Never cut: loops 1 and 2, the evaluation protocol, the README disclosures, the v
 | 2026-11-04 | The safety tab shows each assay's score against the assay's active rate, with the assay's ROC-AUC and CI; no hard flag | Balanced accuracy at 0.5 is 0.52 to 0.70 and below 1-NN on 8 of 12 assays, while ROC-AUC beats 1-NN on 12 of 12 | A flag at a train-set threshold; the 0.5 flag |
 | 2026-11-04 | Loop 2 keeps all 202 drugs from the 3-per-gene plus selective rules, with the odd single-target picks (antibiotics under TOP2A, thiram under JAK2, anthelmintics under TUBB) named in Known limits | They are real PRISM screens on cancer cell lines; the app leads with the lookup; no fourth round | A moa blocklist; selective drugs only for the 9 loop-1 targets |
 | 2026-11-04 | Name: Molecule Screening Workbench | Plain and clear | OncoScreen; HitBench |
+| 2026-11-05 | The Analogs tab reports the spread of its own scores and calls a flat ranking flat | Analogs of a known active all score at the ceiling (CDK6: parent 1.000, ten analogs 1.000), so an ordered list would imply a discrimination the evaluation cannot defend | Showing the ranking plainly; dropping the ranking; a combined activity-and-safety score |
 | 2026-11-05 | Ship a `packages.txt` with libxrender1 and libxext6 | Streamlit Cloud's image has no libXrender, so `from rdkit.Chem import Draw` kills the app at import | Dropping the drawn structures; a Docker-based host |
 | 2026-11-04 | Release v1 with the full models bundle on the private repo | The app needs it at startup; hosting cannot be tested without it | Keep the zip local |
 | 2026-11-04 | Co-author trailers: the manager's early briefs made Opus subagents sign commits with the manager's Fable line; disclosed in the README, history not rewritten | Honesty about who wrote what; a rewrite would hide the mistake and break the pushed history | Rewriting history |
@@ -146,7 +147,14 @@ Never cut: loops 1 and 2, the evaluation protocol, the README disclosures, the v
   `molscreen.drugs` reads the derived DepMap tables, so it runs after `molscreen.depmap`, not beside it.
   Evidence for the two step-8 claims: the hosted app's repo carries no models yet serves predictions, which only
   the startup download explains; the email prompt was seen in this machine's own run log.
-- Waiting on Prakhar: Devpost registration; Discord.
+- Done 2026-11-05: **Analogs tab (loop 4) built and merged** (cbc580c, then c064ade). Nine single-point RDKit
+  transforms on one molecule; each copy scored by the loop-1 activity model and the 12 loop-3 Tox21 models, side
+  by side, never combined. Parent shown first; both abstain rules unchanged. 56 tests pass, ruff clean, checked on
+  the live app. Two honesty problems found in review and fixed before merge: the scores saturate (CDK6 example
+  parent 1.000, the 10 shown analogs all 1.000, spread 0.000), so the tab now measures the spread and says the
+  order is not a ranking when it falls under 0.044, the most these forests move across split seeds 0 to 4; and the
+  Tox21 count was shown even when the Tox21 models abstained, which it no longer is. All four loops now have a tab.
+- Waiting on Prakhar: record the demo video (`docs/video.md`); Devpost registration; Discord.
 - Then: first video take; fresh-clone test; analogs if time.
 - Then: loop-2 and loop-3 app tabs; README disclosures; hosting on Streamlit Community Cloud; first video take.
 
