@@ -1,6 +1,11 @@
 """Re-derive every published figure from the results files and check the docs still say it.
 
-Usage: uv run python scripts/check_numbers.py        (exit 0 if every figure matches, 1 otherwise)
+Usage: uv run python scripts/check_numbers.py            (exit 0 if every figure matches, 1 otherwise)
+       uv run python scripts/check_numbers.py --strict   (also fail if any figure had no source to check)
+
+CI runs the plain form, because `models/`, `data/` and `dist/` are git-ignored and five figures have no source
+there; it prints which ones it skipped. Run `--strict` on a full checkout before submitting, so a figure cannot
+pass by being unverifiable.
 
 Each check recomputes a figure from `results/*.json`, the bundle manifest or the repo itself, formats it the way
 the docs write it, and then asserts that string is present in every document that claims it. So it catches drift
@@ -31,11 +36,20 @@ GENES, DRUGS, TASKS = A["genes"], L["drugs"], T["tasks"]
 POWERED = {k: v for k, v in DRUGS.items() if not v["underpowered"]}
 
 checks: list[tuple[str, str, tuple[str, ...]]] = []
+skipped: list[tuple[str, str]] = []
 
 
 def claim(label: str, text: str, *docs: str) -> None:
     """`text` is built from the data; every doc named must contain it verbatim."""
     checks.append((label, text, docs))
+
+
+def present(rel: str, what: str) -> bool:
+    """True if a git-ignored source is in this checkout; otherwise record what cannot be checked and why."""
+    if (ROOT / rel).exists():
+        return True
+    skipped.append((what, rel))
+    return False
 
 
 def best(d: dict, key, hi: bool):
@@ -86,9 +100,8 @@ claim("weak shipped models", f"{weak} of {len(DRUGS)}", README)
 below = sum(v["logreg"]["roc_auc"] < 0.5 for v in POWERED.values())
 claim("models below 0.5 among the powered drugs",  # the phrase, not a bare number that could match anything
       f"{below} below 0.5 over the {len(POWERED)} drugs that are not underpowered", README)
-hotspots = ROOT / "data" / "depmap" / "derived" / "hotspot_binary.csv"
-if hotspots.exists():  # one column is the cell-line id
-    with hotspots.open(encoding="utf-8") as fh:
+if present("data/depmap/derived/hotspot_binary.csv", "hotspot genes"):  # one column is the cell-line id
+    with (ROOT / "data" / "depmap" / "derived" / "hotspot_binary.csv").open(encoding="utf-8") as fh:
         n_genes = len(fh.readline().rstrip("\n").split(",")) - 1
     claim("hotspot genes", f"{n_genes} genes", README)
 sp = L["split"]
@@ -118,16 +131,25 @@ rf_move = max(max(g["rf"]) - min(g["rf"]) for g in sv.values())
 assert floor >= rf_move, f"FLAT_SPREAD {floor} must cover the {rf_move:.4f} the forests move across seeds"
 
 # ---- the models bundle ------------------------------------------------------
-man = json.loads((ROOT / "models" / "MANIFEST.json").read_text(encoding="utf-8"))
-files = man["files"] if isinstance(man, dict) and "files" in man else man
-claim("models in the bundle", f"{len(files)} models", README)
-tables = sorted((ROOT / "data" / "depmap" / "derived").glob("*.csv"))
-if tables:
+# models/, data/ and dist/ are git-ignored, so these have no source in CI or in a fresh clone. Each one is
+# recorded as skipped rather than quietly dropped, and --strict turns a skip into a failure for the run that
+# matters: the one on a full checkout before submitting.
+have_manifest = present("models/MANIFEST.json", "models in the bundle")
+have_tables = present("data/depmap/derived", "DepMap tables in the bundle")
+files: list = []
+if have_manifest:
+    man = json.loads((ROOT / "models" / "MANIFEST.json").read_text(encoding="utf-8"))
+    files = man["files"] if isinstance(man, dict) and "files" in man else man
+    claim("models in the bundle", f"{len(files)} models", README)
+if have_tables:
+    tables = sorted((ROOT / "data" / "depmap" / "derived").glob("*.csv"))
     claim("DepMap tables in the bundle", f"{len(tables)} DepMap tables", README)
+if have_manifest and have_tables:  # the download count is the two together, plus PULL_INFO.json
     claim("files verified on download", f"{len(files) + len(tables) + 1} files verified", README)
-zip_path = ROOT / "dist" / "models-v2.zip"
-if zip_path.exists():
-    claim("bundle size", f"{zip_path.stat().st_size / 1e6:.0f} MB zip", README)
+else:
+    skipped.append(("files verified on download", "models/MANIFEST.json and data/depmap/derived"))
+if present("dist/models-v2.zip", "bundle size"):
+    claim("bundle size", f"{(ROOT / 'dist' / 'models-v2.zip').stat().st_size / 1e6:.0f} MB zip", README)
 
 # ---- the repo itself --------------------------------------------------------
 n_tests = sum(len(re.findall(r"^def test_", p.read_text(encoding="utf-8"), re.MULTILINE))
@@ -140,17 +162,23 @@ words = len(" ".join(narration).replace("**(cut first)**", "").split())
 claim("narration words in the script", f"{words} words", VIDEO)
 
 
-def main() -> int:
+def main(argv: list[str]) -> int:
+    strict = "--strict" in argv
     bad = 0
     for label, text, docs in checks:
         for doc in docs:
             body = (ROOT / doc).read_text(encoding="utf-8")
             ok = text in body
             bad += not ok
-            print(f"{'ok  ' if ok else 'FAIL'}  {doc:20s}  {label:48s}  {text!r}")
-    print(f"\n{len(checks)} figures checked across the docs; {bad} mismatch(es).")
-    return 1 if bad else 0
+            print(f"{'ok  ' if ok else 'FAIL'}  {doc:27s}  {label:48s}  {text!r}")
+    for what, rel in skipped:
+        print(f"skip  {'(no source here)':27s}  {what:48s}  needs {rel}")
+    print(f"\n{len(checks)} figures checked, {bad} mismatch(es), {len(skipped)} skipped for want of a source.")
+    if skipped:
+        print("Those sources are git-ignored, so this run cannot have checked them. Re-run with --strict on a "
+              "checkout that has the models and the DepMap tables before submitting.")
+    return 1 if bad or (strict and skipped) else 0
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    sys.exit(main(sys.argv[1:]))

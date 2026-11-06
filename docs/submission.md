@@ -124,13 +124,21 @@ Prakhar Suryansh (solo)
 Every figure in the README, in this Devpost text and in the video script. "README" covers the README sections;
 "Devpost" covers this file; "Video" covers `docs/video.md`, the numbers said out loud.
 
-**Most of this table is now machine-checked.** `uv run python scripts/check_numbers.py` recomputes 38 of these
-figures from `results/*.json`, the bundle manifest and the repo itself, formats each one the way the documents
-write it, and fails if that string is missing from every document that claims it. It catches drift in both
-directions: a results file that changes under a document, and a document edited away from its source. Last run
-2026-11-05: 38 of 38 matched. Two kinds of figure it cannot own are marked "not machine-checked" below: wall-clock
-timings, which depend on the machine, and the commit-trailer counts, which change with every commit and are
-pinned to a named commit in the text instead.
+**Most of this table is machine-checked, and CI checks it on every push.** `uv run python
+scripts/check_numbers.py` recomputes 38 of these figures from `results/*.json`, the bundle manifest and the repo
+itself, formats each one the way the documents write it, and fails if that string is missing from every document
+that claims it. It catches drift in both directions: a results file that changes under a document, and a document
+edited away from its source. No copy of any figure lives in the script. Last full run 2026-11-05: 38 of 38
+matched.
+
+The CI job can only check what is in git. `models/`, `data/` and `dist/` are not, so a CI run checks **33 of the
+38** and prints the five it skipped with the file each one needs: the 212 models, the 4 DepMap tables, the 217
+files, the 188 MB zip and the 542 hotspot genes. Before submitting, run `scripts/check_numbers.py --strict` on a
+checkout that has the models bundle; `--strict` fails on a skip, so no figure can pass by being unverifiable.
+
+Two kinds of figure the script cannot own are marked "not machine-checked" below: wall-clock timings, which depend
+on the machine, and the commit-trailer counts, which change with every commit and are pinned to a named commit in
+the text instead.
 
 | Figure | Where it appears | Source (file, run, commit) |
 |---|---|---|

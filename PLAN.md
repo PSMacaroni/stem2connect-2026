@@ -185,9 +185,14 @@ Never cut: loops 1 and 2, the evaluation protocol, the README disclosures, the v
   now dated in the README) and the 145-words-a-minute pace the script's budget assumes, now stated.
   The pass is now a script: `uv run python scripts/check_numbers.py` recomputes 38 figures and asserts each one
   still appears in the documents that claim it. 38 of 38 match.
+- Done 2026-11-05: **the numbers check runs in CI** on every push, after ruff and pytest. It can only check what
+  is in git, and `models/`, `data/` and `dist/` are not, so a CI run checks 33 of the 38 and prints the five it
+  skipped with the file each needs. `--strict` turns a skip into a failure, verified both ways: on a full checkout
+  38 checked and 0 skipped, exit 0; on a clean worktree 33 checked and 5 skipped, exit 0 plain and exit 1 strict.
 - Waiting on Prakhar: record the demo video (`docs/video.md`); Devpost registration; Discord.
-- Then: re-run `scripts/check_numbers.py` after the video is recorded and before submitting; wake the app on
-  2026-11-22 (judging) and 2026-11-24 (Demo Day).
+- Then, before submitting: `uv run python scripts/check_numbers.py --strict` on this checkout, which has the models
+  bundle, so none of the 38 passes by being unverifiable. Wake the app on 2026-11-22 (judging) and 2026-11-24
+  (Demo Day).
 
 ## Problems
 - Tox21 has no stated licence (probably US-government public domain): raw file never committed, cited only.
