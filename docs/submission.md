@@ -35,15 +35,19 @@ ALK, ABL1, PARP1, BCL2). The app estimates whether the molecule is likely to be 
 models use wild-type protein measurements only. When the molecule is unlike anything in the training data, the app
 abstains and says so instead of guessing.
 
-Two more tabs are live:
+Three more tabs are live:
 - **Cell lines (loop 2):** enter mutated genes and see the PRISM-screened cancer cell lines that share the most of
   those hotspot-mutated genes, with the measured PRISM drug responses of the line you pick as the main evidence. It
   is a lookup on cell lines, not a prediction for a patient. Per-drug model ranks come second and are greyed out
   when weak (their held-out 95% CI reaches 0.5), because most are close to chance (see below).
 - **Safety flags (loop 3):** for each of 12 Tox21 lab assays, the molecule's score next to that assay's active
   rate and its held-out ROC-AUC. No toxicity verdict, and it abstains on molecules unlike its training data.
-
-The Analogs tab (loop 4) is not built yet.
+- **Analogs (loop 4):** paste one molecule and the app applies a fixed list of nine small RDKit edits to it, one
+  at a time, then scores every edited copy with the activity model for the selected target and the 12 Tox21
+  models, side by side and never combined into one number. The parent is shown first for comparison. It is
+  enumeration, not a generative model: nothing is sampled and the same input always gives the same analogs.
+  None of the molecules it makes has been measured anywhere, and when the analogs' scores sit closer together
+  than the model's own split-to-split movement the tab says the ranking is not a ranking.
 
 Held-out results (numbers from the results files in the repository):
 - Activity, scaffold split: random forest ROC-AUC 0.845 to 0.971 across the 9 targets, against a
@@ -94,7 +98,7 @@ before every merge. Commits carry Co-Authored-By trailers. Of the 46 non-merge c
   Space Streamlit needs, so we host on Streamlit Community Cloud.
 
 ## What's next
-- Analog enumeration: small RDKit edits to a known active, scored by the activity and safety models.
+- A wider analog list: ring-size and linker changes, beyond the nine single-point edits now shipped.
 - Richer features for the drug-response models (damaging mutations beyond hotspots, other cell-line data).
 - Mutant-specific activity models from the mutant-protein assays the current models leave out.
 - A medicinal chemist's review of the examples, the wording and the abstain behaviour.

@@ -18,14 +18,18 @@ those hotspot-mutated genes, and shows the measured PRISM drug responses of the 
 a lookup on cell lines, not a prediction for a patient. Per-drug model ranks come second and are greyed out when
 weak (their held-out 95% CI reaches 0.5). The Safety flags tab scores a molecule in each of 12 Tox21 lab assays and
 shows each score next to that assay's active rate and its held-out ROC-AUC, with no toxicity verdict; like the
-Activity tab, it abstains on molecules unlike its training data. The Analogs tab is not built yet. The
+Activity tab, it abstains on molecules unlike its training data. The Analogs tab takes one molecule, applies a
+fixed list of nine small RDKit edits to it one at a time, and shows the edited copies with their activity and
+Tox21 scores next to the parent's; the molecules it makes are not real measurements and the tab says so. The
 data comes from lab assays on proteins and cell lines, not patients: this is a research and learning tool, not
 medical advice, and it does not discover drugs.
 
 ## Results at a glance
 
 Held-out results for the three model loops. Each number is copied from the results file in the last column, which
-the training run writes. All three loops have a tab in the app (Activity, Cell lines, Safety flags).
+the training run writes. All three loops have a tab in the app (Activity, Cell lines, Safety flags). The Analogs
+tab reuses the activity and Tox21 models rather than training one of its own, so it has no held-out numbers of its
+own.
 
 | Loop | What is predicted | Held-out test | Result on the held-out test | Source |
 |---|---|---|---|---|
@@ -195,8 +199,8 @@ a copy of it is also in the owner's repository for another challenge (Enveda CAS
   `libxext6`) fixed it. Nothing in the Python lock file could have caught this, because it is not a Python package.
 
 ## What's next
-- **Analog enumeration (loop 4):** small RDKit edits to a known active, each scored by the activity and safety
-  models with the same abstain rule, top few shown.
+- **A wider analog list:** the Analogs tab ships nine single-point edits; ring-size and linker changes would need
+  a bigger transform list and a chemist's eye on which ones are sane.
 - **Richer features for loop 2:** damaging mutations beyond hotspots, and other cell-line data, to test whether the
   per-drug models can get clearly above chance.
 - **Mutant-specific activity models:** use the mutant-protein assay rows that the wild-type models leave out, for

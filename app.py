@@ -11,7 +11,7 @@ import streamlit as st
 from rdkit import Chem
 from rdkit.Chem import Draw
 
-from molscreen import ui_cells, ui_safety
+from molscreen import ui_analogs, ui_cells, ui_safety
 from molscreen.assets import ensure_models, models_url
 from molscreen.data import ACTIVE_PCHEMBL
 from molscreen.predict import examples, predict
@@ -139,6 +139,7 @@ with tabs[1]:
     ui_cells.render()
 with tabs[2]:
     ui_safety.render(MAX_MOLECULES)
-tabs[3].write("Coming: similar molecules to explore (loop 4).")
+with tabs[3]:
+    ui_analogs.render(gene)
 st.divider()
 st.caption(md_section("Credits").replace("\n", "  \n") + f"  \n{res['release']}, CC BY-SA 3.0.")
