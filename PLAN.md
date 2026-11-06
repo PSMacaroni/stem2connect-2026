@@ -160,7 +160,9 @@ Never cut: loops 1 and 2, the evaluation protocol, the README disclosures, the v
   trimming five others: 797 narration words (counted from the file) and 5:35 of shots, 25 s under the limit. The
   same sweep caught two places still saying the workbench answers three questions (README, `docs/submission.md`),
   and the AI disclosure counts going stale again, so those counts are now pinned to a commit with the recount
-  command beside them.
+  command beside them. Docs only: ruff clean, and the full suite in this checkout gives **57 passed** (the suite
+  has 57; `tests/test_data.py::test_real_cdk6_dataset` is skipped wherever `data/chembl/CDK6.csv` is absent, so a
+  worktree or fresh clone reports 56 passed 1 skipped, which is where the earlier "56 tests" figure came from).
 - Waiting on Prakhar: record the demo video (`docs/video.md`); Devpost registration; Discord.
 - Then: a final numbers pass over the README, the write-up and the video script, each figure against its source
   file; wake the app on 2026-11-22 (judging) and 2026-11-24 (Demo Day).
