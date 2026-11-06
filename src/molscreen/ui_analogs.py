@@ -69,7 +69,7 @@ def table(rows: list[dict], top: int) -> None:
         "p_active": None if r["p_active"] is None else round(r["p_active"], 3),
         "Tanimoto to parent": round(r["tanimoto_to_parent"], 3),
         "max Tanimoto to training": round(r["max_tanimoto"], 3),
-        "Tox21 assays above their active rate": None if r["tox_abstain"] else f"{r['tox_above']} of 12",
+        "Tox21 assays above their active rate": "" if r["tox_abstain"] else f"{r['tox_above']} of 12",
         "note": note(r),
         "SMILES": r["smiles"],
     } for i, r in enumerate(shown)]), hide_index=True, row_height=60, height=60 * len(shown) + 38,

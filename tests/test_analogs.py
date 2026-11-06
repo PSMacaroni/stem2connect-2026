@@ -154,11 +154,11 @@ def test_analogs_tab_renders_the_example_and_abstains_on_caffeine(app):
     assert caf["p_active"].isna().all()
     assert all("no activity score: outside what this model has seen" in n for n in caf["note"])
     assert tox_counts_match_their_abstains(caf)
-    assert caf["Tox21 assays above their active rate"].notna().any()  # caffeine is inside the Tox21 training range
+    assert (caf["Tox21 assays above their active rate"] != "").any()  # caffeine is inside the Tox21 training range
 
 
 def tox_counts_match_their_abstains(df) -> bool:
     """A Tox21 count is shown only where the note does not say the Tox21 models abstained, and vice versa."""
-    shown = df["Tox21 assays above their active rate"].notna()
+    shown = df["Tox21 assays above their active rate"].astype(str).str.strip() != ""
     said = ~df["note"].str.contains("no Tox21 count")
     return bool((shown == said).all())
