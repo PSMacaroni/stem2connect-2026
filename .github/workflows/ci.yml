@@ -12,3 +12,6 @@ jobs:
       # Every published figure still matches the results files it came from. Five figures need the models bundle,
       # which is not in git, so this run skips and names them; `--strict` before submitting covers those.
       - run: uv run python scripts/check_numbers.py
+      # The teleprompter sheet is generated from docs/video.md, and it is what gets read on camera. Fail if an
+      # edit to the script left the sheet behind.
+      - run: uv run python scripts/teleprompter.py --check

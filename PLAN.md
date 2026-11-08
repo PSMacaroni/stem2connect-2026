@@ -189,7 +189,31 @@ Never cut: loops 1 and 2, the evaluation protocol, the README disclosures, the v
   is in git, and `models/`, `data/` and `dist/` are not, so a CI run checks 33 of the 38 and prints the five it
   skipped with the file each needs. `--strict` turns a skip into a failure, verified both ways: on a full checkout
   38 checked and 0 skipped, exit 0; on a clean worktree 33 checked and 5 skipped, exit 0 plain and exit 1 strict.
-- Waiting on Prakhar: record the demo video (`docs/video.md`); Devpost registration; Discord.
+- Done 2026-11-08: **walked the live app shot by shot against the script**, which found three things no test or
+  figure check covers, because they are wording on screen rather than numbers:
+  1. The Cell lines tab said weak models are "no better than chance on held-out lineages". A CI lower bound at or
+     below 0.5 means *not shown to* beat chance, not shown *not to*. The app was claiming more than the evidence.
+     Reworded in `src/molscreen/ui_cells.py` to the README's wording, and the same loose phrase fixed in two
+     docstrings in `src/molscreen/drugs.py`. The code was always right; only the prose overreached.
+  2. The Analogs tab captioned "25 analogs from 9 transforms, ranked by p_active, highest first" directly above a
+     ten-row table, because the caption counted what was generated and the table showed `top`. On camera a judge
+     counts ten. The caption now says which it is showing and out of how many.
+  3. Shot 3 of the script never said the Example molecules are in the training table, though the app says so on
+     screen and the open expander shows `Tanimoto 1.00` on the top row. The narration must not be less honest
+     than the app, so it gained one sentence; the budget note now cuts the shot-1 sentence by default to pay for
+     it (809 words written, 796 spoken, 5:29 against a 5:35 shot list).
+  Also checked: NCI-H1573 is already selected when the Cell lines Example loads (the script said to pick it), the
+  caffeine abstain reads exactly "max similarity 0.15 < cut-off 0.71", and the live app woke in about 70 seconds,
+  which is the second measurement behind the README's "about a minute".
+- Done 2026-11-08: **`docs/video-teleprompter.md`**, the script one sentence to a line with the beats marked and a
+  running clock, generated from `docs/video.md` by `scripts/teleprompter.py` so it cannot drift. `--check` runs in
+  CI. Nothing in it is typed by hand: every word count and time is computed, and the 145-words-a-minute pace is
+  labelled an assumption with a shot-1 stopwatch test to confirm it.
+- Done 2026-11-08: **`docs/submission.md` now says which Devpost box each section goes in**, with a pre-submit
+  checklist. No text is duplicated, so the form and the file cannot disagree.
+- Waiting on Prakhar: record the demo video (read `docs/video-teleprompter.md`); Devpost registration; Discord.
+  Claude cannot record it: there is no way to produce speech or capture a screencast from this session, and the
+  presentation in a judged student entry should be his voice regardless.
 - Then, before submitting: `uv run python scripts/check_numbers.py --strict` on this checkout, which has the models
   bundle, so none of the 38 passes by being unverifiable. Wake the app on 2026-11-22 (judging) and 2026-11-24
   (Demo Day).

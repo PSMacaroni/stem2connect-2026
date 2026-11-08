@@ -3,6 +3,32 @@
 <!-- Draft written 2026-11-04. Before pasting: add the links, and re-run the numbers pass against the results files (a re-run changes them). Every figure traces to a
 source file or a run (Numbers appendix). -->
 
+## How to paste this into the Devpost form
+
+The sections below are the text; this table says which box each one goes in. Nothing is duplicated, so edit the
+section and the form gets the edit too. Devpost keeps a draft until you press **Submit** — a draft is not an entry.
+
+| Devpost box | What to paste |
+|---|---|
+| Project name | **Project name** |
+| Elevator pitch | **Tagline**. 178 characters, inside the 200-character cap Devpost used when this was written. Check the counter in the form; if it has changed, cut the clause after the colon. |
+| About the project (one rich-text box) | **The problem**, then **What it does**, then **How it uses AI**, then **What we learned**, then **What's next** — in that order, keeping the headings. This is the box the judges read, and the AI disclosure has to be in it (rules, `docs/hackathon.md`). |
+| Built with | **Built with**, as separate tags. Devpost splits on spaces, so paste one word per tag. |
+| Try it out links | The repository and live-demo URLs from **Links**. |
+| Video demo link | The YouTube or Vimeo URL from **Links**, once it exists. |
+| Additional questions | **Track** (Scientific Research). If the form asks about AI use separately, paste the "AI coding assistants (disclosure)" paragraph from **How it uses AI** again. |
+| Team members | **Team members**: solo, so there is nobody to add, but open the box and confirm it. |
+
+### Before you press Submit
+- [ ] Registered on Devpost, and joined the Discord (`docs/hackathon.md` still lists both as not done).
+- [ ] Video uploaded, under 6:00, public or unlisted, link opens in a signed-out browser.
+- [ ] Video URL pasted in three places: the Devpost form, **Links** below, and the README.
+- [ ] `uv run python scripts/check_numbers.py --strict` passes on this checkout (it needs the models bundle).
+- [ ] Repository is public and a fresh clone runs from the README.
+- [ ] The AI-disclosure commit counts re-pinned to the final commit (they are pinned to 7308fed and drift with
+      every commit; see the note in **How it uses AI**).
+- [ ] Pressed **Submit**, and the entry shows as submitted rather than draft.
+
 ## Project name
 Molecule Screening Workbench
 
