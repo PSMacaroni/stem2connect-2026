@@ -46,7 +46,7 @@ longest are after the abstain in shot 4, after the orange warning in shot 7, and
 
 ## Shot 2 — What it is  ·  say it by 1:10  ·  80 words ≈ 33s of speech in a 40s slot
 
-**On screen:** slowly scroll the four tabs, then back to Activity
+**On screen:** slowly scroll the four tabs, open the Target dropdown so the 9 targets show, then back to Activity
 
   This is the Molecule Screening Workbench: a browser app, free, built only on public data.  //
 
