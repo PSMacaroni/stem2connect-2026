@@ -219,6 +219,21 @@ Never cut: loops 1 and 2, the evaluation protocol, the README disclosures, the v
   (Demo Day).
 
 ## Problems
+- **The hosted app ran out of memory on 2026-11-08 and is down**, showing "This app has gone over its resource
+  limits. It's using too much memory!" It did not come back on reload; Streamlit Cloud needs a **Reboot app** from
+  share.streamlit.io, which only Prakhar can do. Measured peak RSS on the owner's machine, loading one loop at a
+  time: 178 MB imports, 241 MB with one activity model, 581 MB once the DepMap tables are in (the 28 MB
+  `sensitivity.csv` is most of that), still 581 MB after all 202 per-drug models, and **1,605 MB once the Tox21
+  bundle loads**. The bundle itself is the problem and the forests are all of it: `train_fps_packed` is 1.6 MB and
+  the `train` frame 0.9 MB, but the 12 random forests hold **7,776,632 tree nodes** at 500 estimators each, which
+  is about a gigabyte of `tree_` arrays. Exercising all four tabs in one session is what reaches that peak, and it
+  is exactly the video's running order, with the Analogs tab (which scores 25 analogs against the activity model
+  and all 12 Tox21 models) last and heaviest. This did not bite on 2026-11-05 because the Analogs tab was not
+  live yet. **Needs a decision before submitting**, because a judge who opens the link sees the same error:
+  (a) reboot and record against a local app, changing no code and leaving the hosted app fragile; (b) retrain the
+  Tox21 forests smaller (fewer estimators, or a `min_samples_leaf` floor), which is a protocol change needing a
+  dated amendment, a re-run of the loop-3 evaluation and an update to every Tox21 figure in the README, the
+  Devpost text and the video script; (c) pay for more memory. Not decided; no code touched.
 - Tox21 has no stated licence (probably US-government public domain): raw file never committed, cited only.
 - CDK6 has 8 inactives in its test set (6 in the first run), CDK4 36: both marked underpowered.
 - Loop 2 per-drug models on hotspot mutations alone explain little (median ROC-AUC 0.56 at 5b7d361 on the branch); the write-up reports this as a negative result and the app leads with the lookup.
