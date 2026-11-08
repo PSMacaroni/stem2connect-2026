@@ -91,8 +91,9 @@ def analogs(gene: str) -> None:
     if len(rows) == 1:
         st.warning("None of the transforms applies to this molecule, so there are no analogs to show.")
         return
-    st.caption(f"{len(rows) - 1} analogs from {len(TRANSFORMS)} transforms, ranked by p_active, highest first "
-               f"(at most {MAX_ANALOGS} are generated). The parent is the first row and is scored the same way. "
+    st.caption(f"The {min(int(top), len(rows) - 1)} shown below are the highest-scoring of {len(rows) - 1} analogs "
+               f"from {len(TRANSFORMS)} transforms, ranked by p_active (at most {MAX_ANALOGS} are generated; "
+               "change the count above to see more). The parent is the first row and is scored the same way. "
                "p_active = the activity model's score for the selected target; Tox21 = how many of the 12 safety "
                "assays score above that assay's own active rate. The two are shown side by side and never "
                "combined: the held-out results do not support one overall score. Either number is left blank when "

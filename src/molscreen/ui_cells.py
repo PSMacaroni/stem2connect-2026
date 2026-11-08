@@ -70,8 +70,9 @@ def model_ranks(genes: list[str]) -> None:
                  hide_index=True)
     st.caption(f"{len(out)} drug models ranked; a model is left out when none of its training lines carries a "
                "listed gene. Rank 1 = the model's highest score for sensitive. The scores are not calibrated "
-               "probabilities, so only the rank is shown. Greyed (weak) = the held-out ROC-AUC 95% CI reaches 0.5, "
-               "so that model is no better than chance on held-out lineages. Underpowered = few sensitive lines in "
+               "probabilities, so only the rank is shown. Greyed (weak) = the lower end of the held-out ROC-AUC "
+               "95% CI is at or below 0.5, so that model is not shown to beat chance on held-out lineages (which "
+               "is not the same as showing it does not). Underpowered = few sensitive lines in "
                "its test set. The measured responses above are the main evidence.")
 
 

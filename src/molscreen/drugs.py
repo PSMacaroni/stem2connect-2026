@@ -338,7 +338,11 @@ def write_md(res: dict, path: Path) -> None:
 
 
 def weak(m: dict) -> bool:
-    """A model is weak when its held-out ROC-AUC 95% CI reaches 0.5 or below (or there is no CI)."""
+    """Weak = the lower end of the held-out ROC-AUC 95% CI is at or below 0.5 (or there is no CI).
+
+    Not shown to beat chance, which is not the same as shown not to. Counting instead the models whose CI
+    *contains* 0.5 gives 166, not 171, which is why the wording here is exact.
+    """
     return m["roc_auc_ci95"] is None or m["roc_auc_ci95"][0] <= 0.5
 
 
@@ -443,8 +447,9 @@ def _load_models(models_dir: str) -> list[dict]:
 def predict_drugs(genes: list[str], models_dir: Path = MODELS) -> list[dict]:
     """Rank every shipped drug model for a cell line with these hotspot genes (rank 1 = highest P(sensitive)).
 
-    `p_sensitive` is not calibrated: show the rank, never a percentage. `weak` = the model's held-out ROC-AUC 95%
-    CI reaches 0.5 (show it greyed). A model abstains (is left out) when no listed gene is mutated in any of its
+    `p_sensitive` is not calibrated: show the rank, never a percentage. `weak` = the lower end of the model's
+    held-out ROC-AUC 95% CI is at or below 0.5 (show it greyed). A model abstains (is left out) when no listed
+    gene is mutated in any of its
     training lines; an empty list means every model abstained and the app must show no prediction. The nearest
     cell lines and their measured sensitivities are the main evidence. Cell lines, not patients.
     """
