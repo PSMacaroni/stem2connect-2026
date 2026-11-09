@@ -246,8 +246,9 @@ Never cut: loops 1 and 2, the evaluation protocol, the README disclosures, the v
   Devpost text and the video script; (c) pay for more memory. **Decided 2026-11-08: (a).** Prakhar reboots the
   hosted app so the link works for a judge, and the video is recorded against a local app. No code, model or
   published figure changes. What this does not fix: a judge who opens all four tabs in one visit can still hit the
-  error. The README now says so, and says the local run has no such limit, which is the honest hedge; if that
-  wording looks like it costs more than the error does, it is one paragraph to drop.
+  error. The README now says so, and says the local run has no such limit, which is the honest hedge. Prakhar
+  looked at that paragraph and **kept it** (2026-11-08), so it stands: a judge who hits the error finds the cap,
+  the 1.6 GB measurement and the local run written down a screen above it.
 - Tox21 has no stated licence (probably US-government public domain): raw file never committed, cited only.
 - CDK6 has 8 inactives in its test set (6 in the first run), CDK4 36: both marked underpowered.
 - Loop 2 per-drug models on hotspot mutations alone explain little (median ROC-AUC 0.56 at 5b7d361 on the branch); the write-up reports this as a negative result and the app leads with the lookup.
