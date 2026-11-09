@@ -111,6 +111,7 @@ Never cut: loops 1 and 2, the evaluation protocol, the README disclosures, the v
 | 2026-11-04 | Repo flipped public the same day, after the README disclosures merged | The app's startup download is anonymous; hosting cannot be tested on a private repo; a week of buffer | Public after the tabs merge; last week as first planned |
 | 2026-11-04 | Private GitHub repo PSMacaroni/stem2connect-2026 created and main pushed | CI on GitHub Actions; public flip in the last week | Stay local |
 | 2026-11-04 | Host on Streamlit Community Cloud, not Hugging Face Spaces | Spaces now needs a paid plan for Gradio and Docker Spaces; Community Cloud is free and known | Gradio on a free ZeroGPU Space; paying for HF PRO |
+| 2026-11-08 | The demo narration may be spoken by the Windows synthesiser instead of read aloud, if Prakhar prefers; disclosed as an AI tool either way | He asked twice for the video to be voiced for him, and Claude cannot record or speak; generating the audio on his machine is the part of that which is actually possible, and it removes the hardest bit of recording (talking and clicking at once) | Claude recording or voicing the video (no speech or screen capture exists in the session); a slideshow of screenshots (would not show the app working); leaving him to read all 796 words live |
 | 2026-11-08 | Reboot the hosted app for judges, but record the demo against a local app | The hosted free tier caps memory at about 1 GB and the four-tab walk needs 1,607 MB, so a take could die mid-shot; a local run has 16 GB behind it and changes no code, no model and no published figure | Retraining the Tox21 forests smaller (a protocol change: dated amendment, loop-3 re-run, every Tox21 figure re-checked); paying for more memory |
 | 2026-11-04 | Loop 2 uses the Broad Figshare snapshots (DepMap 24Q4 + PRISM 20Q2, CC BY 4.0) instead of Sanger GDSC + Cell Model Passports | Sanger's policy is non-transferable and bans use in third-party websites; the Figshare records carry CC BY 4.0 (checked on the Figshare API); current portal releases have restrictive terms and a captcha | Emailing Sanger for permission; keeping GDSC local-only; the 26Q3 portal release |
 
@@ -221,6 +222,22 @@ Never cut: loops 1 and 2, the evaluation protocol, the README disclosures, the v
   Analogs prints "The 10 shown below are the highest-scoring of 25 analogs" and the flat-ranking warning. Peak
   **1,607 MB**, which independently confirms the 1,605 MB measured with the synthetic loader, in the real app this
   time. Suite in that copy: **56 passed, 1 skipped in 56 s** (the skip needs `data/chembl/CDK6.csv`, not copied).
+- Done 2026-11-08: **the hosted app is back up** (Prakhar rebooted it; front page and all four tabs render again).
+- Done 2026-11-08: **a synthesised voice-over, so the recording is clicking rather than talking and clicking at
+  once.** `scripts/narrate.py` turns the narration in `docs/video.md` into one SSML file per shot, reusing the
+  parser in `scripts/teleprompter.py`, so the audio cannot say anything the script does not; `scripts/narrate.ps1`
+  renders it with the speech synthesiser built into Windows and reports every length read back out of the WAV it
+  wrote. Measured: the voices' own default rate is **142 wpm (David) and 146 wpm (Zira)** over shot 1's 72 words,
+  so the 145 the script budgets for needed no slowing. Totals **5:40 (Zira)** and **5:45 (David)**, both inside
+  6:00, leaving about 20 s for the gaps between shots. Audio goes to `dist/narration/` and is not in git.
+  **Unverified: the pronunciation.** Nothing in this session can play audio, so `ChEMBL`, `Tox21`, `KRAS`, `TP53`
+  and `STK11` have not been heard; `docs/video.md` tells him to listen to two shots first and gives him a `SAY`
+  respelling table for anything that comes out wrong. Using the audio is an AI tool and has to be disclosed: the
+  sentence to paste is in the pre-submit checklist, and the README's video line says the choice is still open.
+  `tests/test_narrate.py` (4 tests) holds the SSML to the script, which took the suite from 57 to **61 tests** —
+  caught immediately by `scripts/check_numbers.py`, since the README's counts are machine-checked. Re-measured
+  rather than adjusted: **47 passed, 14 skipped** with `models/` and `data/` emptied, **60 passed, 1 skipped**
+  with the models present.
 - Waiting on Prakhar: record the demo video (read `docs/video-teleprompter.md`); Devpost registration; Discord.
   Claude cannot record it: there is no way to produce speech or capture a screencast from this session, and the
   presentation in a judged student entry should be his voice regardless.

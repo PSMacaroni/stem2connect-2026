@@ -56,6 +56,38 @@ Steps (each one is a single line to paste into a WSL terminal):
 
 Measured on 2026-11-08: starts in under 5 s, first page in about 10 s, all four tabs working, peak 1,607 MB.
 
+## If you do not want to read it aloud: the synthesised voice-over
+
+The narration can be spoken by the voice built into Windows instead, one audio file per shot, so recording is
+clicking along rather than talking and clicking at once. **This is an AI tool and has to be disclosed** if the
+uploaded video uses it: the sentence to paste is in the pre-submit checklist in `docs/submission.md`.
+
+Make the audio (the first line runs in WSL, the second in Windows PowerShell from the repo root):
+```
+uv run python scripts/narrate.py
+```
+```
+powershell -ExecutionPolicy Bypass -File scripts\narrate.ps1
+```
+That writes `dist/narration/shot-1.wav` … `shot-9.wav` plus `narration-full.wav`, and prints each length. Add
+`-Voice "Microsoft David Desktop"` for the male voice. Measured 2026-11-08: **5:40 total with Zira, 5:45 with
+David**, both inside the 6:00 limit, which leaves about 20 seconds for the gaps between shots.
+
+**Listen to `shot-1.wav` and `shot-3.wav` before you record.** Nobody has heard these files: they were generated
+from a session that cannot play audio, so the pronunciation of `ChEMBL`, `Tox21`, `KRAS`, `TP53` and `STK11` is
+unverified. If a term comes out wrong, add one line to the `SAY` table in `scripts/narrate.py` (a respelling, e.g.
+`"ChEMBL": "Chembl"`) and run both commands again. Never change the meaning there, only the spelling.
+
+Then record in one pass:
+1. Start the screen recorder (Win+Alt+R is built into Windows, or OBS).
+2. Set the app up for shot 1. Play `shot-1.wav`. Click along as the voice talks.
+3. When the file ends you have a second or two of quiet: set up the next shot, then play `shot-2.wav`.
+4. Keep going to shot 9. If you fluff a click, let the audio finish, pause the recorder, and redo that shot.
+5. Stop the recorder. Check the total is under 6:00 before uploading.
+
+A spoken shot runs 1 to 3 seconds longer than its slot in the shot list below, because the pauses are real. The
+total is what counts, and the total fits.
+
 ## Before you record
 1. Have the local app open at http://localhost:8511 (see the section above), and all four tabs clicked once.
    Separately, reboot the hosted app at https://share.streamlit.io so the link in the README and on Devpost works

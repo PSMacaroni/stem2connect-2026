@@ -11,7 +11,10 @@ The free tier also caps memory at about 1 GB, and opening all four tabs in one v
 resource limits". If that happens, the local run below has no such limit.
 
 **Demo video:** not recorded yet. The script is `docs/video.md` and the sheet to read from is
-`docs/video-teleprompter.md`; the link replaces this line once it is uploaded.
+`docs/video-teleprompter.md`; the link replaces this line once it is uploaded. The narration will be either read
+aloud by the owner or spoken by the speech synthesiser built into Windows (`scripts/narrate.py` turns the script
+into SSML, `scripts/narrate.ps1` renders it). **Which one was used is stated here when the link goes in** — a
+synthesised voice is an AI tool and belongs in the disclosure below.
 
 ## What it does
 
@@ -80,9 +83,9 @@ everything in WSL. On Linux or macOS, skip step 1 and run the rest in a normal t
    The first time takes a few minutes (on a Windows drive, about 3).
 5. Run the tests:
    `uv run pytest -q`
-   It worked if the last line says `passed` and nothing `failed`. In a fresh clone 14 of the 57 tests say
+   It worked if the last line says `passed` and nothing `failed`. In a fresh clone 14 of the 61 tests say
    `skipped`: they need the trained models and the data tables, which arrive in step 7. Run it again after that
-   step and 56 pass; the last one stays skipped because it needs the raw ChEMBL download, which the models bundle
+   step and 60 pass; the last one stays skipped because it needs the raw ChEMBL download, which the models bundle
    does not carry.
 6. Optional: check the code style with `uv run ruff check .` (it should say `All checks passed!`).
 7. Get the trained models and the cell-line tables (they are not in git). Download them, a 188 MB zip from the

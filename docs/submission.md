@@ -27,6 +27,13 @@ section and the form gets the edit too. Devpost keeps a draft until you press **
 - [ ] Repository is public and a fresh clone runs from the README.
 - [ ] The AI-disclosure commit counts re-pinned to the final commit (they are pinned to 7308fed and drift with
       every commit; see the note in **How it uses AI**).
+- [ ] If the video's narration was spoken by the Windows speech synthesiser rather than read aloud, that is
+      disclosed. Paste this sentence into **How it uses AI** below and into the README's AI disclosure, and delete
+      the "either read aloud or spoken" clause from the README's video line:
+      *The narration in the demo video is not a human voice: the script in `docs/video.md` was rendered by the
+      speech synthesiser built into Windows (Microsoft Zira Desktop, SAPI) via `scripts/narrate.py` and
+      `scripts/narrate.ps1`. The words are the owner's own script; only the voice is synthetic. Everything shown
+      on screen is the app running.*
 - [ ] Pressed **Submit**, and the entry shows as submitted rather than draft.
 
 ## Project name
@@ -208,8 +215,8 @@ the text instead.
 | Analogs on the CDK6 example: 10 scored, spread 0.000 | Video shot 7 | computed by `flatness()` at render time from the rows on screen, so it is not a fixed figure. Seen 2026-11-05 on the live app. The script tells the recorder to read the app, not recite it |
 | CDK6 held-out ROC-AUC 0.894, 95% CI 0.784 to 0.980 | Video shot 3 | `genes.CDK6.rf` in `results/activity_models.json`; machine-checked |
 | caffeine: max Tanimoto 0.15 against a 0.71 cut-off | Video shot 4 | recomputed 2026-11-05: `predict("CDK6", [caffeine])` gives `max_tanimoto` 0.152778 and `abstain_cutoff` 0.712329. The model's hidden score (0.888) is never shown by the app and is deliberately not said in the video |
-| 57 tests in the suite | README How to run it | counted from `tests/test_*.py`; machine-checked |
-| 14 of the 57 skip in a fresh clone, 56 pass after step 7 | README How to run it | measured 2026-11-05 in a clean worktree of 30b4cb0, following the README: with no models and no data, **43 passed, 14 skipped**; after `ensure_models()` downloaded the bundle (`217 files verified`, 50 s), **56 passed, 1 skipped**, the skip being `tests/test_data.py::test_real_cdk6_dataset`, which needs `scripts/pull_chembl.py`. The owner's own checkout has that pull, which is why it reports 57 passed |
+| 61 tests in the suite | README How to run it | counted from `tests/test_*.py`; machine-checked |
+| 14 of the 61 skip in a fresh clone, 60 pass after step 7 | README How to run it | measured 2026-11-08 on WSL's own disk, with `models/` and `data/` emptied to stand in for a fresh clone: **47 passed, 14 skipped** in 32 s; with the models bundle present, **60 passed, 1 skipped** in 2 min 36. The skip is `tests/test_data.py::test_real_cdk6_dataset`, which needs `scripts/pull_chembl.py`; the owner's own checkout has that pull, which is why it reports 61 passed. The earlier figures (57 tests, 43 passed, 56 passed, measured 2026-11-05 on 30b4cb0) held until `tests/test_narrate.py` added 4 |
 | Python 3.12 | README How to run it | `.python-version` says `3.12`; `pyproject.toml` allows `>=3.11,<3.13` |
 | about a minute to wake from sleep | README live-app line; Devpost | timed once on 2026-11-05. Not a repeated measurement, and the README says so |
 | 145 words a minute, so 792 words is 5:28 | Video budget line | the pace is an assumption the script now states, not a measurement; the word count is machine-checked. The script tells the recorder to time shot 1 against it before recording the rest |
