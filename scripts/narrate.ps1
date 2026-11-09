@@ -2,7 +2,9 @@
 #
 # Usage (Windows PowerShell, from the repo root):
 #     powershell -ExecutionPolicy Bypass -File scripts\narrate.ps1
-#     powershell -ExecutionPolicy Bypass -File scripts\narrate.ps1 -Voice "Microsoft David Desktop"
+#     powershell -ExecutionPolicy Bypass -File scripts\narrate.ps1 -Voice "Microsoft Zira Desktop"
+#
+# The default voice is the one Prakhar chose on 2026-11-09 after hearing both (Zira is the other one installed).
 #
 # Run scripts/narrate.py first. This script only reads dist\narration\shot-*.ssml and writes .wav beside them;
 # it never touches the script or the repo. Windows-only: it uses the speech synthesiser built into Windows.
@@ -11,7 +13,7 @@
 # Every duration printed is read back out of the WAV it just wrote, so the timing report is measured, not assumed.
 
 param(
-    [string]$Voice = 'Microsoft Zira Desktop',
+    [string]$Voice = 'Microsoft David Desktop',
     [int]$Rate = 0,
     [string]$Dir = ''
 )

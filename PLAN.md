@@ -234,6 +234,9 @@ Never cut: loops 1 and 2, the evaluation protocol, the README disclosures, the v
   and `STK11` have not been heard; `docs/video.md` tells him to listen to two shots first and gives him a `SAY`
   respelling table for anything that comes out wrong. Using the audio is an AI tool and has to be disclosed: the
   sentence to paste is in the pre-submit checklist, and the README's video line says the choice is still open.
+  **Voice chosen 2026-11-09: Microsoft David Desktop**, after hearing shot 1 in both. `dist/narration/` is now
+  David throughout (5:45, 15 s under the limit) and the script's default matches, so a re-render cannot silently
+  change voice. Rendering is deterministic: the second David run gave 345.2 s again, to the tenth of a second.
   `tests/test_narrate.py` (4 tests) holds the SSML to the script, which took the suite from 57 to **61 tests** —
   caught immediately by `scripts/check_numbers.py`, since the README's counts are machine-checked. Re-measured
   rather than adjusted: **47 passed, 14 skipped** with `models/` and `data/` emptied, **60 passed, 1 skipped**

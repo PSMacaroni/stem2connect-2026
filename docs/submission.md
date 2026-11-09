@@ -31,7 +31,7 @@ section and the form gets the edit too. Devpost keeps a draft until you press **
       disclosed. Paste this sentence into **How it uses AI** below and into the README's AI disclosure, and delete
       the "either read aloud or spoken" clause from the README's video line:
       *The narration in the demo video is not a human voice: the script in `docs/video.md` was rendered by the
-      speech synthesiser built into Windows (Microsoft Zira Desktop, SAPI) via `scripts/narrate.py` and
+      speech synthesiser built into Windows (Microsoft David Desktop, SAPI) via `scripts/narrate.py` and
       `scripts/narrate.ps1`. The words are the owner's own script; only the voice is synthetic. Everything shown
       on screen is the app running.*
 - [ ] Pressed **Submit**, and the entry shows as submitted rather than draft.

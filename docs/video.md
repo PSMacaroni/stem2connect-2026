@@ -69,9 +69,10 @@ uv run python scripts/narrate.py
 ```
 powershell -ExecutionPolicy Bypass -File scripts\narrate.ps1
 ```
-That writes `dist/narration/shot-1.wav` … `shot-9.wav` plus `narration-full.wav`, and prints each length. Add
-`-Voice "Microsoft David Desktop"` for the male voice. Measured 2026-11-08: **5:40 total with Zira, 5:45 with
-David**, both inside the 6:00 limit, which leaves about 20 seconds for the gaps between shots.
+That writes `dist/narration/shot-1.wav` … `shot-9.wav` plus `narration-full.wav`, and prints each length. The
+voice is **Microsoft David Desktop**, chosen 2026-11-09 after hearing both; add `-Voice "Microsoft Zira Desktop"`
+for the other one. Measured: **5:45 total in David** (5:40 in Zira), inside the 6:00 limit, which leaves about 15
+seconds for the gaps between shots. Rendering is deterministic — the same script gives the same lengths twice.
 
 **Listen to `shot-1.wav` and `shot-3.wav` before you record.** Nobody has heard these files: they were generated
 from a session that cannot play audio, so the pronunciation of `ChEMBL`, `Tox21`, `KRAS`, `TP53` and `STK11` is
