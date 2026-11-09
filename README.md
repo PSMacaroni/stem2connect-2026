@@ -6,6 +6,9 @@ Primary track: Scientific Research
 **Live app:** https://stem2connect-2026-cjfcmxcaxddeqtfvyvjzbw.streamlit.app/
 Free hosting, so it sleeps after 12 idle hours; the first visit then takes about a minute to wake (timed once,
 2026-11-05, on the "Yes, get this app back up!" screen; about 70 seconds on a second timing, 2026-11-08).
+The free tier also caps memory at about 1 GB, and opening all four tabs in one visit needs about 1.6 GB (measured
+2026-11-08; the twelve Tox21 forests are a gigabyte of it), so the hosted app can stop with "gone over its
+resource limits". If that happens, the local run below has no such limit.
 
 **Demo video:** not recorded yet. The script is `docs/video.md` and the sheet to read from is
 `docs/video-teleprompter.md`; the link replaces this line once it is uploaded.

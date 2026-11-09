@@ -111,6 +111,7 @@ Never cut: loops 1 and 2, the evaluation protocol, the README disclosures, the v
 | 2026-11-04 | Repo flipped public the same day, after the README disclosures merged | The app's startup download is anonymous; hosting cannot be tested on a private repo; a week of buffer | Public after the tabs merge; last week as first planned |
 | 2026-11-04 | Private GitHub repo PSMacaroni/stem2connect-2026 created and main pushed | CI on GitHub Actions; public flip in the last week | Stay local |
 | 2026-11-04 | Host on Streamlit Community Cloud, not Hugging Face Spaces | Spaces now needs a paid plan for Gradio and Docker Spaces; Community Cloud is free and known | Gradio on a free ZeroGPU Space; paying for HF PRO |
+| 2026-11-08 | Reboot the hosted app for judges, but record the demo against a local app | The hosted free tier caps memory at about 1 GB and the four-tab walk needs 1,607 MB, so a take could die mid-shot; a local run has 16 GB behind it and changes no code, no model and no published figure | Retraining the Tox21 forests smaller (a protocol change: dated amendment, loop-3 re-run, every Tox21 figure re-checked); paying for more memory |
 | 2026-11-04 | Loop 2 uses the Broad Figshare snapshots (DepMap 24Q4 + PRISM 20Q2, CC BY 4.0) instead of Sanger GDSC + Cell Model Passports | Sanger's policy is non-transferable and bans use in third-party websites; the Figshare records carry CC BY 4.0 (checked on the Figshare API); current portal releases have restrictive terms and a captcha | Emailing Sanger for permission; keeping GDSC local-only; the 26Q3 portal release |
 
 ## Done
@@ -211,6 +212,15 @@ Never cut: loops 1 and 2, the evaluation protocol, the README disclosures, the v
   labelled an assumption with a shot-1 stopwatch test to confirm it.
 - Done 2026-11-08: **`docs/submission.md` now says which Devpost box each section goes in**, with a pre-submit
   checklist. No text is duplicated, so the form and the file cannot disagree.
+- Done 2026-11-08: **the local run for the recording is tested and written down** in `docs/video.md`. Two things
+  had to be worked around: port 8501 is held by another Streamlit app on the Windows side (use 8511), and running
+  from `C:\` inside WSL never finished starting in over two minutes. From a copy on WSL's own disk
+  (`~/s2c-demo`, 176 MB, no `data/` or `dist/`) it binds in under 5 s, draws the first page in about 10 s, and all
+  four tabs work: Activity gives the 3 Example predictions with the training-molecule note, Cell lines has
+  NCI-H1573 already selected with the reworded weak-model caption, Safety flags scores the 3 Example molecules,
+  Analogs prints "The 10 shown below are the highest-scoring of 25 analogs" and the flat-ranking warning. Peak
+  **1,607 MB**, which independently confirms the 1,605 MB measured with the synthetic loader, in the real app this
+  time. Suite in that copy: **56 passed, 1 skipped in 56 s** (the skip needs `data/chembl/CDK6.csv`, not copied).
 - Waiting on Prakhar: record the demo video (read `docs/video-teleprompter.md`); Devpost registration; Discord.
   Claude cannot record it: there is no way to produce speech or capture a screencast from this session, and the
   presentation in a judged student entry should be his voice regardless.
@@ -233,7 +243,11 @@ Never cut: loops 1 and 2, the evaluation protocol, the README disclosures, the v
   (a) reboot and record against a local app, changing no code and leaving the hosted app fragile; (b) retrain the
   Tox21 forests smaller (fewer estimators, or a `min_samples_leaf` floor), which is a protocol change needing a
   dated amendment, a re-run of the loop-3 evaluation and an update to every Tox21 figure in the README, the
-  Devpost text and the video script; (c) pay for more memory. Not decided; no code touched.
+  Devpost text and the video script; (c) pay for more memory. **Decided 2026-11-08: (a).** Prakhar reboots the
+  hosted app so the link works for a judge, and the video is recorded against a local app. No code, model or
+  published figure changes. What this does not fix: a judge who opens all four tabs in one visit can still hit the
+  error. The README now says so, and says the local run has no such limit, which is the honest hedge; if that
+  wording looks like it costs more than the error does, it is one paragraph to drop.
 - Tox21 has no stated licence (probably US-government public domain): raw file never committed, cited only.
 - CDK6 has 8 inactives in its test set (6 in the first run), CDK4 36: both marked underpowered.
 - Loop 2 per-drug models on hotspot mutations alone explain little (median ROC-AUC 0.56 at 5b7d361 on the branch); the write-up reports this as a negative result and the app leads with the lookup.
