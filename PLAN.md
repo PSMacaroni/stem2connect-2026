@@ -241,6 +241,21 @@ Never cut: loops 1 and 2, the evaluation protocol, the README disclosures, the v
   caught immediately by `scripts/check_numbers.py`, since the README's counts are machine-checked. Re-measured
   rather than adjusted: **47 passed, 14 skipped** with `models/` and `data/` emptied, **60 passed, 1 skipped**
   with the models present.
+- Done 2026-11-09: **the demo drives itself.** `scripts/demo_drive.py` (Playwright on the installed Chrome, so no
+  browser download; venv in git-ignored `dist/`) opens the app in an ordinary 1280x720 Chrome window and performs
+  every click in the shot list, holding each shot for exactly that shot's narration length, read from the WAV
+  rather than typed in. `--rehearse` runs the whole list with 1-second holds and prints ok/FAIL per step: that is
+  what found three faults, none of which any test could see. (1) The abstain reason is inside the molecule's
+  expander, so checking for it before opening the row waits forever. (2) Streamlit keeps an expander open across
+  a re-render, so a later blind click *closes* the one an earlier shot opened; the step now reads the
+  `<details open>` attribute first. (3) Two tabs word the abstain warning identically and Streamlit leaves every
+  tab's panel in the DOM, so a `text=` match can land on a hidden copy and never resolve; matches are now
+  filtered with `>> visible=true`. A full silent pass then produced **5:45.88 of 1280x720 VP9, 34.9 MB**, every
+  step ok, verified by pulling frames out of the file: the sidebar numbers, the Analogs flat-ranking warning with
+  the structures table, and caffeine's abstain row all render. Two ways to get sound on it: press Win+Alt+R and
+  let the script play the narration (one pass, one keypress), or `--video` for a silent WebM whose shot
+  boundaries match `narration-full.wav` by construction. Playwright's bundled ffmpeg cannot mux them — it ships
+  `libvpx-vp9` and no audio encoder at all, checked with `-encoders`.
 - Waiting on Prakhar: record the demo video (read `docs/video-teleprompter.md`); Devpost registration; Discord.
   Claude cannot record it: there is no way to produce speech or capture a screencast from this session, and the
   presentation in a judged student entry should be his voice regardless.

@@ -56,6 +56,51 @@ Steps (each one is a single line to paste into a WSL terminal):
 
 Measured on 2026-11-08: starts in under 5 s, first page in about 10 s, all four tabs working, peak 1,607 MB.
 
+## The easiest path: let the demo drive itself
+
+`scripts/demo_drive.py` opens the app in a normal Chrome window and does every click in the shot list for you,
+holding each shot for exactly as long as that shot's narration lasts. You start a recorder and watch. The app is
+answering for real throughout — this automates the clicking, it does not fake a result.
+
+One-time setup (Windows PowerShell, from the repo root). It uses the Chrome you already have, so no browser is
+downloaded, and it installs into `dist/`, which is git-ignored, so nothing touches your system Python:
+```
+py -3.12 -m venv dist\demo-driver
+```
+```
+dist\demo-driver\Scripts\python.exe -m pip install playwright
+```
+
+Check the clicks before trusting them. This takes about 30 seconds and does the whole shot list with 1-second
+holds, printing `ok` or `FAIL` for every step:
+```
+dist\demo-driver\Scripts\python.exe scripts\demo_drive.py --rehearse
+```
+
+Then the real run. Focus the Chrome window it opens, press **Win+Alt+R** during the 3-second countdown, and leave
+it alone for 5:45; it plays the narration and clicks in time with it, and tells you when to stop the recorder:
+```
+dist\demo-driver\Scripts\python.exe scripts\demo_drive.py
+```
+
+If Windows does not capture the narration audio, record it silently instead and lay the audio over it afterwards:
+```
+dist\demo-driver\Scripts\python.exe -m playwright install ffmpeg
+```
+```
+dist\demo-driver\Scripts\python.exe scripts\demo_drive.py --video
+```
+That writes a silent WebM to `dist/demo-video/`. Its shot boundaries line up with
+`dist/narration/narration-full.wav` by construction, because each shot is held for exactly that shot's audio
+length, so dropping both on a Clipchamp timeline at 0 needs no nudging.
+
+**What the rehearsal checks**, and why it is worth running after any UI change: every tab click, every Example
+button, that the abstain really says "Outside what this model has seen", that NCI-H1573 comes up, that the
+Analogs tab prints its flat-ranking warning, and that the model-ranks table is reachable. Two faults in this
+script were found exactly that way, both invisible to the tests: the abstain reason is inside the molecule's
+expander rather than on the page, and Streamlit keeps an expander open across a re-render, so clicking it again
+closes it.
+
 ## If you do not want to read it aloud: the synthesised voice-over
 
 The narration can be spoken by the voice built into Windows instead, one audio file per shot, so recording is
