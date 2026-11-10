@@ -256,6 +256,15 @@ Never cut: loops 1 and 2, the evaluation protocol, the README disclosures, the v
   let the script play the narration (one pass, one keypress), or `--video` for a silent WebM whose shot
   boundaries match `narration-full.wav` by construction. Playwright's bundled ffmpeg cannot mux them — it ships
   `libvpx-vp9` and no audio encoder at all, checked with `-encoders`.
+- Done 2026-11-09: **Prakhar chose the one-pass route** (Win+Alt+R while the script plays the narration), so the
+  pre-flight was tightened around it. Narration playback proved working through `winsound`. Game Bar's capture is
+  enabled (`GameDVR_Enabled` 1) and its audio values are unset, meaning Windows defaults, which do record system
+  audio — defaults, not a guarantee, so `docs/video.md` says to test ten seconds before spending six minutes. The
+  countdown is now `--countdown`, default 6 instead of 3, and the script prints the arithmetic that matters:
+  **the shots are 5:45.88 of the 6:00 allowed**, so the countdown plus the delay in stopping has to fit in 14 s,
+  and Photos trims the start if it does not. Also found and written down: a Streamlit started from a one-off
+  `wsl -d Ubuntu -- ...` call dies when that call returns, because WSL shuts the distribution down with its last
+  session — it happened twice here, and it would kill a take mid-shot. Start it in a terminal left open.
 - Waiting on Prakhar: record the demo video (read `docs/video-teleprompter.md`); Devpost registration; Discord.
   Claude cannot record it: there is no way to produce speech or capture a screencast from this session, and the
   presentation in a judged student entry should be his voice regardless.

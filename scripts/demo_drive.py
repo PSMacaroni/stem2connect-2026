@@ -140,7 +140,7 @@ def shots(d: Driver) -> list[tuple[int, str, list]]:
     ]
 
 
-def run(rehearsing: bool, video: bool = False) -> int:
+def run(rehearsing: bool, video: bool = False, countdown: int = 6) -> int:
     if not rehearsing:
         missing = [n for n in range(1, 10) if not (AUDIO / f"shot-{n}.wav").exists()]
         if missing:
@@ -162,8 +162,13 @@ def run(rehearsing: bool, video: bool = False) -> int:
         # afterwards. Playing the narration as well would only get captured twice over, by whatever records it.
         play_audio = not rehearsing and not video
         if play_audio:
-            for n in (3, 2, 1):
-                print(f"  starting in {n}... (focus this Chrome window and press Win+Alt+R now)")
+            shots_total = sum(audio_seconds(n) for n in range(1, 10))
+            print(f"\n  The shots run {shots_total:.0f}s. The limit is 360s, so everything you add either side of"
+                  f" them -\n  this countdown and however long you take to stop the recorder - has to fit in"
+                  f" {360 - shots_total:.0f}s.\n  If the file does end up over 6:00, trim the start in the Photos"
+                  " app rather than re-recording.\n")
+            for n in range(countdown, 0, -1):
+                print(f"  starting in {n}... (click the Chrome window, then press Win+Alt+R)")
                 time.sleep(1)
 
         for n, title, actions in shots(d):
@@ -180,7 +185,7 @@ def run(rehearsing: bool, video: bool = False) -> int:
             elif not rehearsing:
                 print(f"    note: the clicks took {-left:.1f}s longer than the narration")
 
-        print("\ndone." if video else "\ndone — stop the recorder (Win+Alt+R).")
+        print("\ndone." if video else "\ndone — press Win+Alt+R now to stop. The file is in Videos\\Captures.")
         if video:
             path = page.video.path() if page.video else None
             page.close()  # the WebM is only written out when the page closes
@@ -203,5 +208,7 @@ if __name__ == "__main__":
     ap.add_argument("--rehearse", action="store_true", help="check the clicks with 1s holds and no audio")
     ap.add_argument("--video", action="store_true",
                     help="also save a silent WebM of the page to dist/demo-video (for muxing the audio yourself)")
+    ap.add_argument("--countdown", type=int, default=6,
+                    help="seconds to start the recorder in; every one of them lands in the file (default 6)")
     args = ap.parse_args()
-    sys.exit(run(args.rehearse, args.video))
+    sys.exit(run(args.rehearse, args.video, args.countdown))

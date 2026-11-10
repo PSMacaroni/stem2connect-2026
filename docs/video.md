@@ -77,11 +77,29 @@ holds, printing `ok` or `FAIL` for every step:
 dist\demo-driver\Scripts\python.exe scripts\demo_drive.py --rehearse
 ```
 
-Then the real run. Focus the Chrome window it opens, press **Win+Alt+R** during the 3-second countdown, and leave
-it alone for 5:45; it plays the narration and clicks in time with it, and tells you when to stop the recorder:
+Then the real run. Click the Chrome window it opens, press **Win+Alt+R** during the 6-second countdown, and leave
+it alone for 5:45; it plays the narration and clicks in time with it, and tells you when to stop the recorder.
+The file lands in `Videos\Captures`:
 ```
 dist\demo-driver\Scripts\python.exe scripts\demo_drive.py
 ```
+
+**Watch the clock on this one.** The shots run 5:45.88 of the 6:00 allowed, so the countdown and however long you
+take to press Win+Alt+R again at the end both have to fit in the remaining 14 seconds. Six seconds of countdown
+and a prompt stop leaves about five to spare. If the file does come out over 6:00, trim the start in the Photos
+app — that is faster and safer than re-recording. `--countdown 10` if six seconds is not enough, but then you are
+almost certainly trimming.
+
+Two things to check before the real take, because each one quietly ruins a finished take:
+- **Does Windows capture the sound?** Game Bar's audio settings are at their defaults here, which do record
+  system audio, but defaults are not a guarantee. Record ten seconds of anything with narration playing and
+  confirm the file has sound before you spend six minutes.
+- **Is the app warm?** Open http://localhost:8511 once and let it finish drawing. The capture starts immediately,
+  so a cold app puts its loading skeleton in the first seconds of your video.
+- **Is the app going to stay up?** Start it in a terminal window you leave open for the whole take. A Streamlit
+  started from a one-off `wsl -d Ubuntu -- ...` command dies when that command returns, because WSL shuts the
+  distribution down once its last session closes — which is exactly the kind of thing that kills a take at
+  shot 7.
 
 If Windows does not capture the narration audio, record it silently instead and lay the audio over it afterwards:
 ```
