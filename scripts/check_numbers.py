@@ -139,7 +139,10 @@ have_tables = present("data/depmap/derived", "DepMap tables in the bundle")
 files: list = []
 if have_manifest:
     man = json.loads((ROOT / "models" / "MANIFEST.json").read_text(encoding="utf-8"))
-    files = man["files"] if isinstance(man, dict) and "files" in man else man
+    entries = man["files"] if isinstance(man, dict) and "files" in man else man
+    # The v2 manifest lists every downloaded file, the DepMap tables and PULL_INFO.json included, so only the
+    # entries under models/ are models.
+    files = [e for e in entries if str(e["name"] if isinstance(e, dict) else e).startswith("models/")]
     claim("models in the bundle", f"{len(files)} models", README)
 if have_tables:
     tables = sorted((ROOT / "data" / "depmap" / "derived").glob("*.csv"))

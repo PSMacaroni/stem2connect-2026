@@ -21,13 +21,17 @@ section and the form gets the edit too. Devpost keeps a draft until you press **
 
 ### Before you press Submit
 - [ ] Registered on Devpost, and joined the Discord (`docs/hackathon.md` still lists both as not done).
-- [ ] Video uploaded, under 6:00, public or unlisted, link opens in a signed-out browser.
+- [x] Video uploaded, under 6:00, public or unlisted, link opens in a signed-out browser. (2026-11-12: 5:46,
+      unlisted; YouTube's public oEmbed endpoint returns it without a sign-in.)
 - [ ] Video URL pasted in three places: the Devpost form, **Links** below, and the README.
-- [ ] `uv run python scripts/check_numbers.py --strict` passes on this checkout (it needs the models bundle).
-- [ ] Repository is public and a fresh clone runs from the README.
-- [ ] The AI-disclosure commit counts re-pinned to the final commit (they are pinned to 7308fed and drift with
-      every commit; see the note in **How it uses AI**).
-- [ ] If the video's narration was spoken by the Windows speech synthesiser rather than read aloud, that is
+- [x] `uv run python scripts/check_numbers.py --strict` passes on this checkout (it needs the models bundle).
+      (2026-11-12, on a fresh clone with the downloaded bundle: 38 checked, 0 mismatches, 0 skipped, after the
+      checker stopped counting the bundle's data files as models.)
+- [x] Repository is public and a fresh clone runs from the README. (2026-11-12, WSL: 47 passed and 14 skipped,
+      then `217 files verified`, then 60 passed and 1 skipped; ruff clean.)
+- [x] The AI-disclosure commit counts re-pinned (now to a4b4928, 2026-11-09; they drift with every commit; see
+      the note in **How it uses AI**).
+- [x] If the video's narration was spoken by the Windows speech synthesiser rather than read aloud, that is
       disclosed. Paste this sentence into **How it uses AI** below and into the README's AI disclosure, and delete
       the "either read aloud or spoken" clause from the README's video line:
       *The narration in the demo video is not a human voice: the script in `docs/video.md` was rendered by the
@@ -116,7 +120,12 @@ changed the protocol (mutant-protein assays pooled with wild-type ones, salts co
 inflated metric, a missing metric); those led to the wild-type-only and salt-stripping amendments. Prakhar Suryansh
 chose the project, the data sources, the metrics and the cut-offs, and made every decision in the plan's decisions
 table after seeing the evidence. The manager session re-ran the tests and the reproduction of the reported numbers
-before every merge. Commits carry Co-Authored-By trailers. Of the 73 non-merge commits as of 7308fed (2026-11-05), 46 name Claude Fable 5.1, 24 name Claude Opus 5.5, 1 names Claude Opus 5 and 2 setup commits name Claude Sonnet 5.5. Recount with `git log --no-merges --format='%(trailers:key=Co-Authored-By,valueonly)' | grep -oE "Claude (Fable 5\.1|Opus 5\.5|Opus 5|Sonnet 5\.5)" | sort | uniq -c`, which sums to exactly the 73 commits; grepping whole commit messages instead gives 75, because two commit bodies discuss these model names in prose. The figures are pinned to a commit because every new commit changes them: the commit that records these ones adds a further Opus 5. Of the 46 naming Fable, 24 were in fact written by subagents running Claude Opus 5.5 (the scaffold, data registry, loop-1, loop-2 and activity-tab work): the manager's task briefs specified the manager's own attribution line by mistake, which an audit of the trailers caught while this section was first written. The other 22 are the manager session's own commits, made while it ran Fable 5.1. The 24 naming Opus 5.5 are later subagent work (loop 3, the model bundle, the analogs tab) together with the manager session's own commits after it switched to Opus 5.5, and the one naming Opus 5 is the manager session's own work after its model moved again. Git history was not rewritten; every commit since the audit names the model that wrote it.
+before every merge. Commits carry Co-Authored-By trailers. Of the 88 non-merge commits as of a4b4928 (2026-11-09), 46 name Claude Fable 5.1, 24 name Claude Opus 5.5, 16 name Claude Opus 5 and 2 setup commits name Claude Sonnet 5.5. Recount with `git log --no-merges --format='%(trailers:key=Co-Authored-By,valueonly)' | grep -oE "Claude (Fable 5\.1|Opus 5\.5|Opus 5|Sonnet 5\.5)" | sort | uniq -c`, which sums to exactly the 88 commits; grepping whole commit messages instead gives 90, because two commit bodies discuss these model names in prose. The figures are pinned to a commit because every new commit changes them: the commit that records these ones adds a further Opus 5.5. Of the 46 naming Fable, 24 were in fact written by subagents running Claude Opus 5.5 (the scaffold, data registry, loop-1, loop-2 and activity-tab work): the manager's task briefs specified the manager's own attribution line by mistake, which an audit of the trailers caught while this section was first written. The other 22 are the manager session's own commits, made while it ran Fable 5.1. The 24 naming Opus 5.5 are later subagent work (loop 3, the model bundle, the analogs tab) together with the manager session's own commits after it switched to Opus 5.5, and the 16 naming Opus 5 are later sessions' work after the model moved again (the numbers pass and its CI check, two caption fixes, and the demo-video script, voice-over and driver, 2026-11-05 to 2026-11-09). Git history was not rewritten; every commit since the audit names the model that wrote it.
+
+**Demo video (disclosure).** The narration is not a human voice: the owner's script in `docs/video.md` was rendered
+by the speech synthesiser built into Windows (Microsoft David Desktop, SAPI); only the voice is synthetic. The take
+was recorded by a Claude Code session (Claude Opus 5.5) running `scripts/demo_drive.py`, which clicks through the
+shot list with Playwright; the audio was laid over it with ffmpeg. Everything on screen is the app running locally.
 
 ## What we learned
 - A high score can come from the data, not the model: a random ranking already scores 0.68 to 0.95 on active-class
@@ -147,7 +156,7 @@ moleculenet streamlit-community-cloud github claude-code
 
 ## Links
 - Repository (public since 2026-11-04): https://github.com/PSMacaroni/stem2connect-2026
-- Demo video (YouTube or Vimeo, public or unlisted, 6 minutes or less): [video URL]
+- Demo video (YouTube, unlisted, 5:46): https://youtu.be/rl0X_v5u4YI
 - Live demo: https://stem2connect-2026-cjfcmxcaxddeqtfvyvjzbw.streamlit.app/ (Streamlit Community Cloud; sleeps after 12 idle hours, wakes in about a minute)
 
 ## Team members (all added on Devpost)

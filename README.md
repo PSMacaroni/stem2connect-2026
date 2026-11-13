@@ -10,11 +10,9 @@ The free tier also caps memory at about 1 GB, and opening all four tabs in one v
 2026-11-08; the twelve Tox21 forests are a gigabyte of it), so the hosted app can stop with "gone over its
 resource limits". If that happens, the local run below has no such limit.
 
-**Demo video:** not recorded yet. The script is `docs/video.md` and the sheet to read from is
-`docs/video-teleprompter.md`; the link replaces this line once it is uploaded. The narration will be either read
-aloud by the owner or spoken by the speech synthesiser built into Windows (`scripts/narrate.py` turns the script
-into SSML, `scripts/narrate.ps1` renders it). **Which one was used is stated here when the link goes in** — a
-synthesised voice is an AI tool and belongs in the disclosure below.
+**Demo video:** https://youtu.be/rl0X_v5u4YI (5:46, unlisted on YouTube). The narration is spoken by the speech
+synthesiser built into Windows, not by the owner, and the clicks were driven by a script; both are disclosed under
+"AI tools and services used" below. The script it reads is `docs/video.md`.
 
 ## What it does
 
@@ -135,7 +133,15 @@ the table. Those findings led to the wild-type-only and salt-stripping amendment
 owner, Prakhar Suryansh, chose the project, the data sources, the metrics and the cut-offs, and made every decision
 in the Decisions table of `PLAN.md` after seeing the evidence for it. Before anything was merged, the manager
 session re-ran the tests and the reproduction of the reported numbers.
-Commits carry Co-Authored-By trailers. Of the 73 non-merge commits as of 7308fed (2026-11-05), 46 name Claude Fable 5.1, 24 name Claude Opus 5.5, 1 names Claude Opus 5 and 2 setup commits name Claude Sonnet 5.5. Recount with `git log --no-merges --format='%(trailers:key=Co-Authored-By,valueonly)' | grep -oE "Claude (Fable 5\.1|Opus 5\.5|Opus 5|Sonnet 5\.5)" | sort | uniq -c`, which sums to exactly the 73 commits; grepping whole commit messages instead gives 75, because two commit bodies discuss these model names in prose. The figures are pinned to a commit because every new commit changes them: the commit that records these ones adds a further Opus 5. Of the 46 naming Fable, 24 were in fact written by subagents running Claude Opus 5.5 (the scaffold, data registry, loop-1, loop-2 and activity-tab work): the manager's task briefs specified the manager's own attribution line by mistake, which an audit of the trailers caught while this section was first written. The other 22 are the manager session's own commits, made while it ran Fable 5.1. The 24 naming Opus 5.5 are later subagent work (loop 3, the model bundle, the analogs tab) together with the manager session's own commits after it switched to Opus 5.5, and the one naming Opus 5 is the manager session's own work after its model moved again. Git history was not rewritten; every commit since the audit names the model that wrote it.
+Commits carry Co-Authored-By trailers. Of the 88 non-merge commits as of a4b4928 (2026-11-09), 46 name Claude Fable 5.1, 24 name Claude Opus 5.5, 16 name Claude Opus 5 and 2 setup commits name Claude Sonnet 5.5. Recount with `git log --no-merges --format='%(trailers:key=Co-Authored-By,valueonly)' | grep -oE "Claude (Fable 5\.1|Opus 5\.5|Opus 5|Sonnet 5\.5)" | sort | uniq -c`, which sums to exactly the 88 commits; grepping whole commit messages instead gives 90, because two commit bodies discuss these model names in prose. The figures are pinned to a commit because every new commit changes them: the commit that records these ones adds a further Opus 5.5. Of the 46 naming Fable, 24 were in fact written by subagents running Claude Opus 5.5 (the scaffold, data registry, loop-1, loop-2 and activity-tab work): the manager's task briefs specified the manager's own attribution line by mistake, which an audit of the trailers caught while this section was first written. The other 22 are the manager session's own commits, made while it ran Fable 5.1. The 24 naming Opus 5.5 are later subagent work (loop 3, the model bundle, the analogs tab) together with the manager session's own commits after it switched to Opus 5.5, and the 16 naming Opus 5 are later sessions' work after the model moved again (the numbers pass and its CI check, two caption fixes, and the demo-video script, voice-over and driver, 2026-11-05 to 2026-11-09). Git history was not rewritten; every commit since the audit names the model that wrote it.
+
+**Demo video (disclosure):** the narration is not a human voice. The owner's script in `docs/video.md` was rendered
+by the speech synthesiser built into Windows (Microsoft David Desktop, SAPI) via `scripts/narrate.py` and
+`scripts/narrate.ps1`; only the voice is synthetic. The take was recorded by a Claude Code session (Claude Opus 5.5)
+running `scripts/demo_drive.py`, which clicks through the shot list in Chrome with Playwright and holds each shot
+for its narration's length; the per-shot audio was then laid over the recording with ffmpeg. Everything on screen
+is the app running locally and answering live.
+
 No AI tool decided what this project claims: the
 wording rules (a research and learning tool, not medical advice; cell lines, not patients) are the owner's, in
 `PLAN.md`.
